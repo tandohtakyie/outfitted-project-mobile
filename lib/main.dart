@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/Screens/sign_in_screen.dart';
+import 'package:outfitted_flutter_mobile/Screens/splash_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 import 'Screens/drawer_screen.dart';
@@ -10,7 +12,6 @@ void main() {
 }
 
 class HomePage extends StatelessWidget {
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -23,10 +24,8 @@ class HomePage extends StatelessWidget {
         textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: DrawerAnimation(),
+      home: SplashScreen(),
+      // home: DrawerAnimation(),
     );
-
   }
 }
-
-
