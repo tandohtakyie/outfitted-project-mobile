@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/default_button.dart';
+import 'package:outfitted_flutter_mobile/components/drawer_animation.dart';
 import 'package:outfitted_flutter_mobile/components/form_error.dart';
 import 'package:outfitted_flutter_mobile/style/constants.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
@@ -70,7 +71,11 @@ class _SignInFormState extends State<SignInForm> {
             press: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
+
+                // Route route = MaterialPageRoute(builder: (_) => DrawerAnimation());
+                // Navigator.pushReplacement(context, route);
               }
+
             },
           ),
         ],
