@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/Screens/forgot_password_screen.dart';
 import 'package:outfitted_flutter_mobile/components/sign_in_form.dart';
+import 'package:outfitted_flutter_mobile/components/size_config.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -12,29 +14,83 @@ class SignInScreen extends StatelessWidget {
           width: double.infinity,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Center(
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  FittedBox(
+                    child: Image.asset('assets/images/lady_on_couch.png'),
+                    fit: BoxFit.cover,
+                  ),
                   Text(
                     "OutFitted",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: kPrimaryColor,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     "Sign in with your email and password \nor register",
+                    style: TextStyle(
+                        color: Colors.black.withOpacity(0.5),
+                        fontFamily: "Muli"),
                     textAlign: TextAlign.center,
                   ),
-                  SignInForm()
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SignInForm(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  NoAccountYet(),
                 ],
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class NoAccountYet extends StatelessWidget {
+  const NoAccountYet({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Don't have an account? ",
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black.withOpacity(0.5),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new ForgotPasswordScreen()));
+          },
+          child: Text(
+            "Sign Up",
+            style: TextStyle(fontSize: 16, color: kPrimaryColor),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: kBackgroundColor,
         primaryColor: kPrimaryColor,
-        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+        textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.black.withOpacity(0.5), fontFamily: "Muli"),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: SplashScreen(),
