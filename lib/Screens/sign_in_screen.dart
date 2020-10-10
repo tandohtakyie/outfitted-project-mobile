@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/Screens/forgot_password_screen.dart';
+import 'package:outfitted_flutter_mobile/components/no_account_yet.dart';
 import 'package:outfitted_flutter_mobile/components/sign_in_form.dart';
 import 'package:outfitted_flutter_mobile/components/size_config.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
@@ -39,8 +40,7 @@ class SignInScreen extends StatelessWidget {
                   Text(
                     "Sign in with your email and password \nor register",
                     style: TextStyle(
-                        color: Colors.black.withOpacity(0.5),
-                        fontFamily: "Muli"),
+                        color: Colors.black.withOpacity(0.5),),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
@@ -61,36 +61,4 @@ class SignInScreen extends StatelessWidget {
   }
 }
 
-class NoAccountYet extends StatelessWidget {
-  const NoAccountYet({
-    Key key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          "Don't have an account? ",
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black.withOpacity(0.5),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new ForgotPasswordScreen()));
-          },
-          child: Text(
-            "Sign Up",
-            style: TextStyle(fontSize: 16, color: kPrimaryColor),
-          ),
-        ),
-      ],
-    );
-  }
-}

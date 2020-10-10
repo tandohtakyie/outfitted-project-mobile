@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/Screens/forgot_password_screen.dart';
 import 'package:outfitted_flutter_mobile/components/default_button.dart';
 import 'package:outfitted_flutter_mobile/components/drawer_animation.dart';
 import 'package:outfitted_flutter_mobile/components/form_error.dart';
@@ -53,11 +54,19 @@ class _SignInFormState extends State<SignInForm> {
                 style: TextStyle(  ),
               ),
               Spacer(),
-              Text(
-                "Forgot Password",
-                style: TextStyle(
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new ForgotPasswordScreen()));
+                },
+                child: Text(
+                  "Forgot Password",
+                  style: TextStyle(
 
-                  decoration: TextDecoration.underline,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ],
@@ -116,8 +125,6 @@ class _SignInFormState extends State<SignInForm> {
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
-        labelStyle: TextStyle(  ),
-        hintStyle: TextStyle(  ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         contentPadding: EdgeInsets.symmetric(
           horizontal: 42,
@@ -176,8 +183,6 @@ class _SignInFormState extends State<SignInForm> {
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
-        labelStyle: TextStyle(  ),
-        hintStyle: TextStyle(  ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         contentPadding: EdgeInsets.symmetric(
           horizontal: 42,
