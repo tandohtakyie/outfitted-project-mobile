@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/Screens/sign_in_screen.dart';
 import 'package:outfitted_flutter_mobile/Screens/splash_screen.dart';
@@ -7,7 +8,9 @@ import 'Screens/drawer_screen.dart';
 import 'Screens/home_screen.dart';
 import 'components/drawer_animation.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(HomePage());
 }
 
@@ -16,6 +19,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
       title: 'OutFitted',
       theme: ThemeData(

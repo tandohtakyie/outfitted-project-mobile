@@ -1,9 +1,20 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:outfitted_flutter_mobile/components/custom_textfield_icon.dart';
 import 'package:outfitted_flutter_mobile/components/default_button.dart';
+import 'package:outfitted_flutter_mobile/components/drawer_animation.dart';
 import 'package:outfitted_flutter_mobile/components/form_error.dart';
+import 'package:outfitted_flutter_mobile/dialogbox/errorDialog.dart';
+import 'package:outfitted_flutter_mobile/dialogbox/loadingDialog.dart';
+import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/style/constants.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -13,9 +24,14 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
 
+  String name;
   String email;
   String password;
   String confirm_password;
+
+  File _imageFile;
+
+  String userImageUrl = "";
 
   final List<String> errors = [];
 
@@ -35,10 +51,37 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    double _screenWidth = MediaQuery.of(context).size.width;
+    double _screenHeight = MediaQuery.of(context).size.height;
     return Form(
       key: _formKey,
       child: Column(
         children: [
+          InkWell(
+            onTap: () {
+              _selectAndPickImage();
+            },
+            child: CircleAvatar(
+              radius: _screenWidth * 0.15,
+              backgroundColor: Colors.white,
+              backgroundImage:
+                  _imageFile == null ? null : FileImage(_imageFile),
+              child: _imageFile == null
+                  ? Icon(
+                      Icons.add_a_photo,
+                      size: _screenWidth * 0.15,
+                      color: kPrimaryColor,
+                    )
+                  : null,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          buildNameFormField(),
+          SizedBox(
+            height: 20,
+          ),
           buildEmailFormField(),
           SizedBox(
             height: 20,
@@ -59,6 +102,7 @@ class _SignUpFormState extends State<SignUpForm> {
             press: () {
               if (_formKey.currentState.validate()) {
                 // create account
+                uploadAndSaveImage();
               }
             },
           ),
@@ -67,78 +111,35 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildConfirmPasswordFormField() {
+  TextFormField buildNameFormField() {
     return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => confirm_password = newValue,
-      onChanged: (value) {
-        if (password == confirm_password) {
-          removeError(error: kMatchPassError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          return "";
-        } else if (password != confirm_password) {
-          addError(error: kMatchPassError);
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Confirm Password",
-        hintText: "Re-enter your password",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 42,
-          vertical: 20,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide(color: kPrimaryColor),
-          gapPadding: 10,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide(
-            color: kPrimaryColor,
-          ),
-          gapPadding: 10,
-        ),
-        suffixIcon: CustomTextFieldIcon(
-          icon: Icon(
-            Icons.lock_outline,
-            color: kPrimaryColor.withOpacity(0.8),
-          ),
-        ),
-      ),
-    );
-  }
-
-  TextFormField buildPasswordFormField() {
-    return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => password = newValue,
+      keyboardType: TextInputType.name,
+      onSaved: (newValue) => name = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(error: kPassNullError);
+          removeError(error: kNameNullError);
+        } else if (value.length >= 1) {
+          setState(() {
+            removeError(error: kNameNullError);
+          });
         }
-        password = value;
         return null;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kPassNullError);
-        } else if (value.length < 8) {
-          addError(error: kShortPassError);
+          setState(() {
+            errors.add(kNameNullError);
+          });
+        } else if (value.length < 1) {
+          setState(() {
+            errors.add(kNameNullError);
+          });
         }
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Password",
-        hintText: "Enter your password",
+        labelText: "Name",
+        hintText: "Enter your Name",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         contentPadding: EdgeInsets.symmetric(
           horizontal: 42,
@@ -158,7 +159,7 @@ class _SignUpFormState extends State<SignUpForm> {
         ),
         suffixIcon: CustomTextFieldIcon(
           icon: Icon(
-            Icons.lock_outline,
+            Icons.person_outline,
             color: kPrimaryColor.withOpacity(0.8),
           ),
         ),
@@ -221,5 +222,190 @@ class _SignUpFormState extends State<SignUpForm> {
         ),
       ),
     );
+  }
+
+  TextFormField buildPasswordFormField() {
+    return TextFormField(
+      obscureText: true,
+      onSaved: (newValue) => password = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        } else if (value.length >= 8) {
+          removeError(error: kPassNullError);
+        }
+        password = value;
+        return null;
+      },
+      validator: (value) {
+        if (value.isEmpty) {
+          addError(error: kPassNullError);
+        } else if (value.length < 8) {
+          addError(error: kShortPassError);
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Password",
+        hintText: "Enter your password",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 42,
+          vertical: 20,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(color: kPrimaryColor),
+          gapPadding: 10,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(
+            color: kPrimaryColor,
+          ),
+          gapPadding: 10,
+        ),
+        suffixIcon: CustomTextFieldIcon(
+          icon: Icon(
+            Icons.lock_outline,
+            color: kPrimaryColor.withOpacity(0.8),
+          ),
+        ),
+      ),
+    );
+  }
+
+  TextFormField buildConfirmPasswordFormField() {
+    return TextFormField(
+      obscureText: true,
+      onSaved: (newValue) => confirm_password = newValue,
+      onChanged: (value) {
+        if (password == confirm_password) {
+          removeError(error: kMatchPassError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value.isEmpty) {
+          return "";
+        } else if (password != confirm_password) {
+          addError(error: kMatchPassError);
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Confirm Password",
+        hintText: "Re-enter your password",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 42,
+          vertical: 20,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(color: kPrimaryColor),
+          gapPadding: 10,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(
+            color: kPrimaryColor,
+          ),
+          gapPadding: 10,
+        ),
+        suffixIcon: CustomTextFieldIcon(
+          icon: Icon(
+            Icons.lock_outline,
+            color: kPrimaryColor.withOpacity(0.8),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _selectAndPickImage() async {
+    _imageFile = (await ImagePicker.platform
+        .pickImage(source: ImageSource.gallery)) as File;
+  }
+
+  Future<void> uploadAndSaveImage() async {
+    if (_imageFile == null) {
+      showDialog(
+          context: context,
+          builder: (c) {
+            return ErrorAlertDialog(
+              message: "Please select an image",
+            );
+          });
+    } else {
+      uploadToFirebaseStorage();
+    }
+  }
+
+  uploadToFirebaseStorage() async {
+    showDialog(
+        context: context,
+        builder: (c) {
+          return LoadingAlertDialog(
+            message: "Registering account, please wait....",
+          );
+        });
+
+    String imageFileName = DateTime.now().millisecondsSinceEpoch.toString();
+
+    UploadTask uploadTask =
+        FirebaseStorage.instance.ref().child(imageFileName).putFile(_imageFile);
+
+    TaskSnapshot taskSnapshot = await uploadTask;
+
+    await taskSnapshot.ref.getDownloadURL().then((urlImage) => {
+          userImageUrl = urlImage,
+          _registerCustomer(),
+        });
+  }
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  void _registerCustomer() async {
+    User firebaseUser;
+    await _auth
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((auth) => {
+              firebaseUser = auth.user,
+            })
+        .catchError((error) {
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (c) {
+            return ErrorAlertDialog(
+              message: error.toString(),
+            );
+          });
+    });
+
+    if(firebaseUser != null){
+      MaterialPageRoute route;
+      saveCustomerInfoToFireStore(firebaseUser).then((value) => {
+        Navigator.pop(context),
+        route = MaterialPageRoute(builder: (c) => DrawerAnimation()),
+        Navigator.pushReplacement(context, route),
+      });
+    }
+  }
+
+  Future saveCustomerInfoToFireStore(User fUser) async{
+    // ignore: deprecated_member_use
+    Firestore.instance.collection("customers").doc(fUser.uid).set({
+      "uid" : fUser.uid,
+      "email" : fUser.email,
+      "name" : name,
+      "url" : userImageUrl,
+    });
+
+   await OutFittedApp.sharedPreferences.setString("uid", fUser.uid);
+    await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerEmail, fUser.email);
+    await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName, name);
+    await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerAvatarUrl, userImageUrl);
+    await OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerCartList, ["garbageValue"]);
   }
 }

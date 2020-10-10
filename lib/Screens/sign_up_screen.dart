@@ -20,10 +20,7 @@ class SignUpScreen extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  FittedBox(
-                    child: Image.asset('assets/images/lady_on_couch.png'),
-                    fit: BoxFit.cover,
-                  ),
+
                   Text(
                     "Welcome to OutFitted",
                     style: TextStyle(
@@ -49,6 +46,9 @@ class SignUpScreen extends StatelessWidget {
                     height: 20,
                   ),
                   NoAccountYet(),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),
