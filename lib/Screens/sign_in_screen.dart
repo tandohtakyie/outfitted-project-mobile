@@ -40,7 +40,8 @@ class SignInScreen extends StatelessWidget {
                   Text(
                     "Sign in with your email and password \nor register",
                     style: TextStyle(
-                        color: Colors.black.withOpacity(0.5),),
+                      color: Colors.black.withOpacity(0.5),
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
@@ -60,5 +61,3 @@ class SignInScreen extends StatelessWidget {
     );
   }
 }
-
-

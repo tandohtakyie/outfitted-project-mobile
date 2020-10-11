@@ -82,19 +82,35 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(
             height: 20,
           ),
-          buildNameFormField(),
+          Row(
+            children: [
+              Flexible(child: buildNameFormField(),),
+            ],
+          ),
           SizedBox(
             height: 20,
           ),
-          buildEmailFormField(),
+          Row(
+            children: [
+              Flexible(child: buildEmailFormField(),),
+            ],
+          ),
           SizedBox(
             height: 20,
           ),
-          buildPasswordFormField(),
+          Row(
+            children: [
+              Flexible(child: buildPasswordFormField(),),
+            ],
+          ),
           SizedBox(
             height: 20,
           ),
-          buildConfirmPasswordFormField(),
+          Row(
+            children: [
+              Flexible(child: buildConfirmPasswordFormField(),),
+            ],
+          ),
           FormError(
             errors: errors,
           ),
@@ -398,8 +414,7 @@ class _SignUpFormState extends State<SignUpForm> {
     User firebaseUser;
     await _auth
         .createUserWithEmailAndPassword(
-            email: email.text.trim(),
-            password: password.text.trim())
+            email: email.text.trim(), password: password.text.trim())
         .then((auth) => {
               firebaseUser = auth.user,
             })
@@ -431,6 +446,7 @@ class _SignUpFormState extends State<SignUpForm> {
       "email": fUser.email,
       "name": name.text.trim(),
       "url": userImageUrl,
+      OutFittedApp.customerCartList: ["garbageValue"],
     });
 
     await OutFittedApp.sharedPreferences.setString("uid", fUser.uid);

@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/Screens/forgot_password_screen.dart';
 import 'package:outfitted_flutter_mobile/components/default_button.dart';
 import 'package:outfitted_flutter_mobile/components/drawer_animation.dart';
 import 'package:outfitted_flutter_mobile/components/form_error.dart';
+import 'package:outfitted_flutter_mobile/dialogbox/errorDialog.dart';
+import 'package:outfitted_flutter_mobile/dialogbox/loadingDialog.dart';
+import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/style/constants.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
@@ -17,8 +22,11 @@ class SignInForm extends StatefulWidget {
 class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
 
-  String email;
-  String password;
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  // String email;
+  // String password;
 
   bool remember = false;
 
@@ -30,11 +38,19 @@ class _SignInFormState extends State<SignInForm> {
       key: _formKey,
       child: Column(
         children: [
-          buildEmailTextFormField(),
+          Row(
+            children: [
+              Flexible(child: buildEmailTextFormField(),),
+            ],
+          ),
           SizedBox(
             height: 30,
           ),
-          buildPasswordTextFormField(),
+          Row(
+            children: [
+              Flexible(child: buildPasswordTextFormField(),),
+            ],
+          ),
           SizedBox(
             height: 30,
           ),
@@ -51,11 +67,11 @@ class _SignInFormState extends State<SignInForm> {
               ),
               Text(
                 "Remember me",
-                style: TextStyle(  ),
+                style: TextStyle(),
               ),
               Spacer(),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
@@ -64,7 +80,6 @@ class _SignInFormState extends State<SignInForm> {
                 child: Text(
                   "Forgot Password",
                   style: TextStyle(
-
                     decoration: TextDecoration.underline,
                   ),
                 ),
@@ -81,11 +96,20 @@ class _SignInFormState extends State<SignInForm> {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
 
-                // Route route = MaterialPageRoute(builder: (_) => DrawerAnimation());
-                // Navigator.pushReplacement(context, route);
+                email.text.isNotEmpty && password.text.isNotEmpty
+                    ? signInCustomer()
+                    : showDialog(
+                        context: context,
+                        builder: (c) {
+                          return ErrorAlertDialog(
+                            message: "Login Invalid ",
+                          );
+                        });
               }
-
             },
+          ),
+          SizedBox(
+            height: 20,
           ),
         ],
       ),
@@ -94,8 +118,9 @@ class _SignInFormState extends State<SignInForm> {
 
   TextFormField buildEmailTextFormField() {
     return TextFormField(
+      controller: email,
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
+      // onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty && errors.contains(kEmailNullError)) {
           setState(() {
@@ -154,8 +179,9 @@ class _SignInFormState extends State<SignInForm> {
 
   TextFormField buildPasswordTextFormField() {
     return TextFormField(
+      controller: password,
       obscureText: true,
-      onSaved: (newValue) => password = newValue,
+      //onSaved: (newValue) => password = newValue,
       onChanged: (value) {
         if (value.isNotEmpty && errors.contains(kPassNullError)) {
           setState(() {
@@ -208,5 +234,71 @@ class _SignInFormState extends State<SignInForm> {
         ),
       ),
     );
+  }
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  void signInCustomer() async {
+    showDialog(
+        context: context,
+        builder: (c) {
+          return LoadingAlertDialog(
+            message: "Logging in, Please wait...",
+          );
+        });
+
+    User firebaseUser;
+    await _auth
+        .signInWithEmailAndPassword(
+            email: email.text.trim(), password: password.text.trim())
+        .then((authUser) {
+      firebaseUser = authUser.user;
+    }).catchError((error) {
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (c) {
+            return ErrorAlertDialog(
+              message: error.toString(),
+            );
+          });
+    });
+    if (firebaseUser != null) {
+      MaterialPageRoute route;
+      readData(firebaseUser).then((s) => {
+            Navigator.pop(context),
+            route = MaterialPageRoute(builder: (c) => DrawerAnimation()),
+            Navigator.pushReplacement(context, route),
+          });
+    }
+  }
+
+  Future readData(User fUser) async {
+    // ignore: deprecated_member_use
+    Firestore.instance
+        .collection("customers")
+        .doc(fUser.uid)
+        .get()
+        .then((dataSnapshot) async {
+      await OutFittedApp.sharedPreferences
+          .setString("uid", dataSnapshot.data()[OutFittedApp.customerUID]);
+      await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerEmail,
+          dataSnapshot.data()[OutFittedApp.customerEmail]);
+      await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName,
+          dataSnapshot.data()[OutFittedApp.customerName]);
+      await OutFittedApp.sharedPreferences.setString(
+          OutFittedApp.customerAvatarUrl,
+          dataSnapshot.data()[OutFittedApp.customerAvatarUrl]);
+
+      List<String> cartList =
+          dataSnapshot.data()[OutFittedApp.customerCartList].cast<String>();
+      await OutFittedApp.sharedPreferences
+          .setStringList(OutFittedApp.customerCartList, cartList);
+
+      // await OutFittedApp.sharedPreferences.setString("uid", dataSnapshot.data[OutFittedApp.customerUID]);
+      // await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerEmail, dataSnapshot.data());
+      // await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName, name.text.trim());
+      // await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerAvatarUrl, userImageUrl);
+      // await OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerCartList, ["garbageValue"]);
+    });
   }
 }

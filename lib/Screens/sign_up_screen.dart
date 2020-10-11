@@ -20,7 +20,6 @@ class SignUpScreen extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-
                   Text(
                     "Welcome to OutFitted",
                     style: TextStyle(
@@ -35,7 +34,8 @@ class SignUpScreen extends StatelessWidget {
                   Text(
                     "Sign up for free \nor log in if you already have an account",
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.5),),
+                      color: Colors.black.withOpacity(0.5),
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(

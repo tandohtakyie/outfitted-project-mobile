@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class OutFittedApp{
+class OutFittedApp {
   static const String appName = 'OutFitted';
 
   static SharedPreferences sharedPreferences;
+
+  static User firebaseUser;
+  static FirebaseAuth auth;
 
   // firestore collections
   static final String collectionCustomer = 'customers';
@@ -11,10 +15,16 @@ class OutFittedApp{
   static final String customerCartList = 'customerCart';
   static final String subCollectionAddress = 'customerAddress';
 
-
   static final String customerName = 'name';
   static final String customerEmail = 'email';
   static final String customerPhotoUrl = 'photoUrl';
   static final String customerUID = 'uid';
   static final String customerAvatarUrl = 'url';
+
+  static final String addressID = 'addressID';
+  static final String totalAmount = 'totalAmount';
+  static final String productID = 'productIDs';
+  static final String paymentDetails = 'paymentDetails';
+  static final String orderTime = 'orderTime';
+  static final String isSuccess = 'isSuccess';
 }
