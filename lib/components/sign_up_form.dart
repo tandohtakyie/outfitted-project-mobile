@@ -23,11 +23,15 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-
-  String name;
-  String email;
-  String password;
-  String confirm_password;
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController confirm_password = TextEditingController();
+  //
+  // String name;
+  // String email;
+  // String password;
+  // String confirm_password;
 
   File _imageFile;
 
@@ -102,6 +106,10 @@ class _SignUpFormState extends State<SignUpForm> {
             press: () {
               if (_formKey.currentState.validate()) {
                 // create account
+                // print("Name: " + name);
+                // print("Email: " + email);
+                //print("Password: " + password);
+                //print("Password Confirm: " + password);
                 uploadAndSaveImage();
               }
             },
@@ -113,8 +121,9 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildNameFormField() {
     return TextFormField(
+      controller: name,
       keyboardType: TextInputType.name,
-      onSaved: (newValue) => name = newValue,
+      //onSaved: (newValue) => name = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kNameNullError);
@@ -169,8 +178,9 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      controller: email,
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
+      // onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
@@ -226,15 +236,16 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      controller: password,
       obscureText: true,
-      onSaved: (newValue) => password = newValue,
+      //onSaved: (newValue) => password = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
         } else if (value.length >= 8) {
           removeError(error: kPassNullError);
         }
-        password = value;
+        //password = value;
         return null;
       },
       validator: (value) {
@@ -277,8 +288,9 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildConfirmPasswordFormField() {
     return TextFormField(
+      controller: confirm_password,
       obscureText: true,
-      onSaved: (newValue) => confirm_password = newValue,
+      //onSaved: (newValue) => confirm_password = newValue,
       onChanged: (value) {
         if (password == confirm_password) {
           removeError(error: kMatchPassError);
@@ -324,8 +336,8 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   Future<void> _selectAndPickImage() async {
-    _imageFile = (await ImagePicker.platform
-        .pickImage(source: ImageSource.gallery)) as File;
+    // ignore: deprecated_member_use
+    _imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
   }
 
   Future<void> uploadAndSaveImage() async {
@@ -338,8 +350,25 @@ class _SignUpFormState extends State<SignUpForm> {
             );
           });
     } else {
-      uploadToFirebaseStorage();
+      password.text == confirm_password.text
+          ? name.text.isNotEmpty &&
+                  email.text.isNotEmpty &&
+                  password.text.isNotEmpty &&
+                  confirm_password.text.isNotEmpty
+              ? uploadToFirebaseStorage()
+              : displayDialog("Please fill out all form...")
+          : displayDialog("Password do not match.");
     }
+  }
+
+  displayDialog(String msg) {
+    showDialog(
+        context: context,
+        builder: (c) {
+          return ErrorAlertDialog(
+            message: msg,
+          );
+        });
   }
 
   uploadToFirebaseStorage() async {
@@ -368,7 +397,9 @@ class _SignUpFormState extends State<SignUpForm> {
   void _registerCustomer() async {
     User firebaseUser;
     await _auth
-        .createUserWithEmailAndPassword(email: email, password: password)
+        .createUserWithEmailAndPassword(
+            email: email.text.trim(),
+            password: password.text.trim())
         .then((auth) => {
               firebaseUser = auth.user,
             })
@@ -383,29 +414,33 @@ class _SignUpFormState extends State<SignUpForm> {
           });
     });
 
-    if(firebaseUser != null){
+    if (firebaseUser != null) {
       MaterialPageRoute route;
       saveCustomerInfoToFireStore(firebaseUser).then((value) => {
-        Navigator.pop(context),
-        route = MaterialPageRoute(builder: (c) => DrawerAnimation()),
-        Navigator.pushReplacement(context, route),
-      });
+            Navigator.pop(context),
+            route = MaterialPageRoute(builder: (c) => DrawerAnimation()),
+            Navigator.pushReplacement(context, route),
+          });
     }
   }
 
-  Future saveCustomerInfoToFireStore(User fUser) async{
+  Future saveCustomerInfoToFireStore(User fUser) async {
     // ignore: deprecated_member_use
     Firestore.instance.collection("customers").doc(fUser.uid).set({
-      "uid" : fUser.uid,
-      "email" : fUser.email,
-      "name" : name,
-      "url" : userImageUrl,
+      "uid": fUser.uid,
+      "email": fUser.email,
+      "name": name.text.trim(),
+      "url": userImageUrl,
     });
 
-   await OutFittedApp.sharedPreferences.setString("uid", fUser.uid);
-    await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerEmail, fUser.email);
-    await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName, name);
-    await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerAvatarUrl, userImageUrl);
-    await OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerCartList, ["garbageValue"]);
+    await OutFittedApp.sharedPreferences.setString("uid", fUser.uid);
+    await OutFittedApp.sharedPreferences
+        .setString(OutFittedApp.customerEmail, fUser.email);
+    await OutFittedApp.sharedPreferences
+        .setString(OutFittedApp.customerName, name.text.trim());
+    await OutFittedApp.sharedPreferences
+        .setString(OutFittedApp.customerAvatarUrl, userImageUrl);
+    await OutFittedApp.sharedPreferences
+        .setStringList(OutFittedApp.customerCartList, ["garbageValue"]);
   }
 }
