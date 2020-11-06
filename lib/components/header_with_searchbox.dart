@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/Screens/cart_screen.dart';
 import 'package:outfitted_flutter_mobile/components/icon_button_with_counter.dart';
+import 'package:outfitted_flutter_mobile/components/searchbar.dart';
 import 'package:outfitted_flutter_mobile/components/size_config.dart';
+import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
+import 'package:provider/provider.dart';
 
 class HeaderWithSearchBox extends StatelessWidget {
   const HeaderWithSearchBox({
@@ -54,50 +58,31 @@ class HeaderWithSearchBox extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.77,
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0, 10),
-                        blurRadius: 50,
-                        color: kPrimaryColor.withOpacity(0.23),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          onChanged: (value) {},
-                          decoration: InputDecoration(
-                            hintText: "Search",
-                            hintStyle: TextStyle(
-                              color: kPrimaryColor.withOpacity(0.5),
-                            ),
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                      //Image.asset("assets/icons/icon_search.png"),
-                      Icon(Icons.search),
-                    ],
-                  ),
-                ), //searchbar
+                Searchbar(),//searchbar
                 IconButtonWithCounter(
-                  press: () {},
+                  press: () {
+                    Route route =
+                        MaterialPageRoute(builder: (c) => CartScreen());
+                    Navigator.pushReplacement(context, route);
+                  },
                   icon: Icon(
                     Icons.shopping_bag_outlined,
                     color: Colors.white,
                   ),
                   numOfItems: 1,
+                  consumer: Consumer<CartItemCounter>(
+                    builder: (context, counter, _) {
+                      return Text(
+                        counter.count.toString(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 8,
+                            height: 1,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
+                      );
+                    },
+                  ),
                 ),
               ],
             ),

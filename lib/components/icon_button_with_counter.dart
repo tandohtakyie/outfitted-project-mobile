@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
+import 'package:provider/provider.dart';
 
 class IconButtonWithCounter extends StatelessWidget {
   const IconButtonWithCounter({
@@ -7,11 +8,13 @@ class IconButtonWithCounter extends StatelessWidget {
     @required this.icon,
     this.numOfItems,
     @required this.press,
+    this.consumer,
   }) : super(key: key);
 
   final Icon icon;
   final int numOfItems;
   final GestureTapCallback press;
+  final Consumer consumer;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,7 @@ class IconButtonWithCounter extends StatelessWidget {
             ),
             child: icon,
           ),
-          if(numOfItems != 0)
+          // if(numOfItems != 0)
             Positioned(
               right: 0,
               child: Container(
@@ -48,15 +51,16 @@ class IconButtonWithCounter extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "$numOfItems",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 8,
-                          height: 1,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600),
-                    ),
+                    consumer,
+                    // Text(
+                    //   "$numOfItems",
+                    //   textAlign: TextAlign.center,
+                    //   style: TextStyle(
+                    //       fontSize: 8,
+                    //       height: 1,
+                    //       color: Colors.white,
+                    //       fontWeight: FontWeight.w600),
+                    // ),
                   ],
                 ),
               ),
