@@ -74,6 +74,7 @@ class HomeBody extends StatelessWidget {
       child: Column(
         children: <Widget>[
           HeaderWithSearchBox(size: size),
+         // SearchBarHeader(),
           StoreCategories(),
           TitleWithMoreButton(
             title: "New Collection",
