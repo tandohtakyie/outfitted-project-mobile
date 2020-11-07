@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/Screens/drawer_screen.dart';
 import 'package:outfitted_flutter_mobile/Screens/sign_in_screen.dart';
-import 'package:outfitted_flutter_mobile/components/drawer_animation.dart';
+import 'package:outfitted_flutter_mobile/components/drawer_home_animation.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void displaySplash() {
     Timer(Duration(seconds: 3), () async{
       if(await OutFittedApp.auth.currentUser != null){
-        Route route = MaterialPageRoute(builder: (_) => DrawerAnimation());
+        Route route = MaterialPageRoute(builder: (_) => DrawerHomeAnimation());
         Navigator.pushReplacement(context, route);
       }else {
         Route route = MaterialPageRoute(builder: (_) => SignInScreen());

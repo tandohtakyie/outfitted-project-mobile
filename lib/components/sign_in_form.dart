@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/Screens/forgot_password_screen.dart';
 import 'package:outfitted_flutter_mobile/components/default_button.dart';
-import 'package:outfitted_flutter_mobile/components/drawer_animation.dart';
+import 'package:outfitted_flutter_mobile/components/drawer_home_animation.dart';
 import 'package:outfitted_flutter_mobile/components/form_error.dart';
 import 'package:outfitted_flutter_mobile/dialogbox/errorDialog.dart';
 import 'package:outfitted_flutter_mobile/dialogbox/loadingDialog.dart';
@@ -266,33 +266,25 @@ class _SignInFormState extends State<SignInForm> {
       MaterialPageRoute route;
       readData(firebaseUser).then((s) => {
             Navigator.pop(context),
-            route = MaterialPageRoute(builder: (c) => DrawerAnimation()),
+            route = MaterialPageRoute(builder: (c) => DrawerHomeAnimation()),
             Navigator.pushReplacement(context, route),
           });
     }
   }
 
   Future readData(User fUser) async {
-    // ignore: deprecated_member_use
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection("customers")
         .doc(fUser.uid)
         .get()
         .then((dataSnapshot) async {
-      await OutFittedApp.sharedPreferences
-          .setString("uid", dataSnapshot.data()[OutFittedApp.customerUID]);
-      await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerEmail,
-          dataSnapshot.data()[OutFittedApp.customerEmail]);
-      await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName,
-          dataSnapshot.data()[OutFittedApp.customerName]);
-      await OutFittedApp.sharedPreferences.setString(
-          OutFittedApp.customerAvatarUrl,
-          dataSnapshot.data()[OutFittedApp.customerAvatarUrl]);
+      await OutFittedApp.sharedPreferences.setString("uid", dataSnapshot.data()[OutFittedApp.customerUID]);
+      await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerEmail, dataSnapshot.data()[OutFittedApp.customerEmail]);
+      await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName, dataSnapshot.data()[OutFittedApp.customerName]);
+      await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerAvatarUrl, dataSnapshot.data()[OutFittedApp.customerAvatarUrl]);
 
-      List<String> cartList =
-          dataSnapshot.data()[OutFittedApp.customerCartList].cast<String>();
-      await OutFittedApp.sharedPreferences
-          .setStringList(OutFittedApp.customerCartList, cartList);
+      List<String> cartList = dataSnapshot.data()[OutFittedApp.customerCartList].cast<String>();
+      await OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerCartList, cartList);
 
       // await OutFittedApp.sharedPreferences.setString("uid", dataSnapshot.data[OutFittedApp.customerUID]);
       // await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerEmail, dataSnapshot.data());

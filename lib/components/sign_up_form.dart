@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:outfitted_flutter_mobile/components/custom_textfield_icon.dart';
 import 'package:outfitted_flutter_mobile/components/default_button.dart';
-import 'package:outfitted_flutter_mobile/components/drawer_animation.dart';
+import 'package:outfitted_flutter_mobile/components/drawer_home_animation.dart';
 import 'package:outfitted_flutter_mobile/components/form_error.dart';
 import 'package:outfitted_flutter_mobile/dialogbox/errorDialog.dart';
 import 'package:outfitted_flutter_mobile/dialogbox/loadingDialog.dart';
@@ -399,7 +399,7 @@ class _SignUpFormState extends State<SignUpForm> {
     String imageFileName = DateTime.now().millisecondsSinceEpoch.toString();
 
     UploadTask uploadTask =
-        FirebaseStorage.instance.ref().child(imageFileName).putFile(_imageFile);
+        FirebaseStorage.instance.ref().child("customers/"+imageFileName).putFile(_imageFile);
 
     TaskSnapshot taskSnapshot = await uploadTask;
 
@@ -433,7 +433,7 @@ class _SignUpFormState extends State<SignUpForm> {
       MaterialPageRoute route;
       saveCustomerInfoToFireStore(firebaseUser).then((value) => {
             Navigator.pop(context),
-            route = MaterialPageRoute(builder: (c) => DrawerAnimation()),
+            route = MaterialPageRoute(builder: (c) => DrawerHomeAnimation()),
             Navigator.pushReplacement(context, route),
           });
     }
@@ -450,13 +450,9 @@ class _SignUpFormState extends State<SignUpForm> {
     });
 
     await OutFittedApp.sharedPreferences.setString("uid", fUser.uid);
-    await OutFittedApp.sharedPreferences
-        .setString(OutFittedApp.customerEmail, fUser.email);
-    await OutFittedApp.sharedPreferences
-        .setString(OutFittedApp.customerName, name.text.trim());
-    await OutFittedApp.sharedPreferences
-        .setString(OutFittedApp.customerAvatarUrl, userImageUrl);
-    await OutFittedApp.sharedPreferences
-        .setStringList(OutFittedApp.customerCartList, ["garbageValue"]);
+    await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerEmail, fUser.email);
+    await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName, name.text.trim());
+    await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerAvatarUrl, userImageUrl);
+    await OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerCartList, ["garbageValue"]);
   }
 }
