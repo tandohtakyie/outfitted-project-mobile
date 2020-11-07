@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/components/drawer_collections_animation.dart';
 import 'package:outfitted_flutter_mobile/components/drawer_home_animation.dart';
 
 List<Map> drawerItems = [
@@ -10,7 +11,7 @@ List<Map> drawerItems = [
   {
     'icon': Icons.shopping_bag,
     'title': 'Collections',
-    'route': DrawerHomeAnimation(),
+    'route': DrawerCollectionsAnimation(),
   },
   {
     'icon': Icons.favorite,
