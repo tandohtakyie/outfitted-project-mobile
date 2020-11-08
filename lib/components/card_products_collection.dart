@@ -33,7 +33,8 @@ class ProductCollectionCard extends StatelessWidget {
                 onTap: press,
                 child: Column(
                   children: [
-                    Image.asset(image),
+                   // Image.asset(image),
+                    Image.network(image),
                     Container(
                       padding: EdgeInsets.all(kDefaultPadding / 2),
                       decoration: BoxDecoration(

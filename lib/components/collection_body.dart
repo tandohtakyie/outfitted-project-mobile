@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:outfitted_flutter_mobile/Screens/product_details_screen.dart';
 import 'package:outfitted_flutter_mobile/components/card_products_collection.dart';
 import 'package:outfitted_flutter_mobile/model/product.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
@@ -13,50 +14,82 @@ class CollectionBody extends StatefulWidget {
 class _CollectionBodyState extends State<CollectionBody> {
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection("products")
-              .limit(20)
-              .snapshots(),
-          builder: (context, dataSnapshot) {
-            return !dataSnapshot.hasData
-                ? SliverToBoxAdapter(
-              child: Text("No data"),
-            )
-                : SliverStaggeredGrid.countBuilder(
-              crossAxisCount: 1,
-              staggeredTileBuilder: (c) => StaggeredTile.fit(1),
-              itemBuilder: (context, index) {
-                Product product = Product.fromJson(
-                    dataSnapshot.data.docs[index].data());
-                return sourceInfo(product, context);
-              },
-              itemCount: dataSnapshot.data.docs.length,
+    Size size = MediaQuery.of(context).size;
+
+    /*24 is for notification bar on Android*/
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
+    final double itemWidth = size.width / 2;
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection("products")
+          .limit(20)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError)
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Center(
+              child: Text('Loading'),
             );
-          },
-        ),
-      ],
+          default:
+            return Padding(
+              padding: EdgeInsets.only(
+                top: 5,
+                right: 5,
+              ),
+              child: GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: snapshot.data.docs.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: (itemWidth/itemHeight),
+                  crossAxisCount: 2
+                ),
+                itemBuilder: (context, index){
+                  Product product = Product.fromJson(snapshot.data.docs[index].data());
+                  return sourceInfo(product, context);
+                },
+              ),
+              // child: GridView.count(
+              //     crossAxisCount: 2,
+              //     childAspectRatio: (itemWidth/itemHeight),
+              //     controller: ScrollController(
+              //       keepScrollOffset: false,
+              //     ),
+              //     shrinkWrap: true,
+              //     scrollDirection: Axis.vertical,
+              //     children: snapshot.data.docs.map((DocumentSnapshot document){
+              //           return ProductCollectionCard(
+              //             image: document['productImage'],
+              //             brand: document['supplier'],
+              //             model: document['name'],
+              //             price: 250,
+              //             press: (){},
+              //           );
+              //     }).toList(),
+              // ),
+            );
+        }
+      },
     );
   }
 }
 
-Widget sourceInfo(Product product, BuildContext context,
-    {Color background, removeCartFunction}) {
-  // return Container(
-  //   child: Center(
-  //     child: Text(product.name),
-  //   ),
-  // );
-  return ProductCollectionCard(
-    image: product.productImage,
-    brand: product.supplier,
-    model: product.name,
-    price: 250,
-  );
-}
 
-Widget card({Color primaryColor = kPrimaryColor, String imgPath}) {
-  return Container();
+Widget sourceInfo(Product productModel, BuildContext context,
+    {Color background, removeCartFunction}) {
+  return ProductCollectionCard(
+    image: productModel.productImage,
+    brand: productModel.supplier,
+    model: productModel.name,
+    price: 250,
+    press: (){
+      Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen(product : productModel));
+      Navigator.pushReplacement(context, route);
+    },
+  );
 }

@@ -14,21 +14,21 @@ class ProductsCollections extends StatelessWidget {
       child: Row(
         children: [
           ProductCollectionCard(
-            image: "assets/images/tshirt_nike_1.jpg",
+            image: "https://firebasestorage.googleapis.com/v0/b/outfitted-4da25.appspot.com/o/products%2FDri-Fit%20T-shirt.jpg?alt=media&token=4872186d-9da8-44e1-a323-708df33e402b",
             brand: "Vans",
             model: "Skateboard move",
             price: 299,
             press: () {},
           ),
           ProductCollectionCard(
-            image: "assets/images/tshirt_london_1.jpg",
+            image: "https://firebasestorage.googleapis.com/v0/b/outfitted-4da25.appspot.com/o/products%2FAutumn%20Jacket.jpg?alt=media&token=fb3abf77-c42b-4829-ba7b-e461637b1463",
             brand: "Vans",
             model: "Skateboard move",
             price: 299,
             press: () {},
           ),
           ProductCollectionCard(
-            image: "assets/images/sneaker_vans_1.jpg",
+            image: "https://firebasestorage.googleapis.com/v0/b/outfitted-4da25.appspot.com/o/products%2FFilmore%20Decon.jpg?alt=media&token=2bc3d85b-9484-4bec-b6f7-a20d73027b98",
             brand: "Vans",
             model: "Skateboard move",
             price: 299,

@@ -23,7 +23,14 @@ class _CollectionScreenState extends State<CollectionScreen> {
       duration: Duration(milliseconds: 350),
       child: Scaffold(
         appBar: buildAppBar(),
-        body: CollectionBody(),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text("hello"),
+              CollectionBody(),
+            ],
+          ),
+        ),
       ),
     );
   }
