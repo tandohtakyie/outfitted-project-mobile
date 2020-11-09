@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/components/drawer_collections_animation.dart';
 import 'package:outfitted_flutter_mobile/model/product.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -11,14 +12,14 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int quantityOfItems = 1;
-
+  Route route = MaterialPageRoute(builder: (c) => DrawerCollectionsAnimation());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: RoundedIconButton(
           iconData: Icons.arrow_back_ios,
-          press: () => Navigator.pop(context),
+          press: () => Navigator.pushReplacement(context, route),
         ),
       ),
     );
