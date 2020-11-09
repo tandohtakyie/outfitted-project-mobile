@@ -6,8 +6,8 @@ class Product{
   Product({
     this.name,
     this.productImage,
-    this.supplier}
-    );
+    this.supplier
+  });
 
   Product.fromJson(Map<String, dynamic> json){
     name = json['name'];
