@@ -3,6 +3,7 @@ import 'package:outfitted_flutter_mobile/Screens/sign_in_screen.dart';
 import 'package:outfitted_flutter_mobile/components/categories.dart';
 import 'package:outfitted_flutter_mobile/config/drawer_items_config.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
+import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class DrawerScreen extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: primaryTheme,
+      color: kPrimaryColor,
       padding: EdgeInsets.only(top: 60, bottom: 50, left: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,7 +41,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "Online",
+                    "Welcome to OutFitted",
                     style: TextStyle(
                         color: Colors.white.withOpacity(0.7),
                         fontWeight: FontWeight.bold),

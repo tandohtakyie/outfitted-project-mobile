@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/drawer_collections_animation.dart';
 import 'package:outfitted_flutter_mobile/model/product.dart';
+import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -21,6 +22,37 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           iconData: Icons.arrow_back_ios,
           press: () => Navigator.pushReplacement(context, route),
         ),
+      ),
+      body: Column(
+        children: [
+          SizedBox(
+         //   width: 238,
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Image.network(widget.product.productImage),
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                height: 68,
+                width: 58,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: kPrimaryColor),
+                ),
+                child: Image.network(widget.product.productImage),
+              ),
+            ],
+          ),
+
+        ],
       ),
     );
   }

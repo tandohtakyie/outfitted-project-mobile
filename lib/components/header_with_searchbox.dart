@@ -4,6 +4,7 @@ import 'package:outfitted_flutter_mobile/components/icon_button_with_counter.dar
 import 'package:outfitted_flutter_mobile/components/searchbar.dart';
 import 'package:outfitted_flutter_mobile/components/size_config.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
+import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:provider/provider.dart';
 
@@ -39,8 +40,9 @@ class HeaderWithSearchBox extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "Welcome Buddy!",
-                  style: Theme.of(context).textTheme.headline5.copyWith(
+                  "Hi there, " + OutFittedApp.sharedPreferences
+                      .getString(OutFittedApp.customerName),
+                  style: Theme.of(context).textTheme.headline6.copyWith(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 Spacer(),

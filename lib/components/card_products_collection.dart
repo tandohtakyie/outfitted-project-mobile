@@ -45,7 +45,7 @@ class ProductCollectionCard extends StatelessWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              offset: Offset(0, 10),
+                              offset: Offset(0, 5),
                               blurRadius: 50,
                               color: kPrimaryColor.withOpacity(0.23),
                             )
@@ -94,7 +94,7 @@ class ProductCollectionCard extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Icon(
-              Icons.shopping_cart_outlined,
+              Icons.favorite_border_outlined,
               color: Colors.white,
             ),
           ),
