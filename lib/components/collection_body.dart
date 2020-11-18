@@ -54,24 +54,6 @@ class _CollectionBodyState extends State<CollectionBody> {
                   return sourceInfo(product, context);
                 },
               ),
-              // child: GridView.count(
-              //     crossAxisCount: 2,
-              //     childAspectRatio: (itemWidth/itemHeight),
-              //     controller: ScrollController(
-              //       keepScrollOffset: false,
-              //     ),
-              //     shrinkWrap: true,
-              //     scrollDirection: Axis.vertical,
-              //     children: snapshot.data.docs.map((DocumentSnapshot document){
-              //           return ProductCollectionCard(
-              //             image: document['productImage'],
-              //             brand: document['supplier'],
-              //             model: document['name'],
-              //             price: 250,
-              //             press: (){},
-              //           );
-              //     }).toList(),
-              // ),
             );
         }
       },

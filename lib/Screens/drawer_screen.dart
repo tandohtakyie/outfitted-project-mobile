@@ -109,19 +109,19 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 width: 10,
               ),
               GestureDetector(
-                onTap: () async {
-
-                 await OutFittedApp.sharedPreferences.remove("uid");
-                  OutFittedApp.sharedPreferences.remove(OutFittedApp.customerEmail);
-                  OutFittedApp.sharedPreferences.remove(OutFittedApp.customerName);
-                  OutFittedApp.sharedPreferences.remove(OutFittedApp.customerAvatarUrl);
-                  OutFittedApp.sharedPreferences.remove(OutFittedApp.customerCartList);
-
-                  OutFittedApp.auth.signOut().then((c){
-                    Route route = MaterialPageRoute(builder: (c) => SignInScreen());
-                    Navigator.pushReplacement(context, route);
-                  });
-                },
+                // onTap: () async {
+                //
+                //  await OutFittedApp.sharedPreferences.remove("uid");
+                //   OutFittedApp.sharedPreferences.remove(OutFittedApp.customerEmail);
+                //   OutFittedApp.sharedPreferences.remove(OutFittedApp.customerName);
+                //   OutFittedApp.sharedPreferences.remove(OutFittedApp.customerAvatarUrl);
+                //   OutFittedApp.sharedPreferences.remove(OutFittedApp.customerCartList);
+                //
+                //   OutFittedApp.auth.signOut().then((c){
+                //     Route route = MaterialPageRoute(builder: (c) => SignInScreen());
+                //     Navigator.pushReplacement(context, route);
+                //   });
+                // },
                 child: Row(
                   children: [
                     Icon(
