@@ -68,7 +68,7 @@ Widget sourceInfo(Product productModel, BuildContext context,
     image: productModel.productImage,
     brand: productModel.supplier,
     model: productModel.name,
-    price: 250,
+    price: productModel.price,
     press: (){
       Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen(product : productModel));
       Navigator.pushReplacement(context, route);

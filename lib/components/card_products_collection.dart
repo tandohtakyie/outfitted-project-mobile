@@ -12,7 +12,7 @@ class ProductCollectionCard extends StatelessWidget {
   }) : super(key: key);
 
   final String image, brand, model;
-  final int price;
+  final double price;
   final Function press;
 
   @override
@@ -57,12 +57,16 @@ class ProductCollectionCard extends StatelessWidget {
                               children: [
                                 TextSpan(
                                   text: "$brand\n".toUpperCase(),
-                                  style: Theme.of(context).textTheme.button,
+                                  style: TextStyle(
+                                    color: kPrimaryColor,
+
+                                  ),
                                 ),
                                 TextSpan(
                                     text: "$model",
                                     style: TextStyle(
                                       color: kPrimaryColor.withOpacity(0.5),
+                                        fontSize: 12,
                                     ))
                               ],
                             ),
@@ -70,10 +74,10 @@ class ProductCollectionCard extends StatelessWidget {
                           Spacer(),
                           Text(
                             '€$price',
-                            style: Theme.of(context)
-                                .textTheme
-                                .button
-                                .copyWith(color: kPrimaryColor),
+                            style: TextStyle(
+                              color: kPrimaryColor.withOpacity(0.9),
+                              fontSize: 10,
+                            ),
                           ),
                         ],
                       ),
