@@ -28,8 +28,8 @@ class _CollectionScreenState extends State<CollectionScreen> {
           child: Column(
             children: [
               Text("hello"),
-            //  CollectionBody(), these values are coming straight from the firestore
-              CollectionBodyAPI(), // these values are coming from the api which gets its value from firestore
+              CollectionBody(), // these values are coming straight from the firestore
+             // CollectionBodyAPI(), // these values are coming from the api which gets its value from firestore
             ],
           ),
         ),

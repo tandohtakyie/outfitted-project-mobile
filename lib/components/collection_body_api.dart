@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/Screens/product_details_screen.dart';
+import 'package:outfitted_flutter_mobile/api/ProductApiResponse.dart';
 import 'package:outfitted_flutter_mobile/model/product.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,13 +15,16 @@ class CollectionBodyAPI extends StatefulWidget {
 }
 
 class _CollectionBodyAPIState extends State<CollectionBodyAPI> {
-  Future<Product> futureProducts;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    futureProducts = fetchProducts();
+  Future<List<Product>> fetchProducts() async {
+    final response = await http.get('http://192.168.192.19:5000/allProducts');
+    if (response.statusCode == 200) {
+      final List parsed = json.decode(response.body);
+      List<Product> responseProduct = new ProductApiResponse.fromJsonApi(parsed).products;
+      return responseProduct;
+    } else {
+      throw Exception('Failed to load products');
+    }
   }
 
   @override
@@ -30,48 +34,42 @@ class _CollectionBodyAPIState extends State<CollectionBodyAPI> {
     /*24 is for notification bar on Android*/
     final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
     final double itemWidth = size.width / 2;
-    return FutureBuilder<Product>(
-      future: futureProducts,
-      builder: (context, snapshot){
-        if(snapshot.hasData){
-          return Padding(
-            padding: EdgeInsets.only(
-              top: 5,
-              right: 5,
-            ),
-            child: GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: snapshot.data.toJson().length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: (itemWidth/itemHeight),
-                  crossAxisCount: 2
-              ),
-              itemBuilder: (context, index){
-                Product product = Product.fromJson(snapshot.data.toJson()[index].data());
-                return sourceInfo(product, context);
-              },
-            ),
-          );
-        } else if(snapshot.hasError){
-          return Text('${snapshot.error}');
-        }
-        return Center(
-          child: Text('Loading data!'),
-        );
-      },
-    );
-  }
-}
+    return FutureBuilder<List<Product>>(
+      future: fetchProducts(),
+        builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot){
+          if (snapshot.hasError)
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(
+                child: Text('Loading'),
+              );
+            default:
+              return Padding(
+                padding: EdgeInsets.only(
+                  top: 5,
+                  right: 5,
+                ),
+                child: GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: (itemWidth/itemHeight),
+                      crossAxisCount: 2
+                  ),
+                  itemBuilder: (context, index){
 
-Future<Product> fetchProducts() async {
-  //final response = await http.get('http://127.0.0.1:5000/allProducts');
-  final response = await http.get('http://192.168.192.19:5000/allProducts');
-  if (response.statusCode == 200) {
-    final jsonData = json.decode(response.body);
-    return Product.fromJson(jsonData);
-  } else {
-    throw Exception('Failed to load products');
+                    Product product = Product.fromJsonApi(snapshot.data[index].toJsonApi());
+                    return sourceInfo(product, context);
+                  },
+                ),
+              );
+          }
+        },
+    );
   }
 }
 
@@ -88,3 +86,4 @@ Widget sourceInfo(Product productModel, BuildContext context,
     },
   );
 }
+
