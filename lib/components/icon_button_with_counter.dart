@@ -52,15 +52,6 @@ class IconButtonWithCounter extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     consumer,
-                    // Text(
-                    //   "$numOfItems",
-                    //   textAlign: TextAlign.center,
-                    //   style: TextStyle(
-                    //       fontSize: 8,
-                    //       height: 1,
-                    //       color: Colors.white,
-                    //       fontWeight: FontWeight.w600),
-                    // ),
                   ],
                 ),
               ),

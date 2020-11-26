@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfitted_flutter_mobile/components/drawer_collections_animation.dart';
+import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
+import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/product.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -150,7 +154,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ),
                                 height: 55,
                                 color: kPrimaryColor,
-                                onPressed: (){},
+                                onPressed: (){
+                                  checkItemInCart(widget.product.name, context);
+                                },
                                 child: Text(
                                   "Add to Cart",
                                   style: TextStyle(
@@ -264,4 +270,24 @@ class RoundedIconButton extends StatelessWidget {
       ),
     );
   }
+}
+
+void checkItemInCart(String productName, BuildContext context){
+  OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerCartList).contains(productName)
+      ? Fluttertoast.showToast(msg: "$productName is already added.")
+      : addItemToCart(productName, context);
+}
+
+void addItemToCart(String productName, BuildContext context){
+  List tempCartList = OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerCartList);
+  tempCartList.add(productName);
+
+  OutFittedApp.firestore.collection(OutFittedApp.collectionCustomer).doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID)).update({
+    OutFittedApp.customerCartList : tempCartList
+  }).then((v){
+    Fluttertoast.showToast(msg: "$productName added to cart successfully.");
+    OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerCartList, tempCartList);
+
+    Provider.of<CartItemCounter>(context, listen: false).displayResult();
+  });
 }

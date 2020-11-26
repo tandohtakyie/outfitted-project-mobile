@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,6 +9,7 @@ class OutFittedApp {
 
   static User firebaseUser;
   static FirebaseAuth auth;
+  static FirebaseFirestore firestore;
 
   // firestore collections
   static final String collectionCustomer = 'customers';
