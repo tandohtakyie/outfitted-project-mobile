@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/collection_body.dart';
+import 'package:outfitted_flutter_mobile/components/collection_body_api.dart';
 
 class CollectionScreen extends StatefulWidget {
   @override
@@ -27,7 +28,8 @@ class _CollectionScreenState extends State<CollectionScreen> {
           child: Column(
             children: [
               Text("hello"),
-              CollectionBody(),
+              CollectionBody(), // these values are coming straight from the firestore
+             // CollectionBodyAPI(), // these values are coming from the api which gets its value from firestore
             ],
           ),
         ),

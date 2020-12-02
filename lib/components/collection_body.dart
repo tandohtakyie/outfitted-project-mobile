@@ -54,24 +54,6 @@ class _CollectionBodyState extends State<CollectionBody> {
                   return sourceInfo(product, context);
                 },
               ),
-              // child: GridView.count(
-              //     crossAxisCount: 2,
-              //     childAspectRatio: (itemWidth/itemHeight),
-              //     controller: ScrollController(
-              //       keepScrollOffset: false,
-              //     ),
-              //     shrinkWrap: true,
-              //     scrollDirection: Axis.vertical,
-              //     children: snapshot.data.docs.map((DocumentSnapshot document){
-              //           return ProductCollectionCard(
-              //             image: document['productImage'],
-              //             brand: document['supplier'],
-              //             model: document['name'],
-              //             price: 250,
-              //             press: (){},
-              //           );
-              //     }).toList(),
-              // ),
             );
         }
       },
@@ -86,7 +68,7 @@ Widget sourceInfo(Product productModel, BuildContext context,
     image: productModel.productImage,
     brand: productModel.supplier,
     model: productModel.name,
-    price: 250,
+    price: productModel.price,
     press: (){
       Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen(product : productModel));
       Navigator.pushReplacement(context, route);
