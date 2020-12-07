@@ -1,14 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/navigation/bottom_nav_bar.dart';
+import 'package:outfitted_flutter_mobile/style/style.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(HomePage());
+  runApp(MainApp());
 }
 
-class HomePage extends StatelessWidget {
+class MainApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -20,11 +22,7 @@ class HomePage extends StatelessWidget {
               bodyColor: Colors.black.withOpacity(0.5), fontFamily: "Muli"),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: Scaffold(
-          body: Center(
-            child: Text('Welcome to outFitted!'),
-          ),
-        ),
+        home: BottomNavBar(),
     );
   }
 }
