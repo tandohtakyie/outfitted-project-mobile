@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/Screens/forgot_password_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/forgot_password_screen.dart';
 import 'package:outfitted_flutter_mobile/components/no_account_yet.dart';
 import 'package:outfitted_flutter_mobile/components/sign_in_form.dart';
 import 'package:outfitted_flutter_mobile/components/size_config.dart';

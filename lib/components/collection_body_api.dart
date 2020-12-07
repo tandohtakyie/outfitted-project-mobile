@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/Screens/product_details_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/product_details_screen.dart';
 import 'package:outfitted_flutter_mobile/api/ProductApiResponse.dart';
 import 'package:outfitted_flutter_mobile/model/product.dart';
 import 'package:http/http.dart' as http;

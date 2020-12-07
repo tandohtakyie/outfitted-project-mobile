@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/Screens/cart_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/cart_screen.dart';
 import 'package:outfitted_flutter_mobile/components/icon_button_with_counter.dart';
 import 'package:outfitted_flutter_mobile/components/searchbar.dart';
 import 'package:outfitted_flutter_mobile/components/size_config.dart';

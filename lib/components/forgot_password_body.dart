@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/Screens/sign_in_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/sign_in_screen.dart';
 import 'package:outfitted_flutter_mobile/components/custom_textfield_icon.dart';
 import 'package:outfitted_flutter_mobile/components/default_button.dart';
 import 'package:outfitted_flutter_mobile/components/form_error.dart';

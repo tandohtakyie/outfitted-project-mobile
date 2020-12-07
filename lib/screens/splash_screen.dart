@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/Screens/drawer_screen.dart';
-import 'package:outfitted_flutter_mobile/Screens/sign_in_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/drawer_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/sign_in_screen.dart';
 import 'package:outfitted_flutter_mobile/components/drawer_home_animation.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 

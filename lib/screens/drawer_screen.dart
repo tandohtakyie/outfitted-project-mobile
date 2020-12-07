@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/Screens/sign_in_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/sign_in_screen.dart';
 import 'package:outfitted_flutter_mobile/components/categories.dart';
 import 'package:outfitted_flutter_mobile/config/drawer_items_config.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';

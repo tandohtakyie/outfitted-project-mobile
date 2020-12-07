@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/Screens/forgot_password_screen.dart';
-import 'package:outfitted_flutter_mobile/Screens/sign_up_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/forgot_password_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/sign_up_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class NoAccountYet extends StatelessWidget {

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/Screens/splash_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/splash_screen.dart';
 import 'package:outfitted_flutter_mobile/counters/address_changer.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/counters/item_quantity.dart';

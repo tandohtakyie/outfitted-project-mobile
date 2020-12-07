@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/Screens/forgot_password_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/forgot_password_screen.dart';
 import 'package:outfitted_flutter_mobile/components/default_button.dart';
 import 'package:outfitted_flutter_mobile/components/drawer_home_animation.dart';
 import 'package:outfitted_flutter_mobile/components/form_error.dart';

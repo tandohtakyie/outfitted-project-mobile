@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:outfitted_flutter_mobile/Screens/product_details_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/product_details_screen.dart';
 import 'package:outfitted_flutter_mobile/components/card_products_collection.dart';
 import 'package:outfitted_flutter_mobile/model/product.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
