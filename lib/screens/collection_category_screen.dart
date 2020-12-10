@@ -5,13 +5,14 @@ import 'package:outfitted_flutter_mobile/model/Product.dart';
 import 'package:outfitted_flutter_mobile/screens/product_details_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
-class CollectionCategoryScreen extends StatefulWidget {
-  @override
-  _CollectionCategoryScreenState createState() =>
-      _CollectionCategoryScreenState();
-}
+class CollectionCategoryScreen extends StatelessWidget {
+  const CollectionCategoryScreen({
+    Key key,
+    this.categoryName,
+  }) : super(key: key);
 
-class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
+  final String categoryName;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -20,43 +21,60 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
     final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
     final double itemWidth = size.width / 2;
 
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection("products")
-          .limit(20)
-          .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError)
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Collections of $categoryName',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+      ),
+      backgroundColor: Colors.white,
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection("products")
+            .where('category', isEqualTo: 'categoryName')
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError)
             return Center(
-              child: Text('Loading'),
+              child: Text('Error: ${snapshot.error}'),
             );
-          default:
-            return Padding(
-              padding: EdgeInsets.only(
-                top: 5,
-                right: 5,
-              ),
-              child: GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: snapshot.data.docs.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: (itemWidth/itemHeight),
-                    crossAxisCount: 2
+          if (!snapshot.hasData)
+            return Center(
+              child: Text('There are no products yet! Sign up for updates'),
+            );
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(
+                child: Text('Loading'),
+              );
+            default:
+              return Padding(
+                padding: EdgeInsets.only(
+                  top: 5,
+                  right: 5,
                 ),
-                itemBuilder: (context, index){
-                  Product product = Product.fromJson(snapshot.data.docs[index].data());
-                  return productInfo(product, context);
-                },
-              ),
-            );
-        }
-      },
+                child: GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.docs.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: (itemWidth / itemHeight),
+                      crossAxisCount: 2),
+                  itemBuilder: (context, index) {
+                    Product product =
+                        Product.fromJson(snapshot.data.docs[index].data());
+                    return productInfo(product, context);
+                  },
+                ),
+              );
+          }
+        },
+      ),
     );
   }
 }
@@ -68,7 +86,7 @@ Widget productInfo(Product productModel, BuildContext context,
     brand: productModel.supplier,
     model: productModel.name,
     price: productModel.price,
-    press: (){
+    press: () {
       Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen());
       Navigator.push(context, route);
     },

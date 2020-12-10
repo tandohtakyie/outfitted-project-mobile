@@ -58,7 +58,7 @@ Widget categoryInfo(Category category, BuildContext context) {
   return StoreCategory(
     categoryName: category.categoryName,
     press: (){
-      Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen());
+      Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : category.categoryName));
       Navigator.push(context, route);
     },
   );

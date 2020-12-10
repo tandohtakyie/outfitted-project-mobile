@@ -29,6 +29,7 @@ class MainApp extends StatelessWidget {
         theme: ThemeData(
           textTheme: Theme.of(context).textTheme.apply(
               bodyColor: Colors.black.withOpacity(0.5), fontFamily: "Muli"),
+          backgroundColor: Colors.white,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: BottomNavBar(),
