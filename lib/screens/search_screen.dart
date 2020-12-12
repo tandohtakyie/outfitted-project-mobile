@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/store_category.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/category.dart';
 import 'package:outfitted_flutter_mobile/screens/collection_category_screen.dart';
+import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -19,9 +21,12 @@ class _SearchScreenState extends State<SearchScreen> {
     final double itemWidth = size.width / 2;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Search Screen'),
+      appBar: buildOutFittedCustomAppBar(
+          title: 'Search Category',
+        customIcon: Icon(Icons.search),
       ),
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: kBackgroundOutFitted,
       body: Padding(
         padding: EdgeInsets.all(10),
         child: StreamBuilder<QuerySnapshot>(

@@ -28,8 +28,8 @@ class MainApp extends StatelessWidget {
         title: 'OutFitted',
         theme: ThemeData(
           textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: Colors.black.withOpacity(0.5), fontFamily: "Muli"),
-          backgroundColor: Colors.white,
+              bodyColor: Colors.white.withOpacity(0.5), fontFamily: "Muli",
+          ),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: BottomNavBar(),

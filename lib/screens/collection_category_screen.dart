@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/product_collection_card.dart';
 import 'package:outfitted_flutter_mobile/model/Product.dart';
 import 'package:outfitted_flutter_mobile/screens/product_details_screen.dart';
@@ -22,58 +23,62 @@ class CollectionCategoryScreen extends StatelessWidget {
     final double itemWidth = size.width / 2;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Collections of $categoryName',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
+      appBar: buildOutFittedCustomAppBar(
+          title: 'Collections of $categoryName',
+          customIcon: Icon(Icons.search),
       ),
-      backgroundColor: Colors.white,
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection("products")
-            .where('category', isEqualTo: 'categoryName')
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError)
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          if (!snapshot.hasData)
-            return Center(
-              child: Text('There are no products yet! Sign up for updates'),
-            );
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(
-                child: Text('Loading'),
-              );
-            default:
-              return Padding(
-                padding: EdgeInsets.only(
-                  top: 5,
-                  right: 5,
-                ),
-                child: GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.docs.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: (itemWidth / itemHeight),
-                      crossAxisCount: 2),
-                  itemBuilder: (context, index) {
-                    Product product =
-                        Product.fromJson(snapshot.data.docs[index].data());
-                    return productInfo(product, context);
-                  },
-                ),
-              );
-          }
-        },
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        child: Icon(Icons.filter_list_outlined),
+        backgroundColor: kSecondaryColor,
+      ),
+      backgroundColor: kBackgroundOutFitted,
+      body: Column(
+        children: [
+          Text('hello'),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection("products")
+                .where('category', isEqualTo: categoryName)
+                .snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError)
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              if (!snapshot.hasData)
+                return Center(
+                  child: Text('There are no products yet! Sign up for updates'),
+                );
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(
+                    child: Text('Loading'),
+                  );
+                default:
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      top: 5,
+                      right: 5,
+                    ),
+                    child: GridView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.docs.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: (itemWidth / itemHeight),
+                          crossAxisCount: 2),
+                      itemBuilder: (context, index) {
+                        Product product =
+                            Product.fromJson(snapshot.data.docs[index].data());
+                        return productInfo(product, context);
+                      },
+                    ),
+                  );
+              }
+            },
+          ),
+        ],
       ),
     );
   }
@@ -87,7 +92,7 @@ Widget productInfo(Product productModel, BuildContext context,
     model: productModel.name,
     price: productModel.price,
     press: () {
-      Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen());
+      Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen(product: productModel));
       Navigator.push(context, route);
     },
   );

@@ -17,20 +17,30 @@ class StoreCategory extends StatelessWidget {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 200,
+            height: 235,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Stack(
                 children: [
+                  Flex(
+                    direction: Axis.vertical,
+                    children: [
+                      Image.asset(
+                        'assets/images/category_bg.png',
+                      ),
+                    ],
+                  ),
                   Container(
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                          Color(0xff343434).withOpacity(0.95),
-                          Color(0xff343434).withOpacity(0.95),
-                        ])),
+                          Color(0xff343434).withOpacity(0.20),
+                          Color(0xff343434).withOpacity(0.20),
+                        ],
+                        ),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -45,7 +55,9 @@ class StoreCategory extends StatelessWidget {
                             TextSpan(
                               text: categoryName,
                               style: TextStyle(
-                                  fontSize: 28, fontWeight: FontWeight.bold),
+                                  fontSize: 28,
+                                  fontFamily: "Muli",
+                              ),
                             ),
                           ],
                         ),
