@@ -1,14 +1,76 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/rounded_button.dart';
+import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
+import 'package:outfitted_flutter_mobile/dialog/loading_alert_dialog.dart';
+import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
+import 'package:outfitted_flutter_mobile/navigation/bottom_nav_bar.dart';
 import 'package:outfitted_flutter_mobile/screens/register_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class LoginScreen extends StatelessWidget {
-  bool remember = false;
+
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+
+    Future readData(User fUser) async {
+      FirebaseFirestore.instance
+          .collection("customers")
+          .doc(fUser.uid)
+          .get()
+          .then((dataSnapshot) async {
+        await OutFittedApp.sharedPreferences.setString("uid", dataSnapshot.data()[OutFittedApp.customerUID]);
+        await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerEmail, dataSnapshot.data()[OutFittedApp.customerEmail]);
+        await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName, dataSnapshot.data()[OutFittedApp.customerName]);
+
+        List<String> cartList = dataSnapshot.data()[OutFittedApp.customerCartList].cast<String>();
+        await OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerCartList, cartList);
+
+      });
+    }
+
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    void signInCustomer() async {
+      showDialog(
+          context: context,
+          builder: (c) {
+        return LoadingAlertDialog(
+          message: 'Logging in...',
+        );
+      });
+
+      User firebaseUser;
+      await _auth.signInWithEmailAndPassword(
+          email: email.text.trim(),
+          password: password.text.trim()
+      ).then((authUser){
+        firebaseUser = authUser.user;
+      }).catchError((error){
+        Navigator.pop(context);
+        showDialog(
+            context: context,
+            builder: (c) {
+              return ErrorAlertDialog(
+                message: error.toString(),
+              );
+            });
+      });
+
+      if(firebaseUser != null){
+          MaterialPageRoute route;
+          readData(firebaseUser).then((s) => {
+            Navigator.pop(context),
+            route = MaterialPageRoute(builder: (c) => BottomNavBar()),
+            Navigator.pushReplacement(context, route),
+          });
+      }
+    }
+
     return Scaffold(
       appBar: buildOutFittedCustomAppBar(
         title: 'Login',
@@ -29,6 +91,7 @@ class LoginScreen extends StatelessWidget {
               ),
               TextFieldContainer(
                 child: TextFormField(
+                  controller: email,
                   decoration: InputDecoration(
                     icon: Icon(
                       Icons.person,
@@ -44,6 +107,7 @@ class LoginScreen extends StatelessWidget {
               ),
               TextFieldContainer(
                 child: TextFormField(
+                  controller: password,
                   obscureText: true,
                   decoration: InputDecoration(
                     icon: Icon(
@@ -68,7 +132,20 @@ class LoginScreen extends StatelessWidget {
               RoundedButton(
                 buttonColor: kPrimaryColor,
                 buttonText: 'LOGIN',
-                press: () {},
+                press: () {
+                  if(email.text.isNotEmpty && password.text.isNotEmpty){
+                    signInCustomer();
+                  }else{
+                    showDialog(
+                        context: context,
+                        builder: (c) {
+                          return ErrorAlertDialog(
+                            message: "Please, fill all the fields...",
+                          );
+                        }
+                    );
+                  }
+                },
               ),
               SizedBox(
                 height: 10,
