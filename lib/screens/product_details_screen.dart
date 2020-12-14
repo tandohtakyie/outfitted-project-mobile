@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
+import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/Product.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
@@ -149,8 +151,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ),
                                 height: 55,
                                 color: kBackgroundOutFitted,
-                                onPressed: (){
-                                //  checkItemInCart(widget.product.name, context);
+                                onPressed: () async {
+                                  if(await OutFittedApp.auth.currentUser != null){
+                                    //  checkItemInCart(widget.product.name, context);
+                                  }else {
+                                    showDialog(context: context,
+                                        builder: (c) {
+                                          return ErrorAlertDialog(
+                                            message: 'Create an account or Login to add to your cart.',
+                                          );
+                                        });
+                                  }
                                 },
                                 child: Text(
                                   "Add to Cart",
