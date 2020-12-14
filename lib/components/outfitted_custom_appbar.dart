@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
-AppBar buildOutFittedCustomAppBar({String title, Icon customIcon}) {
+AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon customIcon}) {
   return AppBar(
     elevation: 0.1,
     backgroundColor: kBackgroundOutFitted,
@@ -22,11 +22,26 @@ AppBar buildOutFittedCustomAppBar({String title, Icon customIcon}) {
         ),
       ),
     ),
-    title: Text(
+    title: underTitle == "" ? Text(
       title,
       style: TextStyle(
-          fontFamily: "Muli",
+        fontFamily: "Muli",
       ),
+    ) : Column(
+      children: [
+        Text(
+          title,
+          style: TextStyle(color: Colors.white),
+        ),
+        SizedBox(height: 7),
+        Text(
+            underTitle /*todo: replace with length of products list*/,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 10
+            )
+        )
+      ],
     ),
     centerTitle: true,
     actions: [

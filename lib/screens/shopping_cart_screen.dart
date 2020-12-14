@@ -12,7 +12,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildOutFittedCustomAppBar(
-          title: 'Shopping cart',
+        title: 'Shopping cart',
+        underTitle: "0 items" /*todo: replace with amount of items in shopping cart list*/,
         customIcon: Icon(Icons.search),
       ),
       backgroundColor: kBackgroundOutFitted,
