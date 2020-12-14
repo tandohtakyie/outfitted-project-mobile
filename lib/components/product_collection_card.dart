@@ -34,11 +34,11 @@ class ProductCollectionCard extends StatelessWidget {
                 child: Column(
                   children: [
                    // Image.asset(image),
-                    Image.network(image),
+                     Image.network(image),
                     Container(
                       padding: EdgeInsets.all(kDefaultPadding / 2),
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: kPrimaryColor,
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(10),
                             bottomRight: Radius.circular(10),
@@ -48,8 +48,14 @@ class ProductCollectionCard extends StatelessWidget {
                               offset: Offset(0, 5),
                               blurRadius: 50,
                               color: kPrimaryColor.withOpacity(0.23),
-                            )
-                          ]),
+                            ),
+                            BoxShadow(
+                              offset: Offset(5, 0),
+                              blurRadius: 50,
+                              color: kPrimaryColor.withOpacity(0.23),
+                            ),
+                          ],
+                      ),
                       child: Row(
                         children: [
                           RichText(
@@ -58,15 +64,15 @@ class ProductCollectionCard extends StatelessWidget {
                                 TextSpan(
                                   text: "$brand\n".toUpperCase(),
                                   style: TextStyle(
-                                    color: kPrimaryColor,
+                                    color: kWhiteColor,
 
                                   ),
                                 ),
                                 TextSpan(
                                     text: "$model",
                                     style: TextStyle(
-                                      color: kPrimaryColor.withOpacity(0.5),
-                                        fontSize: 12,
+                                      color: kWhiteColor.withOpacity(0.5),
+                                      fontSize: 12,
                                     ))
                               ],
                             ),
@@ -75,7 +81,7 @@ class ProductCollectionCard extends StatelessWidget {
                           Text(
                             '€$price',
                             style: TextStyle(
-                              color: kPrimaryColor.withOpacity(0.9),
+                              color: kWhiteColor.withOpacity(0.9),
                               fontSize: 10,
                             ),
                           ),
@@ -94,7 +100,7 @@ class ProductCollectionCard extends StatelessWidget {
             height: 40,
             width: 40,
             decoration: BoxDecoration(
-              color: kPrimaryColor.withOpacity(0.8),
+              color: kPrimaryColor,
               shape: BoxShape.circle,
             ),
             child: Icon(

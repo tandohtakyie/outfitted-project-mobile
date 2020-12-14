@@ -12,6 +12,7 @@ class OutFittedApp {
   static FirebaseFirestore firestore;
 
   // firestore collections
+  static final String collectionProduct = 'products';
   static final String collectionCustomer = 'customers';
   static final String collectionOrders = 'orders';
   static final String customerCartList = 'customerCart';

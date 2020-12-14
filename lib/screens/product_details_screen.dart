@@ -1,32 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:outfitted_flutter_mobile/components/drawer_collections_animation.dart';
-import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
-import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
-import 'package:outfitted_flutter_mobile/model/product.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/model/Product.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
-import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
+
   final Product product;
-  ProductDetailScreen({this.product});
+
+  const ProductDetailScreen({Key key, this.product}) : super(key: key);
 
   @override
   _ProductDetailScreenState createState() => _ProductDetailScreenState();
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  int quantityOfItems = 1;
-  Route route = MaterialPageRoute(builder: (c) => DrawerCollectionsAnimation());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: RoundedIconButton(
-          iconData: Icons.arrow_back_ios,
-          press: () => Navigator.pushReplacement(context, route),
-        ),
+      appBar: buildOutFittedCustomAppBar(
+          title: 'Product name',
+          customIcon: Icon(Icons.arrow_back),
       ),
+      backgroundColor: kBackgroundOutFitted,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -50,14 +45,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: kPrimaryColor),
+                    border: Border.all(color: kSecondaryColor),
                   ),
                   child: Image.network(widget.product.productImage),
                 ),
               ],
             ),
             TopRoundedContainer(
-              color: Colors.white,
+              color: kPrimaryColor,
               child: Column(
                 children: [
                   Column(
@@ -111,10 +106,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ],
                   ),
                   TopRoundedContainer(
-                    color: Color(0xFFF6F7F9),
+                    color: kBackgroundOutFitted,
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                       // horizontal: 20,
+                        // horizontal: 20,
                       ),
                       child: Column(
                         children: [
@@ -145,7 +140,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ),
                           ),
                           TopRoundedContainer(
-                            color: Colors.white,
+                            color: kPrimaryColor,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                               child: FlatButton(
@@ -153,15 +148,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 height: 55,
-                                color: kPrimaryColor,
+                                color: kBackgroundOutFitted,
                                 onPressed: (){
-                                  checkItemInCart(widget.product.name, context);
+                                //  checkItemInCart(widget.product.name, context);
                                 },
                                 child: Text(
                                   "Add to Cart",
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold
                                   ),
                                 ),
                               ),
@@ -213,35 +208,6 @@ class ColorDot extends StatelessWidget {
   }
 }
 
-class TopRoundedContainer extends StatelessWidget {
-  const TopRoundedContainer({
-    Key key,
-    this.color,
-    this.child,
-  }) : super(key: key);
-
-  final Color color;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 20),
-      padding: EdgeInsets.only(top: 20),
-      width: double.infinity,
-      //height: 300,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(40),
-          topRight: Radius.circular(40),
-        ),
-      ),
-      child: child,
-    );
-  }
-}
-
 class RoundedIconButton extends StatelessWidget {
   const RoundedIconButton(
       {Key key, @required this.iconData, @required this.press})
@@ -272,22 +238,31 @@ class RoundedIconButton extends StatelessWidget {
   }
 }
 
-void checkItemInCart(String productName, BuildContext context){
-  OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerCartList).contains(productName)
-      ? Fluttertoast.showToast(msg: "$productName is already added.")
-      : addItemToCart(productName, context);
-}
+class TopRoundedContainer extends StatelessWidget {
+  const TopRoundedContainer({
+    Key key,
+    this.color,
+    this.child,
+  }) : super(key: key);
 
-void addItemToCart(String productName, BuildContext context){
-  List tempCartList = OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerCartList);
-  tempCartList.add(productName);
+  final Color color;
+  final Widget child;
 
-  OutFittedApp.firestore.collection(OutFittedApp.collectionCustomer).doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID)).update({
-    OutFittedApp.customerCartList : tempCartList
-  }).then((v){
-    Fluttertoast.showToast(msg: "$productName added to cart successfully.");
-    OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerCartList, tempCartList);
-
-    Provider.of<CartItemCounter>(context, listen: false).displayResult();
-  });
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      padding: EdgeInsets.only(top: 20),
+      width: double.infinity,
+      //height: 300,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
+        ),
+      ),
+      child: child,
+    );
+  }
 }

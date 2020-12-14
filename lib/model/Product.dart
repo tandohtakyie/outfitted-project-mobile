@@ -20,8 +20,10 @@ class Product{
     productImage = json['productImage'];
     supplier = json['supplier'];
     productDescription = json['productDescription'];
-    stock = int.parse(json['stock']);
-    price = double.parse(json['price']);
+    stock = json['stock'];
+    //price = json['price'];
+    // stock = int.parse(json['stock']);
+    price = double.parse(json['price'].toString());
   }
 
   Map<String, dynamic> toJson(){
@@ -43,8 +45,8 @@ class Product{
     productImage = json['productImage'];
     supplier = json['supplier'];
     productDescription = json['productDescription'];
-    stock = int.parse(json['stock']);
-    price = double.parse(json['price']);
+    stock = int.parse(json['stock'].toString());
+    price = double.parse(json['price'].toString());
   }
 
   Map<String, dynamic> toJsonApi(){
@@ -58,5 +60,5 @@ class Product{
 
     return data;
   }
-  // End of API
+// End of API
 }

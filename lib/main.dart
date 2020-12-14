@@ -2,15 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/screens/splash_screen.dart';
-import 'package:outfitted_flutter_mobile/counters/address_changer.dart';
-import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
-import 'package:outfitted_flutter_mobile/counters/item_quantity.dart';
-import 'package:outfitted_flutter_mobile/counters/totall_amount.dart';
-import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
+import 'package:outfitted_flutter_mobile/navigation/bottom_nav_bar.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'firebase/firebase_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,33 +16,23 @@ void main() async {
   OutFittedApp.firestore = FirebaseFirestore.instance;
   OutFittedApp.sharedPreferences = await SharedPreferences.getInstance();
 
-  runApp(HomePage());
+  runApp(MainApp());
 }
 
-class HomePage extends StatelessWidget {
+class MainApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (c) => CartItemCounter()),
-        ChangeNotifierProvider(create: (c)=> ItemQuantity()),
-        ChangeNotifierProvider(create: (c) => AddressChanger()),
-        ChangeNotifierProvider(create: (c) => TotalAmount()),
-      ],
-      child: MaterialApp(
+    return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'OutFitted',
         theme: ThemeData(
-          scaffoldBackgroundColor: kBackgroundColor,
-          primaryColor: kPrimaryColor,
           textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: Colors.black.withOpacity(0.5), fontFamily: "Muli"),
+              bodyColor: Colors.white.withOpacity(0.5), fontFamily: "Muli",
+          ),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: SplashScreen(),
-        // home: DrawerAnimation(),
-      ),
+        home: BottomNavBar(),
     );
   }
 }
