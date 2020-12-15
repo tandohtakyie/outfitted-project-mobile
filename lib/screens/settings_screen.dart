@@ -21,7 +21,7 @@ class SettingsScreen extends StatelessWidget {
           press: () async {
             OutFittedApp.auth.signOut().then((c) {
                 Route route = MaterialPageRoute(builder: (c) => BottomNavBar());
-                Navigator.pushReplacement(context, route);
+                Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/settings'));
             });
           },
         ),

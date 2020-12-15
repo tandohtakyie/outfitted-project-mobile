@@ -1,4 +1,3 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,6 +7,11 @@ import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/counters/item_quantity.dart';
 import 'package:outfitted_flutter_mobile/counters/total_amount.dart';
 import 'package:outfitted_flutter_mobile/navigation/bottom_nav_bar.dart';
+import 'package:outfitted_flutter_mobile/screens/account_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/login_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/register_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/settings_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/splash_screen_outfitted.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,31 +33,36 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (c) => CartItemCounter()),
-          ChangeNotifierProvider(create: (c)=> ItemQuantity()),
-          ChangeNotifierProvider(create: (c) => AddressChanger()),
-          ChangeNotifierProvider(create: (c) => TotalAmount()),
-        ],
+      providers: [
+        ChangeNotifierProvider<CartItemCounter>(
+            create: (c) => CartItemCounter()),
+        ChangeNotifierProvider<ItemQuantity>(create: (c) => ItemQuantity()),
+        ChangeNotifierProvider<AddressChanger>(create: (c) => AddressChanger()),
+        ChangeNotifierProvider<TotalAmount>(create: (c) => TotalAmount()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'OutFitted',
+        initialRoute: '/',
+        routes: {
+          '/': (context) => SplashScreenOutFitted(),
+          '/home': (context) => BottomNavBar(),
+          '/account': (context) => AccountScreen(),
+          '/settings': (context) => SettingsScreen(),
+          '/login': (context) => LoginScreen(),
+          '/register': (context) => RegisterScreen(),
+        },
         theme: ThemeData(
           textTheme: Theme.of(context).textTheme.apply(
-            bodyColor: Colors.white.withOpacity(0.5), fontFamily: "Muli",
-          ),
+                bodyColor: Colors.white.withOpacity(0.5),
+                fontFamily: "Muli",
+              ),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: AnimatedSplashScreen(
-          splash: Image.asset(
-            'assets/images/logo.png',
-            width: 300,
-          ),
-          splashTransition: SplashTransition.fadeTransition,
-          duration: 2000,
-          nextScreen: BottomNavBar(),
-        ),
+      //  home: SplashScreenOutFitted(),
       ),
     );
   }
 }
+
+

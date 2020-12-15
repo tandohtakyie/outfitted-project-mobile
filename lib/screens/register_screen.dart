@@ -65,7 +65,7 @@ class RegisterScreen extends StatelessWidget {
               )
               .then((auth) => {firebaseUser = auth.user})
               .catchError((error) {
-            Navigator.pop(context);
+          //  Navigator.pop(context);
             showDialog(
                 context: context,
                 builder: (c) {
@@ -80,7 +80,7 @@ class RegisterScreen extends StatelessWidget {
             saveCustomerInfo(firebaseUser).then((value) => {
                   Navigator.pop(context),
                   route = MaterialPageRoute(builder: (c) => BottomNavBar()),
-                  Navigator.pushReplacement(context, route)
+                  Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/register'))
                 });
           }
         } else {

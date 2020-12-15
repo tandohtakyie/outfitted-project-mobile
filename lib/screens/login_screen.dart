@@ -66,7 +66,7 @@ class LoginScreen extends StatelessWidget {
           readData(firebaseUser).then((s) => {
             Navigator.pop(context),
             route = MaterialPageRoute(builder: (c) => BottomNavBar()),
-            Navigator.pushReplacement(context, route),
+            Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/login'))
           });
       }
     }
