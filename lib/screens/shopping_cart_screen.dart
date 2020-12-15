@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/model/Cart.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     return Scaffold(
       appBar: buildOutFittedCustomAppBar(
         title: 'Shopping cart',
-        underTitle: "0 items" /*todo: replace with amount of items in shopping cart list*/,
+        underTitle: "${dummyCart.length} items" /*todo: replace with amount of items in shopping cart list (dummy for now)*/,
         customIcon: Icon(Icons.search),
       ),
       backgroundColor: Colors.white,
