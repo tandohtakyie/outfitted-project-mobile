@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
+import 'package:provider/provider.dart';
 
 AppBar buildOutFittedCustomAppBar({String title, Icon customIcon}) {
   return AppBar(
@@ -59,11 +61,15 @@ AppBar buildOutFittedCustomAppBar({String title, Icon customIcon}) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // replace text with consumer to keep up the counter
-                      Text(
-                        '999',
-                        style: TextStyle(
-                          fontSize: 8,
-                        ),
+                      Consumer<CartItemCounter>(
+                        builder: (context, counter, _){
+                          return Text(
+                            counter.count.toString(),
+                            style: TextStyle(
+                              fontSize: 8,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
