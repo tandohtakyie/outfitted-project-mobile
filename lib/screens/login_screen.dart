@@ -84,17 +84,18 @@ class LoginScreen extends StatelessWidget {
             children: [
               Container(
               width: MediaQuery.of(context).size.width * 0.8,
-                child: FittedBox(
-                  child: Image.asset('assets/images/lady_on_couch.png'),
-                  fit: BoxFit.cover,
+                child: Image.asset(
+                    'assets/images/lady_on_couch.png',
+                  width: 200,
                 ),
               ),
               TextFieldContainer(
                 child: TextFormField(
                   controller: email,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     icon: Icon(
-                      Icons.person,
+                      Icons.alternate_email,
                       color: kWhiteColor.withOpacity(0.8),
                     ),
                     hintText: 'Your Email',

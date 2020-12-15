@@ -16,6 +16,7 @@ class OutFittedApp {
   static final String collectionCustomer = 'customers';
   static final String collectionOrders = 'orders';
   static final String customerCartList = 'customerCart';
+  static final String customerWishList = 'customerWishList';
   static final String subCollectionAddress = 'customerAddress';
 
   static final String customerName = 'name';

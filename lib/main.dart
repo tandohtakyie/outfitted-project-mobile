@@ -1,3 +1,4 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,7 +33,15 @@ class MainApp extends StatelessWidget {
           ),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: BottomNavBar(),
+        home: AnimatedSplashScreen(
+          splash: Image.asset(
+            'assets/images/logo.png',
+             width: 300,
+          ),
+          splashTransition: SplashTransition.fadeTransition,
+          duration: 2000,
+          nextScreen: BottomNavBar(),
+        ),
     );
   }
 }

@@ -10,7 +10,6 @@ import 'package:outfitted_flutter_mobile/screens/login_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class RegisterScreen extends StatelessWidget {
-
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -18,7 +17,6 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     displayDialog(String msg) {
       showDialog(
           context: context,
@@ -30,55 +28,66 @@ class RegisterScreen extends StatelessWidget {
     }
 
     Future saveCustomerInfo(User fUser) async {
-      FirebaseFirestore.instance.collection(OutFittedApp.collectionCustomer).doc(fUser.uid).set({
+      FirebaseFirestore.instance
+          .collection(OutFittedApp.collectionCustomer)
+          .doc(fUser.uid)
+          .set({
         "uid": fUser.uid,
         "email": fUser.email,
         "name": name.text.trim(),
-        OutFittedApp.customerCartList : ["garbageValue"],
+        OutFittedApp.customerCartList: ["garbageValue"],
+        OutFittedApp.customerWishList: ["garbageValue"],
       });
 
       await OutFittedApp.sharedPreferences.setString("uid", fUser.uid);
-      await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerEmail, fUser.email);
-      await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName, name.text.trim());
-      await OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerCartList, ["garbageValue"]);
+      await OutFittedApp.sharedPreferences
+          .setString(OutFittedApp.customerEmail, fUser.email);
+      await OutFittedApp.sharedPreferences
+          .setString(OutFittedApp.customerName, name.text.trim());
+      await OutFittedApp.sharedPreferences
+          .setStringList(OutFittedApp.customerCartList, ["garbageValue"]);
+      await OutFittedApp.sharedPreferences
+          .setStringList(OutFittedApp.customerWishList, ["garbageValue"]);
     }
 
     FirebaseAuth _auth = FirebaseAuth.instance;
     void registerCustomer() async {
-      if(name.text.isNotEmpty && email.text.isNotEmpty && password.text.isNotEmpty && confirmPassword.text.isNotEmpty){
-        if(password.text == confirmPassword.text){
+      if (name.text.isNotEmpty &&
+          email.text.isNotEmpty &&
+          password.text.isNotEmpty &&
+          confirmPassword.text.isNotEmpty) {
+        if (password.text == confirmPassword.text) {
+          User firebaseUser;
+          await _auth
+              .createUserWithEmailAndPassword(
+                email: email.text.trim(),
+                password: password.text.trim(),
+              )
+              .then((auth) => {firebaseUser = auth.user})
+              .catchError((error) {
+            Navigator.pop(context);
+            showDialog(
+                context: context,
+                builder: (c) {
+                  return ErrorAlertDialog(
+                    message: error.toString(),
+                  );
+                });
+          });
 
-        }else{
+          if (firebaseUser != null) {
+            MaterialPageRoute route;
+            saveCustomerInfo(firebaseUser).then((value) => {
+                  Navigator.pop(context),
+                  route = MaterialPageRoute(builder: (c) => BottomNavBar()),
+                  Navigator.pushReplacement(context, route)
+                });
+          }
+        } else {
           displayDialog('Password do not match...');
         }
-      }else{
-        displayDialog('Please, fill out all form.');
-      }
-      User firebaseUser;
-      await _auth.createUserWithEmailAndPassword(
-        email: email.text.trim(),
-        password: password.text.trim(),
-      ).then((auth) => {
-        firebaseUser = auth.user
-      }).catchError((error){
-        Navigator.pop(context);
-        showDialog(
-            context: context,
-            builder: (c) {
-              return ErrorAlertDialog(
-                message: error.toString(),
-              );
-            }
-        );
-      });
-
-      if(firebaseUser != null){
-        MaterialPageRoute route;
-        saveCustomerInfo(firebaseUser).then((value) => {
-          Navigator.pop(context),
-          route = MaterialPageRoute(builder: (c) => BottomNavBar()),
-          Navigator.pushReplacement(context, route)
-        });
+      } else {
+        displayDialog('Please, fill out all form...');
       }
     }
 
@@ -112,9 +121,10 @@ class RegisterScreen extends StatelessWidget {
               TextFieldContainer(
                 child: TextFormField(
                   controller: email,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     icon: Icon(
-                      Icons.person,
+                      Icons.alternate_email,
                       color: kWhiteColor.withOpacity(0.8),
                     ),
                     hintText: 'Your Email',
@@ -173,7 +183,7 @@ class RegisterScreen extends StatelessWidget {
               RoundedButton(
                 buttonColor: kPrimaryColor,
                 buttonText: 'REGISTER',
-                press: (){
+                press: () {
                   registerCustomer();
                 },
               ),
@@ -186,11 +196,4 @@ class RegisterScreen extends StatelessWidget {
       ),
     );
   }
-
-
-
-
-
 }
-
-
