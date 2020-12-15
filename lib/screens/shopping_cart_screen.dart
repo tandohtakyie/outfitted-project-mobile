@@ -16,9 +16,49 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         underTitle: "0 items" /*todo: replace with amount of items in shopping cart list*/,
         customIcon: Icon(Icons.search),
       ),
-      backgroundColor: kBackgroundOutFitted,
-      body: Center(
-        child: Text('This is shopping bag screen!'),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          Row(
+            children: [
+              SizedBox(
+                width: 88,
+                child: AspectRatio(
+                  aspectRatio: 0.88,
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Color(0xFFF5F6F9),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Image.asset("assets/images/sneaker_nike_2.jpg"), /*todo: replace with image of product*/
+                  ),
+                ),
+              ),
+              SizedBox(width: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Name of product",
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                    maxLines: 2,
+                  ),
+                  const SizedBox(height: 10),
+                  Text.rich(TextSpan(
+                      text: "\€0.00", /*todo: replace with price of product*/
+                      style: TextStyle(color: Colors.indigo),
+                      children: [
+                        TextSpan(
+                            text: " x2",/*todo: replace with number of items of product*/
+                            style: TextStyle(color: kPrimaryColor)
+                        )
+                      ])
+                  )
+                ],)
+            ],
+          ),
+        ],
       ),
     );
   }
