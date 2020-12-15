@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/components/list_item.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/model/Cart.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
@@ -18,48 +20,32 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         customIcon: Icon(Icons.search),
       ),
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Row(
-            children: [
-              SizedBox(
-                width: 88,
-                child: AspectRatio(
-                  aspectRatio: 0.88,
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFF5F6F9),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Image.asset("assets/images/sneaker_nike_2.jpg"), /*todo: replace with image of product*/
+      /*todo: make component of below ListView?*/
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: ListView.builder(
+            itemCount: dummyCart.length,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 7),
+              child: Dismissible(
+                key: Key(dummyCart[0].product.id.toString()),
+                background: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFFE6E6),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      Icon(CupertinoIcons.trash),
+                    ],
                   ),
                 ),
+                child: ListItem(cartItem: dummyCart[index]),
               ),
-              SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Name of product",
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                    maxLines: 2,
-                  ),
-                  const SizedBox(height: 10),
-                  Text.rich(TextSpan(
-                      text: "\€0.00", /*todo: replace with price of product*/
-                      style: TextStyle(color: Colors.indigo),
-                      children: [
-                        TextSpan(
-                            text: " x2",/*todo: replace with number of items of product*/
-                            style: TextStyle(color: kPrimaryColor)
-                        )
-                      ])
-                  )
-                ],)
-            ],
-          ),
-        ],
+            )
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 class Product{
+  int id;
   String name;
   String productImage;
   String supplier;
@@ -7,6 +8,7 @@ class Product{
   double price;
 
   Product({
+    this.id,
     this.name,
     this.productImage,
     this.supplier,
@@ -65,8 +67,8 @@ class Product{
 
 // Dummy data for cart /*todo: if you want to use photos from url read this: https://flutter.dev/docs/cookbook/images/network-image*/
 List<Product> dummyProducts = [
-  Product(name: "Nike sneakers", productImage: "sneaker_nike_1.jpg", supplier: "Nike", productDescription: "These shoes are lit", stock: 30, price: 50.00),
-  Product(name: "Nike sneakers", productImage: "sneaker_nike_2.jpg", supplier: "Nike", productDescription: "Nice shoes", stock: 30, price: 70.00),
-  Product(name: "Vans Old Skool", productImage: "sneaker_vans_1.jpg", supplier: "Vans", productDescription: "Skateboard shoes", stock: 30, price: 54.00),
-  Product(name: "Vans Sk8-hi", productImage: "sneaker_vans_1.jpg", supplier: "Vans", productDescription: "Let's skate men!", stock: 30, price: 37.00),
+  Product(id: 0, name: "Nike sneakers", productImage: "assets/images/sneaker_nike_1.jpg", supplier: "Nike", productDescription: "These shoes are lit", stock: 30, price: 50.00),
+  Product(id: 1, name: "Nike sneakers", productImage: "assets/images/sneaker_nike_2.jpg", supplier: "Nike", productDescription: "Nice shoes", stock: 30, price: 70.00),
+  Product(id: 2, name: "Vans Old Skool", productImage: "assets/images/sneaker_vans_1.jpg", supplier: "Vans", productDescription: "Skateboard shoes", stock: 30, price: 54.00),
+  Product(id: 3, name: "Vans Sk8-hi", productImage: "assets/images/sneaker_vans_1.jpg", supplier: "Vans", productDescription: "Let's skate men!", stock: 30, price: 37.00),
 ];
