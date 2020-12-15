@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/store_category.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
-import 'package:outfitted_flutter_mobile/model/category.dart';
+import 'package:outfitted_flutter_mobile/model/Category.dart';
 import 'package:outfitted_flutter_mobile/screens/collection_category_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
