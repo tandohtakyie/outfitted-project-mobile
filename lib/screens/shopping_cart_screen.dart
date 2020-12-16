@@ -24,7 +24,16 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       ),
       backgroundColor: kWhiteColor,
       /*todo: make component of below ListView (including padding and dismissible)?*/
-      body: Padding(
+      body: dummyCart.isEmpty ?
+      Center(
+        child: Text(
+            'Add a product by pressing the 🛒️ icon',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: kPrimaryColor,
+            )),
+      ) :
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView.builder(
             itemCount: dummyCart.length,
@@ -59,7 +68,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             )
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: dummyCart.isNotEmpty ? Container(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
         // height: 175,
         decoration: BoxDecoration(
@@ -144,7 +153,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             ],
           ),
         ),
-      ),
+      ) : null,
     );
   }
 }
