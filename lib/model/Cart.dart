@@ -16,3 +16,14 @@ List<Cart> dummyCart = [
   Cart(product: dummyProducts[3], amountItems: 5),
   Cart(product: dummyProducts[1], amountItems: 2),
 ];
+
+// get total sum dummy data
+double getDummyTotal(){
+  double total = 0;
+
+  dummyCart.forEach((cartItem) {
+    total += (cartItem.product.price*cartItem.amountItems);
+  });
+
+  return total;
+}

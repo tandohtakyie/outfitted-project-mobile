@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/model/Cart.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon customIcon}) {
@@ -35,7 +36,7 @@ AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon cust
         ),
         SizedBox(height: 7),
         Text(
-            underTitle /*todo: replace with length of products list*/,
+            underTitle,
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 10
@@ -50,15 +51,22 @@ AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon cust
           padding: const EdgeInsets.only(right: 5),
           child: Stack(
             children: [
-              Container(
-                height: 45,
-                width: 45,
-                decoration: BoxDecoration(
-                  color: Colors.black26,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.shopping_bag_outlined,
+              GestureDetector(
+                onTap: (){
+                  /*todo: go to shopping cart screen.
+                     @Gibbs: is het niet beter als user alleen via knopje bovenin shopping cart kan bereiken?*/
+                  print("PRESSS");
+              },
+                child: Container(
+                  height: 45,
+                  width: 45,
+                  decoration: BoxDecoration(
+                    color: Colors.black26,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.shopping_bag_outlined,
+                  ),
                 ),
               ),
               Positioned(
@@ -75,7 +83,7 @@ AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon cust
                     children: [
                       // replace text with consumer to keep up the counter
                       Text(
-                        '999',
+                        dummyCart.length.toString(), /*todo: good? List needs to be replaced with real data tho.*/
                         style: TextStyle(
                           fontSize: 8,
                         ),

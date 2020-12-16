@@ -11,7 +11,7 @@ class ShoppingCartScreen extends StatefulWidget {
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
-  int total = 0;
+  double total = getDummyTotal(); // todo: correct?
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       ),
       backgroundColor: Colors.white,
       /*todo: make component of below ListView (including padding and dismissible)?*/
+
+      /* todo: @Gibbs gaan we layout van shopping cart ook voor wishlist gebruiken?
+          Als ja, dan ga ik van code hieronder component maken */
+
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView.builder(
@@ -47,6 +51,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                 ),
                 onDismissed: (direction){
                   setState(() {
+                    /*todo: need to come up with better way of doing this?*/
+                    // first update total sum label, then remove item from list
+                    total -= (dummyCart[index].product.price*dummyCart[index].amountItems);
                     dummyCart.removeAt(index);
                   });
                 },
