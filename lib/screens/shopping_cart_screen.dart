@@ -29,12 +29,14 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     return Scaffold(
       appBar: buildOutFittedCustomAppBar(
         title: 'Shopping',
-        underTitle: (OutFittedApp.sharedPreferences
+        underTitle: OutFittedApp.auth.currentUser != null
+        ? (OutFittedApp.sharedPreferences
             .getStringList(OutFittedApp.customerCartList)
             .length -
             1)
             .toString() +
-            " items",
+            " items"
+        :'',
         customIcon: Icon(Icons.search),
       ),
       backgroundColor: kBackgroundOutFitted,
@@ -131,7 +133,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Consumer2<TotalAmount, CartItemCounter>(
+                  OutFittedApp.auth.currentUser != null
+                  ? Consumer2<TotalAmount, CartItemCounter>(
                       builder: (context, amountProvider, cartProvider, c){
                         return Text.rich(
                           TextSpan(
@@ -153,11 +156,28 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                           ),
                         );
                       }
-                  ),
+                  )
+                  : Text.rich(
+                      TextSpan(
+                      text: "Total:\n",
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.5),
+                        ),
+                        children: [
+                          TextSpan(
+                            text:  "\€0.00"/*todo: use real sum*/,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: kSecondaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   SizedBox(
                     width: 190,
                     child: TextButton(
-                        child: Text("Check out"),
+                        child: Text("Check out"), // hide check out button when not logged in
                         style: TextButton.styleFrom(
                           primary: Colors.white,
                           backgroundColor: kSecondaryColor,
