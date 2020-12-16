@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/components/list_item.dart';
+import 'package:outfitted_flutter_mobile/components/list_item_cart.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/model/Cart.dart';
+import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
   @override
@@ -21,12 +22,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         underTitle: "${dummyCart.length} items" /*todo: replace with amount of items in shopping cart list (dummy for now)*/,
         customIcon: Icon(Icons.search),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: kWhiteColor,
       /*todo: make component of below ListView (including padding and dismissible)?*/
-
-      /* todo: @Gibbs gaan we layout van shopping cart ook voor wishlist gebruiken?
-          Als ja, dan ga ik van code hieronder component maken */
-
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView.builder(
@@ -57,7 +54,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     dummyCart.removeAt(index);
                   });
                 },
-                child: ListItem(cartItem: dummyCart[index]),
+                child: listItemCart(cartItem: dummyCart[index]),
               ),
             )
         ),
@@ -66,7 +63,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
         // height: 175,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: kWhiteColor,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30)

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/model/Cart.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
-Row ListItem({Cart cartItem,}) {
+Row listItemCart({Cart cartItem,}) {
   return Row(
     children: [
       SizedBox(
