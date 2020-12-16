@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
+import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
+import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/Product.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-
   final Product product;
 
   const ProductDetailScreen({Key key, this.product}) : super(key: key);
@@ -18,8 +22,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildOutFittedCustomAppBar(
-          title: 'Product name',
-          customIcon: Icon(Icons.arrow_back),
+        title: 'Product name',
+        customIcon: Icon(Icons.arrow_back),
       ),
       backgroundColor: kBackgroundOutFitted,
       body: SingleChildScrollView(
@@ -109,8 +113,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     color: kBackgroundOutFitted,
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                        // horizontal: 20,
-                      ),
+                          // horizontal: 20,
+                          ),
                       child: Column(
                         children: [
                           Padding(
@@ -142,22 +146,38 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           TopRoundedContainer(
                             color: kPrimaryColor,
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 20),
                               child: FlatButton(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 height: 55,
                                 color: kBackgroundOutFitted,
-                                onPressed: (){
-                                //  checkItemInCart(widget.product.name, context);
+                                onPressed: () async {
+                                  if (await OutFittedApp.auth.currentUser !=
+                                      null) {
+                                    checkItemInCart(
+                                        widget.product.supplier +
+                                            " " +
+                                            widget.product.name,
+                                        context);
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (c) {
+                                          return ErrorAlertDialog(
+                                            message:
+                                                'Create an account or Login to add to your cart.',
+                                          );
+                                        });
+                                  }
                                 },
                                 child: Text(
                                   "Add to Cart",
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
@@ -265,4 +285,41 @@ class TopRoundedContainer extends StatelessWidget {
       child: child,
     );
   }
+}
+
+void checkItemInCart(String productName, BuildContext context) {
+  OutFittedApp.sharedPreferences
+          .getStringList(OutFittedApp.customerCartList)
+          .contains(productName)
+      ? Fluttertoast.showToast(
+          msg: '$productName is already added.',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: kSecondaryColor,
+          fontSize: 15,
+        )
+      : addItemToCart(productName, context);
+}
+
+void addItemToCart(String productName, BuildContext context) {
+  List tempCartList = OutFittedApp.sharedPreferences
+      .getStringList(OutFittedApp.customerCartList);
+  tempCartList.add(productName);
+
+  OutFittedApp.firestore
+      .collection(OutFittedApp.collectionCustomer)
+      .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
+      .update({OutFittedApp.customerCartList: tempCartList}).then((v) {
+    Fluttertoast.showToast(
+        msg: '$productName added to cart successfully.',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Color(0xff5eba7d),
+        fontSize: 15,
+    );
+    OutFittedApp.sharedPreferences
+        .setStringList(OutFittedApp.customerCartList, tempCartList);
+
+    Provider.of<CartItemCounter>(context, listen: false).displayResult();
+  });
 }

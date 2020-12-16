@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
+import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
+import 'package:provider/provider.dart';
 
 AppBar buildOutFittedCustomAppBar({String title, Icon customIcon}) {
   return AppBar(
@@ -46,6 +49,7 @@ AppBar buildOutFittedCustomAppBar({String title, Icon customIcon}) {
                   Icons.shopping_bag_outlined,
                 ),
               ),
+              OutFittedApp.auth.currentUser != null ?
               Positioned(
                 right: 0,
                 child: Container(
@@ -59,16 +63,22 @@ AppBar buildOutFittedCustomAppBar({String title, Icon customIcon}) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // replace text with consumer to keep up the counter
-                      Text(
-                        '999',
-                        style: TextStyle(
-                          fontSize: 8,
-                        ),
+                      Consumer<CartItemCounter>(
+                        builder: (context, counter, _){
+                          return Text(
+                            (OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerCartList).length - 1).toString(),
+                            style: TextStyle(
+                              fontSize: 8,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
                 ),
-              ),
+              )
+              :
+              SizedBox()
             ],
           ),
         ),

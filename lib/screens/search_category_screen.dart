@@ -7,12 +7,12 @@ import 'package:outfitted_flutter_mobile/model/category.dart';
 import 'package:outfitted_flutter_mobile/screens/collection_category_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
-class SearchScreen extends StatefulWidget {
+class SearchCategoryScreen extends StatefulWidget {
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _SearchCategoryScreenState createState() => _SearchCategoryScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchCategoryScreenState extends State<SearchCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
