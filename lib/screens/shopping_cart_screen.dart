@@ -1,8 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/components/list_item.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
-import 'package:outfitted_flutter_mobile/model/Cart.dart';
+import 'package:outfitted_flutter_mobile/components/shopping_cart_item_card.dart';
+import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
+import 'package:outfitted_flutter_mobile/counters/total_amount.dart';
+import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
+import 'package:outfitted_flutter_mobile/style/style.dart';
+import 'package:provider/provider.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
   @override
@@ -10,74 +14,88 @@ class ShoppingCartScreen extends StatefulWidget {
 }
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
+  double totalAmount;
 
-  double total = getDummyTotal(); // todo: correct?
+  @override
+  void initState() {
+    super.initState();
+
+    totalAmount = 0;
+    Provider.of<TotalAmount>(context, listen: false).displayResult(0);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildOutFittedCustomAppBar(
-        title: 'Shopping cart',
-        underTitle: "${dummyCart.length} items" /*todo: replace with amount of items in shopping cart list (dummy for now)*/,
+        title: 'Shopping',
+        underTitle: (OutFittedApp.sharedPreferences
+            .getStringList(OutFittedApp.customerCartList)
+            .length -
+            1)
+            .toString() +
+            " items",
         customIcon: Icon(Icons.search),
       ),
-      backgroundColor: Colors.white,
-      /*todo: make component of below ListView (including padding and dismissible)?*/
-
-      /* todo: @Gibbs gaan we layout van shopping cart ook voor wishlist gebruiken?
-          Als ja, dan ga ik van code hieronder component maken */
-
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: ListView.builder(
-            itemCount: dummyCart.length,
-            itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 7),
-              child: Dismissible(
-                key: Key(dummyCart[index].product.id.toString()),
-                direction: DismissDirection.endToStart,
-                background: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFFE6E6),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(
-                    children: [
-                      Spacer(),
-                      Icon(CupertinoIcons.trash),
-                    ],
-                  ),
-                ),
-                onDismissed: (direction){
-                  setState(() {
-                    /*todo: need to come up with better way of doing this?*/
-                    // first update total sum label, then remove item from list
-                    total -= (dummyCart[index].product.price*dummyCart[index].amountItems);
-                    dummyCart.removeAt(index);
-                  });
-                },
-                child: ListItem(cartItem: dummyCart[index]),
-              ),
-            )
+      backgroundColor: kBackgroundOutFitted,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ShoppingCartItemCard(
+              price: '300',
+              image: 'assets/images/sneaker_nike_2.jpg',
+              productName: 'Nike Air Max Runner',
+              totalOfItems: '3',
+            ),
+            ShoppingCartItemCard(
+              price: '300',
+              image: 'assets/images/sneaker_nike_2.jpg',
+              productName: 'Nike Air Max Runner',
+              totalOfItems: '3',
+            ),
+            ShoppingCartItemCard(
+              price: '300',
+              image: 'assets/images/sneaker_nike_2.jpg',
+              productName: 'Nike Air Max Runner',
+              totalOfItems: '3',
+            ),
+            ShoppingCartItemCard(
+              price: '300',
+              image: 'assets/images/sneaker_nike_2.jpg',
+              productName: 'Nike Air Max Runner',
+              totalOfItems: '3',
+            ),
+            ShoppingCartItemCard(
+              price: '300',
+              image: 'assets/images/sneaker_nike_2.jpg',
+              productName: 'Nike Air Max Runner',
+              totalOfItems: '3',
+            ),
+            ShoppingCartItemCard(
+              price: '300',
+              image: 'assets/images/sneaker_nike_2.jpg',
+              productName: 'Nike Air Max Runner',
+              totalOfItems: '3',
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
         // height: 175,
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30)
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30)
+          ),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, -15),
+              blurRadius: 20,
+              color: Color(0xFFDADADA).withOpacity(0.15),
             ),
-            boxShadow: [
-              BoxShadow(
-                offset: Offset(0, -15), 
-                blurRadius: 20,
-                color: Color(0xFFDADADA).withOpacity(0.15),
-              ),
-            ],
+          ],
         ),
         child: SafeArea(
           child: Column(
@@ -98,33 +116,43 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                   Text(
                     "Add voucher code",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white.withOpacity(0.5),
                     ),
                   ),
                   const SizedBox(width: 20),
-                  Icon(Icons.arrow_forward_ios, size: 12, color: Colors.black),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 12,
+                    color: Colors.white.withOpacity(0.5),
+                  ),
                 ],
               ),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text.rich(
-                      TextSpan(
-                        text: "Total:\n",
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                        children: [
+                  Consumer2<TotalAmount, CartItemCounter>(
+                      builder: (context, amountProvider, cartProvider, c){
+                        return Text.rich(
                           TextSpan(
-                            text: "\€$total", /*todo: use real sum*/
+                            text: "Total:\n",
                             style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.indigo
-                            )
+                              color: Colors.white.withOpacity(0.5),
+                            ),
+                            children: [
+                              TextSpan(
+                                text: cartProvider.count == 0
+                                    ? "\€0.00"
+                                    : "\€${amountProvider.totalAmount.toStringAsFixed(2)}" /*todo: use real sum*/,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: kSecondaryColor,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        );
+                      }
                   ),
                   SizedBox(
                     width: 190,
@@ -132,13 +160,22 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         child: Text("Check out"),
                         style: TextButton.styleFrom(
                           primary: Colors.white,
-                          backgroundColor: Colors.indigo,
+                          backgroundColor: kSecondaryColor,
                           onSurface: Colors.grey,
                         ),
                         onPressed: () {
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text("Purchase..."),
-                          ));
+                          if(OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerCartList).length == 1){
+                            Fluttertoast.showToast(
+                              msg: 'Your cart is empty.',
+                              backgroundColor: Color(0xffffe6e6),
+                            );
+                          }else{
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text("Purchase..."),
+                            ));
+
+                            // Navigate customer to fill in address screen.
+                          }
                         }
                     ),
                   )
@@ -151,3 +188,5 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     );
   }
 }
+
+
