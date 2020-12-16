@@ -4,7 +4,7 @@ import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:provider/provider.dart';
 
-AppBar buildOutFittedCustomAppBar({String title, Icon customIcon}) {
+AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon customIcon}) {
   return AppBar(
     elevation: 0.1,
     backgroundColor: kBackgroundOutFitted,
@@ -25,11 +25,26 @@ AppBar buildOutFittedCustomAppBar({String title, Icon customIcon}) {
         ),
       ),
     ),
-    title: Text(
+    title: underTitle == "" ? Text(
       title,
       style: TextStyle(
-          fontFamily: "Muli",
+        fontFamily: "Muli",
       ),
+    ) : Column(
+      children: [
+        Text(
+          title,
+          style: TextStyle(color: Colors.white),
+        ),
+        SizedBox(height: 7),
+        Text(
+            underTitle,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 10
+            )
+        )
+      ],
     ),
     centerTitle: true,
     actions: [
@@ -38,15 +53,22 @@ AppBar buildOutFittedCustomAppBar({String title, Icon customIcon}) {
           padding: const EdgeInsets.only(right: 5),
           child: Stack(
             children: [
-              Container(
-                height: 45,
-                width: 45,
-                decoration: BoxDecoration(
-                  color: Colors.black26,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.shopping_bag_outlined,
+              GestureDetector(
+                onTap: (){
+                  /*todo: go to shopping cart screen.
+                     @Gibbs: is het niet beter als user alleen via knopje bovenin shopping cart kan bereiken?*/
+                  print("PRESSS");
+              },
+                child: Container(
+                  height: 45,
+                  width: 45,
+                  decoration: BoxDecoration(
+                    color: Colors.black26,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.shopping_bag_outlined,
+                  ),
                 ),
               ),
               OutFittedApp.auth.currentUser != null ?
