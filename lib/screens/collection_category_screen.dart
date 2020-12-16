@@ -90,7 +90,7 @@ Widget productInfo(Product productModel, BuildContext context,
     image: productModel.productImage,
     brand: productModel.supplier,
     model: productModel.name,
-    price: productModel.price,
+    price: productModel.price.toStringAsFixed(2),
     press: () {
       Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen(product: productModel));
       Navigator.push(context, route);

@@ -12,7 +12,7 @@ class ProductCollectionCard extends StatelessWidget {
   }) : super(key: key);
 
   final String image, brand, model;
-  final double price;
+  final String price;
   final Function press;
 
   @override
