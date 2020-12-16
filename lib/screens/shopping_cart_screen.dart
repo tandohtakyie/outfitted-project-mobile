@@ -117,7 +117,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         ),
                         children: [
                           TextSpan(
-                            text: "\€$total", /*todo: use real sum*/
+                            text: "\€" + total.toStringAsFixed(2), /*todo: works fully?*/
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.indigo

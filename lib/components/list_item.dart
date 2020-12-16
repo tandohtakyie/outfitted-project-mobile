@@ -31,7 +31,7 @@ Row ListItem({Cart cartItem,}) {
           ),
           const SizedBox(height: 10),
           Text.rich(TextSpan(
-              text: "\€${cartItem.product.price}", /*todo: replace with price of product*/
+              text: "\€${cartItem.product.price.toStringAsFixed(2)}", /*todo: replace with price of product*/
               style: TextStyle(color: Colors.indigo),
               children: [
                 TextSpan(
