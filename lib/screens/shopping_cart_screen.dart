@@ -43,6 +43,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            /*todo: @Gibbs we need to use loop when using real data*/
             ShoppingCartItemCard(
               price: '300',
               image: 'assets/images/sneaker_nike_2.jpg',
