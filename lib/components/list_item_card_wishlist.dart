@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/model/Wishlist.dart';
+import 'package:outfitted_flutter_mobile/style/style.dart';
 
 List<Widget> buildWishListCard({@required WishList wishListItem,}) {
 
@@ -28,13 +29,15 @@ List<Widget> buildWishListCard({@required WishList wishListItem,}) {
       children: [
         Text(
           productName,
-          style: TextStyle(fontSize: 16, color: Colors.black),
+          style: TextStyle(
+            fontSize: 16,
+          ),
           maxLines: 2,
         ),
         const SizedBox(height: 10),
         Text.rich(TextSpan(
           text: "\€$price",
-          style: TextStyle(color: Colors.indigo),
+          style: TextStyle(color: kSecondaryColor),
         ))
       ],
     )

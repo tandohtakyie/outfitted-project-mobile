@@ -10,7 +10,7 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem,}) {
   final String image = cartItem.product.productImage,
                productName = cartItem.product.name,
                price = cartItem.product.price.toStringAsFixed(2),
-               totalOfItems = cartItem.amountItems.toStringAsFixed(2);
+               totalOfItems = cartItem.amountItems.toString();
 
   return [
     SizedBox(
@@ -53,6 +53,7 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem,}) {
                 text: ' x$totalOfItems',
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.5),
+                  fontSize: 15
                 ),
               ),
             ],
