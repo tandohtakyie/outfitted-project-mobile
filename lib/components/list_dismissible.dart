@@ -7,10 +7,6 @@ import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'list_item_card_shoppingcart.dart';
 import 'list_item_card_wishlist.dart';
 
-/*todo: Deze class hernoemen naar 'ListDismissible' --> met als parameter dynamic die lijst met items die getoond moeten worden
-            in de deze component wordt gecontroleerd wat voor lijst het is (items voor shoppingcart of voor wishlist)
-            Afhankelijk daarvan (van de controle) wordt bepaald of listitem_card_shoppingcart- of listitem_card_wishlist component wordt opgeroepen (zie regel 69)*/
-
 class ListDismissible extends StatefulWidget{
 
   /*
@@ -76,7 +72,7 @@ class _ListItemDismissible extends State<ListDismissible>{
               onDismissed: (direction) {
                 setState(() {
                   // todo: Remove the item from the list (retrieved from function in parameter)
-                  // todo: Discuss if is unnecessary to use function via parameter?
+                  // todo: @Gibbs Discuss if is necessary to use function via parameter?
                   funcOnDismissible();
                   list.removeAt(index);
                 });
@@ -87,7 +83,8 @@ class _ListItemDismissible extends State<ListDismissible>{
               },
               child: Row(
                   children:
-                  /*todo: vanaf hier checken voor welk component card maken --> listitem_card_shoppingcart of listitem_card_wishlist --> met als parameter een specifieke item binnen van een lijst (bijv. list[0])*/
+                  /* Check which list-item-card must be created:
+                      items for shopping cart or items for wishlist */
                   list is List<Cart> ?
                   buildShoppingCartCard(cartItem: list[index])
                       : buildWishListCard(wishListItem: list[index])

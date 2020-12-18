@@ -40,7 +40,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         customIcon: Icon(Icons.search),
       ),
       backgroundColor: kBackgroundOutFitted,
-      /*todo: checken of lijst leeg is, anders tekst laten zien (zie branch: shoppingcartv2)*/
       body: ListDismissible(emptyListText:"Add a product by pressing the 🛒️ icon",
                             list: dummyCart,
                             funcOnDismissible: onDismissed),
