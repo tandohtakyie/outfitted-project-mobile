@@ -56,7 +56,7 @@ AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon cust
               GestureDetector(
                 onTap: (){
                   /*todo: go to shopping cart screen.
-                     @Gibbs: is het niet beter als user alleen via knopje bovenin shopping cart kan bereiken?*/
+                     @Gibbs is het niet beter als user alleen via knopje bovenin shopping cart kan bereiken?*/
                   print("PRESSS");
               },
                 child: Container(

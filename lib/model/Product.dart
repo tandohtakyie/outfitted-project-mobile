@@ -1,5 +1,5 @@
 
-/* todo: @Gibbs de products in database moeten nog attribute 'id' krijgen (ik kan het ook doen, maar heb dan je hulp nodig)*/
+/* todo: @Gibbs de products in database moeten nog attribute 'id' krijgen (ik kan het doen, maar heb je hulp nodig)*/
 class Product{
   int id;
   String name;

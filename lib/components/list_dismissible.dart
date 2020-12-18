@@ -13,6 +13,9 @@ class ListDismissible extends StatefulWidget{
   * dynamic list = list with certain content which must be visible
   * Function funcOnDismissible = function which must be invoked after item has been dismissed
   * */
+  /* todo: @Gibbs is er een betere manier om dit te doen?
+      Voor nu declareer ik deze variablen twee keer (in ListDismissible en _ListDismissible)
+   */
   final String emptyListText;
   final dynamic list;
   final Function funcOnDismissible;
@@ -30,6 +33,9 @@ class ListDismissible extends StatefulWidget{
 
 class _ListItemDismissible extends State<ListDismissible>{
 
+  /* todo: @Gibbs is er een betere manier om dit te doen?
+      Voor nu declareer ik deze variablen twee keer (in ListDismissible en _ListDismissible)
+   */
   final String emptyListText;
   final dynamic list;
   final Function funcOnDismissible;
@@ -72,10 +78,11 @@ class _ListItemDismissible extends State<ListDismissible>{
               onDismissed: (direction) {
                 setState(() {
                   // todo: Remove the item from the list (retrieved from function in parameter)
-                  // todo: @Gibbs Discuss if is necessary to use function via parameter?
+                  // todo: @Gibbs do you think that this is necessary to use? (function via parameter)
                   funcOnDismissible();
                   list.removeAt(index);
                 });
+                // todo: @Gibbs do you think we need this? (snackbar after dismiss)
                 // Show a snackbar. This snackbar could also contain "Undo" actions.
                 /*Scaffold
                     .of(context)

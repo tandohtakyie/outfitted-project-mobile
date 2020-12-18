@@ -169,6 +169,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     );
   }
 
+  // todo: @Gibbs do you think we need this?
   void onDismissed(){
     print("JAA REMOVED CART ITEM!");
   }
