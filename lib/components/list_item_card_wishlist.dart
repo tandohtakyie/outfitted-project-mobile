@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/model/Wishlist.dart';
-import 'package:outfitted_flutter_mobile/style/style.dart';
 
 List<Widget> buildWishListCard({@required WishList wishListItem,}) {
 

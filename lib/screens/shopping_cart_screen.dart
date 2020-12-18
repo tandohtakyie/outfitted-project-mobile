@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:outfitted_flutter_mobile/components/list_item_dismissible.dart';
+import 'package:outfitted_flutter_mobile/components/list_dismissible.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
-import 'package:outfitted_flutter_mobile/components/list_item_card_shoppingcart.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/counters/total_amount.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
@@ -42,61 +41,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       ),
       backgroundColor: kBackgroundOutFitted,
       /*todo: checken of lijst leeg is, anders tekst laten zien (zie branch: shoppingcartv2)*/
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            /*todo: @Gibbs we need to use loop when using real data*/
-            /*todo: vanaf hier moet er een loop komen die er zo uit ziet:
-
-
-                for loop(){
-                  ListItemDismissible(list: listShoppingCart, itemIndex: i)
-                  of
-                  ListItemDismissible(list: listWishList, itemIndex: i)
-                }
-             */
-
-            ListItemDismissible(list: dummyCart, itemIndex: 2)
-
-            // ShoppingCartItemCard(
-            //   price: '300',
-            //   image: 'assets/images/sneaker_nike_2.jpg',
-            //   productName: 'Nike Air Max Runner',
-            //   totalOfItems: '3',
-            // ),
-            // ShoppingCartItemCard(
-            //   price: '300',
-            //   image: 'assets/images/sneaker_nike_2.jpg',
-            //   productName: 'Nike Air Max Runner',
-            //   totalOfItems: '3',
-            // ),
-            // ShoppingCartItemCard(
-            //   price: '300',
-            //   image: 'assets/images/sneaker_nike_2.jpg',
-            //   productName: 'Nike Air Max Runner',
-            //   totalOfItems: '3',
-            // ),
-            // ShoppingCartItemCard(
-            //   price: '300',
-            //   image: 'assets/images/sneaker_nike_2.jpg',
-            //   productName: 'Nike Air Max Runner',
-            //   totalOfItems: '3',
-            // ),
-            // ShoppingCartItemCard(
-            //   price: '300',
-            //   image: 'assets/images/sneaker_nike_2.jpg',
-            //   productName: 'Nike Air Max Runner',
-            //   totalOfItems: '3',
-            // ),
-            // ShoppingCartItemCard(
-            //   price: '300',
-            //   image: 'assets/images/sneaker_nike_2.jpg',
-            //   productName: 'Nike Air Max Runner',
-            //   totalOfItems: '3',
-            // ),
-          ],
-        ),
-      ),
+      body: ListDismissible(emptyListText:"Add a product by pressing the 🛒️ icon",
+                            list: dummyCart,
+                            funcOnDismissible: onDismissed),
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
         // height: 175,
@@ -221,6 +168,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         ),
       ),
     );
+  }
+
+  void onDismissed(){
+    print("JAA REMOVED CART ITEM!");
   }
 }
 
