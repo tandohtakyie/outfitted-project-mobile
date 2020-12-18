@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:outfitted_flutter_mobile/components/list_item_dismissible.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
-import 'package:outfitted_flutter_mobile/components/shopping_cart_item_card.dart';
+import 'package:outfitted_flutter_mobile/components/list_item_card_shoppingcart.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/counters/total_amount.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
+import 'package:outfitted_flutter_mobile/model/Cart.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +21,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   @override
   void initState() {
     super.initState();
-
     totalAmount = 0;
     Provider.of<TotalAmount>(context, listen: false).displayResult(0);
   }
@@ -40,46 +41,59 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         customIcon: Icon(Icons.search),
       ),
       backgroundColor: kBackgroundOutFitted,
+      /*todo: checken of lijst leeg is, anders tekst laten zien (zie branch: shoppingcartv2)*/
       body: SingleChildScrollView(
         child: Column(
           children: [
             /*todo: @Gibbs we need to use loop when using real data*/
-            ShoppingCartItemCard(
-              price: '300',
-              image: 'assets/images/sneaker_nike_2.jpg',
-              productName: 'Nike Air Max Runner',
-              totalOfItems: '3',
-            ),
-            ShoppingCartItemCard(
-              price: '300',
-              image: 'assets/images/sneaker_nike_2.jpg',
-              productName: 'Nike Air Max Runner',
-              totalOfItems: '3',
-            ),
-            ShoppingCartItemCard(
-              price: '300',
-              image: 'assets/images/sneaker_nike_2.jpg',
-              productName: 'Nike Air Max Runner',
-              totalOfItems: '3',
-            ),
-            ShoppingCartItemCard(
-              price: '300',
-              image: 'assets/images/sneaker_nike_2.jpg',
-              productName: 'Nike Air Max Runner',
-              totalOfItems: '3',
-            ),
-            ShoppingCartItemCard(
-              price: '300',
-              image: 'assets/images/sneaker_nike_2.jpg',
-              productName: 'Nike Air Max Runner',
-              totalOfItems: '3',
-            ),
-            ShoppingCartItemCard(
-              price: '300',
-              image: 'assets/images/sneaker_nike_2.jpg',
-              productName: 'Nike Air Max Runner',
-              totalOfItems: '3',
-            ),
+            /*todo: vanaf hier moet er een loop komen die er zo uit ziet:
+
+
+                for loop(){
+                  ListItemDismissible(list: listShoppingCart, itemIndex: i)
+                  of
+                  ListItemDismissible(list: listWishList, itemIndex: i)
+                }
+             */
+
+            ListItemDismissible(list: dummyCart, itemIndex: 2)
+
+            // ShoppingCartItemCard(
+            //   price: '300',
+            //   image: 'assets/images/sneaker_nike_2.jpg',
+            //   productName: 'Nike Air Max Runner',
+            //   totalOfItems: '3',
+            // ),
+            // ShoppingCartItemCard(
+            //   price: '300',
+            //   image: 'assets/images/sneaker_nike_2.jpg',
+            //   productName: 'Nike Air Max Runner',
+            //   totalOfItems: '3',
+            // ),
+            // ShoppingCartItemCard(
+            //   price: '300',
+            //   image: 'assets/images/sneaker_nike_2.jpg',
+            //   productName: 'Nike Air Max Runner',
+            //   totalOfItems: '3',
+            // ),
+            // ShoppingCartItemCard(
+            //   price: '300',
+            //   image: 'assets/images/sneaker_nike_2.jpg',
+            //   productName: 'Nike Air Max Runner',
+            //   totalOfItems: '3',
+            // ),
+            // ShoppingCartItemCard(
+            //   price: '300',
+            //   image: 'assets/images/sneaker_nike_2.jpg',
+            //   productName: 'Nike Air Max Runner',
+            //   totalOfItems: '3',
+            // ),
+            // ShoppingCartItemCard(
+            //   price: '300',
+            //   image: 'assets/images/sneaker_nike_2.jpg',
+            //   productName: 'Nike Air Max Runner',
+            //   totalOfItems: '3',
+            // ),
           ],
         ),
       ),

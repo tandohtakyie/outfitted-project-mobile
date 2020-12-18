@@ -5,10 +5,6 @@ import 'package:outfitted_flutter_mobile/style/style.dart';
           We hebben hier dus ook de hele list nodig waarin item zit om item te kunnen verwijderen.
           Ik denk daarom dat beter is als we een component maken die*/
 
-/*todo: Deze class hernoemen naar 'ListDismissible' --> met als parameter String die zegt wat voor lijst het is ('cart' of 'wish') EN dynamic die lijst met items die getoond moeten worden
-            in de list_dismissible component wordt gecontroleerd wat voor lijst het is (items voor shoppingcart of voor wishlist)
-            Afhankelijk daarvan (van de controle) wordt bepaald of listitem_card_shoppingcart- of listitem_card_wishlist component wordt opgeroepen (zie regel 46)*/
-
 class ShoppingCartItemCard extends StatelessWidget {
   const ShoppingCartItemCard({
     Key key,
@@ -19,6 +15,10 @@ class ShoppingCartItemCard extends StatelessWidget {
   }) : super(key: key);
 
   final String image, productName, price, totalOfItems;
+  /* final String image = "todo: list[0].image",
+                productName = "todo: list[0].productName",
+                price = "todo: list[0].price",
+                totalOfItems = "todo: list[0].totalOfItems"; */
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,6 @@ class ShoppingCartItemCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            /*todo: vanaf hier moet er een loop komen waarin steeds component voor shopping cart items of wishlist items wordt aangeroepen*/
             /*todo: vanaf hier twee components maken --> listitem_card_shoppingcart en listitem_card_wishlist --> met als parameter een specifieke item binnen van een lijst (bijv. list[0])*/
             SizedBox(
               width: 88,
