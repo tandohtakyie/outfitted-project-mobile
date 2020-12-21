@@ -19,6 +19,11 @@ class ShoppingCartScreen extends StatefulWidget {
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   double totalAmount;
+  Stream<QuerySnapshot> cartData = OutFittedApp.firestore
+      .collection(OutFittedApp.collectionProduct)
+      .where("name",
+      whereIn: OutFittedApp.sharedPreferences
+          .getStringList(OutFittedApp.customerCartList)).snapshots();
 
   @override
   void initState() {
