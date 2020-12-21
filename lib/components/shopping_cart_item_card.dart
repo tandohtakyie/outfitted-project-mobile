@@ -8,16 +8,17 @@ class ShoppingCartItemCard extends StatelessWidget {
     this.productName,
     this.price,
     this.totalOfItems,
+    this.productKey,
   }) : super(key: key);
 
-  final String image, productName, price, totalOfItems;
+  final String image, productName, price, totalOfItems, productKey;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Dismissible(
-        key: Key('1'),
+        key: Key(productKey),
         direction: DismissDirection.endToStart,
         background: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -47,8 +48,8 @@ class ShoppingCartItemCard extends StatelessWidget {
                     color: Color(0xfff5f6f9),
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Image.asset(image),
-                  //  child: Image.network(image),
+                  //child: Image.asset(image),
+                    child: Image.network(image),
                 ),
               ),
             ),
