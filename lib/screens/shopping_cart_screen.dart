@@ -161,7 +161,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         })
                       : Text.rich(
                           TextSpan(
-                            text: "\€" + total.toStringAsFixed(2), /*todo: works fully?*/
+                            text: "\€" + totalAmount.toStringAsFixed(2), /*todo: works fully?*/
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.5),
                             ),
