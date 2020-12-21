@@ -17,9 +17,11 @@ class ShoppingCartItemCard extends StatelessWidget {
     this.price,
     this.totalOfItems,
     this.productKey,
+    this.onSwiped,
   }) : super(key: key);
 
   final String image, productName, price, totalOfItems, productKey;
+  final Function onSwiped;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class ShoppingCartItemCard extends StatelessWidget {
       child: Dismissible(
         key: Key(productKey),
         direction: DismissDirection.endToStart,
+        onDismissed: onSwiped,
         background: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(

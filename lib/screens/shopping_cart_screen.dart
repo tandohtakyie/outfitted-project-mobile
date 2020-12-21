@@ -30,7 +30,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildOutFittedCustomAppBar(
-        title: 'Shopping',
+        title: 'Shopping cart',
         underTitle: OutFittedApp.auth.currentUser != null
             ? (OutFittedApp.sharedPreferences
                             .getStringList(OutFittedApp.customerCartList)
@@ -193,12 +193,17 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                               1) {
                             Fluttertoast.showToast(
                               msg: 'Your cart is empty.',
-                              backgroundColor: Color(0xffffe6e6),
+                              textColor: kWhiteColor,
+                              backgroundColor: Color(0xffeb4034),
                             );
                           } else {
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text("Purchase..."),
-                            ));
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "Purchase...",
+                                ),
+                              ),
+                            );
 
                             // Navigate customer to fill in address screen.
                           }
@@ -213,18 +218,48 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     );
   }
 
-  beginBuildingCart() {}
+  beginBuildingCart() {
+    return Center(
+      child: Text('Cart is empty'),
+    );
+  }
 
-  removeItemFromCustomerCart(String productName) {}
-}
+  removeItemFromCustomerCart(String productName) {
+    List tempCartList = OutFittedApp.sharedPreferences
+        .getStringList(OutFittedApp.customerCartList);
+    tempCartList.remove(productName);
 
-Widget cartItems(Product productModel, BuildContext context,
-    {Color background, removeCartFunction}) {
-  return ShoppingCartItemCard(
-    price: productModel.price.toStringAsFixed(2),
-    image: productModel.productImage,
-    productName: productModel.name,
-    totalOfItems: '3',
-    productKey: productModel.name,
-  );
+    OutFittedApp.firestore
+        .collection(OutFittedApp.collectionCustomer)
+        .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
+        .update({OutFittedApp.customerCartList: tempCartList}).then((v) {
+      Fluttertoast.showToast(
+        msg: '$productName removed from cart successfully.',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Color(0xfff7b0b7),
+        fontSize: 15,
+      );
+      OutFittedApp.sharedPreferences
+          .setStringList(OutFittedApp.customerCartList, tempCartList);
+
+      Provider.of<CartItemCounter>(context, listen: false).displayResult();
+
+      totalAmount = 0;
+    });
+  }
+
+  Widget cartItems(Product productModel, BuildContext context,
+      {Color background, removeCartFunction}) {
+    return ShoppingCartItemCard(
+      price: productModel.price.toStringAsFixed(2),
+      image: productModel.productImage,
+      productName: productModel.name,
+      totalOfItems: '3',
+      productKey: productModel.name,
+      onSwiped: (direction) {
+        removeItemFromCustomerCart(productModel.name);
+      },
+    );
+  }
 }
