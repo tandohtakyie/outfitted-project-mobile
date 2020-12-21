@@ -5,6 +5,7 @@ import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart
 import 'package:outfitted_flutter_mobile/components/shopping_cart_item_card.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/counters/total_amount.dart';
+import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/Product.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
@@ -42,183 +43,179 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         customIcon: Icon(Icons.search),
       ),
       backgroundColor: kBackgroundOutFitted,
-      body: StreamBuilder<QuerySnapshot>(
-        stream: OutFittedApp.firestore
-            .collection(OutFittedApp.collectionProduct)
-            .where("name",
-                whereIn: OutFittedApp.sharedPreferences
-                    .getStringList(OutFittedApp.customerCartList))
-            .snapshots(),
-        builder: (context, snapshot) {
-          return !snapshot.hasData
-              ? Center(
-                  child: Text('No data!'),
-                )
-              : snapshot.data.docs.length == 0
-                  ? beginBuildingCart()
-                  : ListView.builder(
-                      itemCount:
-                          snapshot.hasData ? snapshot.data.docs.length : 0,
-                      itemBuilder: (context, index) {
-                        Product product =
-                            Product.fromJson(snapshot.data.docs[index].data());
-                        if (index == 0) {
-                          totalAmount = 0;
-                          totalAmount = product.price + totalAmount;
-                        } else {
-                          totalAmount = product.price + totalAmount;
-                        }
+      body: OutFittedApp.auth.currentUser != null
+          ? StreamBuilder<QuerySnapshot>(
+              stream: OutFittedApp.firestore
+                  .collection(OutFittedApp.collectionProduct)
+                  .where("name",
+                      whereIn: OutFittedApp.sharedPreferences
+                          .getStringList(OutFittedApp.customerCartList))
+                  .snapshots(),
+              builder: (context, snapshot) {
+                return !snapshot.hasData
+                    ? Center(
+                        child: Text('No data!'),
+                      )
+                    : snapshot.data.docs.length == 0
+                        ? beginBuildingEmptyCart()
+                        : ListView.builder(
+                            itemCount: snapshot.hasData
+                                ? snapshot.data.docs.length
+                                : 0,
+                            itemBuilder: (context, index) {
+                              Product product = Product.fromJson(
+                                  snapshot.data.docs[index].data());
+                              if (index == 0) {
+                                totalAmount = 0;
+                                totalAmount = product.price + totalAmount;
+                              } else {
+                                totalAmount = product.price + totalAmount;
+                              }
 
-                        if (snapshot.data.docs.length - 1 == index) {
-                          WidgetsBinding.instance.addPostFrameCallback((t) {
-                            Provider.of<TotalAmount>(context, listen: false)
-                                .displayResult(totalAmount);
-                          });
-                        }
+                              if (snapshot.data.docs.length - 1 == index) {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((t) {
+                                  Provider.of<TotalAmount>(context,
+                                          listen: false)
+                                      .displayResult(totalAmount);
+                                });
+                              }
 
-                        return cartItems(product, context,
-                            removeCartFunction: () =>
-                                removeItemFromCustomerCart(product.name));
-                      },
-                    );
-        },
-      ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-        // height: 175,
-        decoration: BoxDecoration(
-          color: kPrimaryColor,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(0, -15),
-              blurRadius: 20,
-              color: Color(0xFFDADADA).withOpacity(0.15),
+                              return cartItems(product, context,
+                                  removeCartFunction: () =>
+                                      removeItemFromCustomerCart(product.name));
+                            },
+                          );
+              },
+            )
+          : Container(
+              child: Center(
+                child: Text('Register or Login to add to cart.'),
+              ),
             ),
-          ],
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFF5F6F9),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Icon(
-                      Icons.receipt,
-                      color: Colors.orange,
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    "Add voucher code",
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.5),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 12,
-                    color: Colors.white.withOpacity(0.5),
+      bottomNavigationBar: OutFittedApp.auth.currentUser != null
+          ? Container(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+              // height: 175,
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30)),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(0, -15),
+                    blurRadius: 20,
+                    color: Color(0xFFDADADA).withOpacity(0.15),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  OutFittedApp.auth.currentUser != null
-                      ? Consumer2<TotalAmount, CartItemCounter>(
-                          builder: (context, amountProvider, cartProvider, c) {
-                          return Text.rich(
-                            TextSpan(
-                              text: "Total:\n",
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.5),
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: cartProvider.count == 0 ||
-                                          cartProvider.count == null
-                                      ? "\€0.00"
-                                      : "\€${amountProvider.totalAmount.toStringAsFixed(2)}" /*todo: use real sum*/,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: kSecondaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        })
-                      : Text.rich(
-                          TextSpan(
-                            text: "\€" + totalAmount.toStringAsFixed(2), /*todo: works fully?*/
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.5),
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "\€0.00" /*todo: use real sum*/,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: kSecondaryColor,
-                                ),
-                              ),
-                            ],
+              child: SafeArea(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF5F6F9),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.receipt,
+                            color: Colors.orange,
                           ),
                         ),
-                  SizedBox(
-                    width: 190,
-                    child: TextButton(
-                        child: Text(
-                            "Check out"), // hide check out button when not logged in
-                        style: TextButton.styleFrom(
-                          primary: Colors.white,
-                          backgroundColor: kSecondaryColor,
-                          onSurface: Colors.grey,
+                        Spacer(),
+                        Text(
+                          "Add voucher code",
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.5),
+                          ),
                         ),
-                        onPressed: () {
-                          if (OutFittedApp.sharedPreferences
-                                  .getStringList(OutFittedApp.customerCartList)
-                                  .length ==
-                              1) {
-                            Fluttertoast.showToast(
-                              msg: 'Your cart is empty.',
-                              textColor: kWhiteColor,
-                              backgroundColor: Color(0xffeb4034),
-                            );
-                          } else {
-                            Scaffold.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "Purchase...",
+                        const SizedBox(width: 20),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 12,
+                          color: Colors.white.withOpacity(0.5),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Consumer2<TotalAmount, CartItemCounter>(
+                          builder: (context, amountProvider, cartProvider, c) {
+                            return Text.rich(
+                              TextSpan(
+                                text: "Total:\n",
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.5),
                                 ),
+                                children: [
+                                  TextSpan(
+                                    text: cartProvider.count == 0 ||
+                                            cartProvider.count == null
+                                        ? "\€0.00"
+                                        : "\€${amountProvider.totalAmount.toStringAsFixed(2)}" /*todo: use real sum*/,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: kSecondaryColor,
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
-
-                            // Navigate customer to fill in address screen.
-                          }
-                        }),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
+                          },
+                        ),
+                        SizedBox(
+                          width: 190,
+                          child: TextButton(
+                            child: Text(
+                                "Check out"), // hide check out button when not logged in
+                            style: TextButton.styleFrom(
+                              primary: Colors.white,
+                              backgroundColor: kSecondaryColor,
+                              onSurface: Colors.grey,
+                            ),
+                            onPressed: () {
+                              if (OutFittedApp.sharedPreferences
+                                      .getStringList(
+                                          OutFittedApp.customerCartList)
+                                      .length ==
+                                  1) {
+                                Fluttertoast.showToast(
+                                  msg: 'Your cart is empty.',
+                                  textColor: kWhiteColor,
+                                  backgroundColor: Color(0xffeb4034),
+                                );
+                              } else {
+                                Scaffold.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      "Purchase...",
+                                    ),
+                                  ),
+                                );
+                                // Navigate customer to fill in address screen.
+                              }
+                            },
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            )
+          : Container(),
     );
   }
 
-  beginBuildingCart() {
+  beginBuildingEmptyCart() {
     return Center(
       child: Text('Cart is empty'),
     );

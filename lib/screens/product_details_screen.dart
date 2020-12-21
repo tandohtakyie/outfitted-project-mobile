@@ -309,6 +309,9 @@ void addItemToCart(String productName, BuildContext context) {
     Fluttertoast.showToast(
         msg: '$productName added to cart successfully.',
         toastLength: Toast.LENGTH_LONG,
+
+
+
         gravity: ToastGravity.CENTER,
         backgroundColor: Color(0xff5eba7d),
         fontSize: 15,
