@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/store_category.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
-import 'package:outfitted_flutter_mobile/model/Category.dart';
+import 'package:outfitted_flutter_mobile/model/CollectionCategory.dart';
 import 'package:outfitted_flutter_mobile/screens/collection_category_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
@@ -47,7 +47,7 @@ class _SearchCategoryScreenState extends State<SearchCategoryScreen> {
                 return ListView.builder(
                   itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index){
-                       Category category = Category.fromJson(snapshot.data.docs[index].data());
+                       CollectionCategory category = CollectionCategory.fromJson(snapshot.data.docs[index].data());
                         return categoryInfo(category, context);
                     }
                 );
@@ -59,7 +59,7 @@ class _SearchCategoryScreenState extends State<SearchCategoryScreen> {
   }
 }
 
-Widget categoryInfo(Category category, BuildContext context) {
+Widget categoryInfo(CollectionCategory category, BuildContext context) {
   return StoreCategory(
     categoryName: category.categoryName,
     press: (){
