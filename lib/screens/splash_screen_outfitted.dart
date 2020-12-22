@@ -14,7 +14,7 @@ class SplashScreenOutFitted extends StatelessWidget {
       splash: Image.asset(
         'assets/images/logo.png',
       ),
-      splashIconSize: 400,
+      splashIconSize: 300,
       backgroundColor: kSplashColor,
       splashTransition: SplashTransition.fadeTransition,
       duration: 2000,
