@@ -13,8 +13,8 @@ class SplashScreenOutFitted extends StatelessWidget {
     return AnimatedSplashScreen(
       splash: Image.asset(
         'assets/images/logo.png',
-        width: 300,
       ),
+      splashIconSize: 400,
       backgroundColor: kSplashColor,
       splashTransition: SplashTransition.fadeTransition,
       duration: 2000,
