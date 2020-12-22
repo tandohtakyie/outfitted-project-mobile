@@ -5,6 +5,7 @@ const kBackgroundOutFitted = Color(0xff242228);
 const kSecondaryColor = Color(0xfff3c62a);
 const kPrimaryColor = Color(0xff1b1a1d);
 const kWhiteColor = Color(0xffffffff);
+const kSplashColor = Color(0xff242228);
 
 //const kPrimaryColor = Color(0xfff54260);
 //const kSecondaryColor = Color(0xfff5647d);
