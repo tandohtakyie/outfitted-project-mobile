@@ -18,14 +18,14 @@ class ShoppingCartScreen extends StatefulWidget {
 }
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
-  double totalPriceOfCart;
+  double totalAmount;
   // Initialize empty list as if shopping cart is empty
   List<Cart> shoppingCartList = List<Cart>();
 
   @override
   void initState() {
     super.initState();
-    totalPriceOfCart = 0;
+    totalAmount = 0;
     Provider.of<TotalAmount>(context, listen: false).displayResult(0);
   }
 
@@ -36,16 +36,17 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         title: 'Shopping cart',
         underTitle: OutFittedApp.auth.currentUser != null
             ? (OutFittedApp.sharedPreferences
-                            .getStringList(OutFittedApp.customerCartList)
-                            .length -
-                        1)
-                    .toString() +
-                " items"
+            .getStringList(OutFittedApp.customerCartList)
+            .length -
+            1)
+            .toString() +
+            " items"
             : '',
         customIcon: Icon(Icons.search),
       ),
       backgroundColor: kBackgroundOutFitted,
-      body: StreamBuilder<QuerySnapshot>(
+      body: OutFittedApp.auth.currentUser != null
+          ? StreamBuilder<QuerySnapshot>(
         stream: OutFittedApp.firestore
             .collection(OutFittedApp.collectionProduct)
             .where("name",
@@ -70,9 +71,14 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             );
           }
         },
+      )
+          : Container(
+        child: Center(
+          child: Text('Register or Login to add to cart.'),
+        ),
       ),
-      //todo: hide when not logged in?
-      bottomNavigationBar: Container(
+      bottomNavigationBar: OutFittedApp.auth.currentUser != null
+          ? Container(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
         // height: 175,
         decoration: BoxDecoration(
@@ -125,87 +131,71 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  OutFittedApp.auth.currentUser != null
-                      ? Consumer2<TotalAmount, CartItemCounter>(
-                          builder: (context, amountProvider, cartProvider, c) {
-                          return Text.rich(
+                  Consumer2<TotalAmount, CartItemCounter>(
+                    builder: (context, amountProvider, cartProvider, c) {
+                      return Text.rich(
+                        TextSpan(
+                          text: "Total:\n",
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.5),
+                          ),
+                          children: [
                             TextSpan(
-                              text: "Total:\n",
+                              text: cartProvider.count == 0 ||
+                                  cartProvider.count == null
+                                  ? "\€0.00"
+                                  : "\€${amountProvider.totalAmount.toStringAsFixed(2)}" /*todo: @Gibbs works only after adding something to cart, close app and then open app again. Something wrong with cartprovider? */ ,,
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.5),
+                                fontSize: 16,
+                                color: kSecondaryColor,
                               ),
-                              children: [
-                                TextSpan(
-                                  text: cartProvider.count == 0 ||
-                                          cartProvider.count == null
-                                      ? "\€0.00"
-                                      : "\€${totalPriceOfCart.toStringAsFixed(2)}" /*todo: @Gibbs works only after adding something to cart, close app and then open app again. Something wrong with cartprovider? */ ,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: kSecondaryColor,
-                                  ),
-                                ),
-                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    width: 190,
+                    child: TextButton(
+                      child: Text(
+                          "Check out"), // hide check out button when not logged in
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        backgroundColor: kSecondaryColor,
+                        onSurface: Colors.grey,
+                      ),
+                      onPressed: () {
+                        if (OutFittedApp.sharedPreferences
+                            .getStringList(
+                            OutFittedApp.customerCartList)
+                            .length ==
+                            1) {
+                          Fluttertoast.showToast(
+                            msg: 'Your cart is empty.',
+                            textColor: kWhiteColor,
+                            backgroundColor: Color(0xffeb4034),
+                          );
+                        } else {
+                          Scaffold.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Purchase...",
+                              ),
                             ),
                           );
-                        })
-                      : Text.rich(
-                          TextSpan(
-                            text: "Total:\n",
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.5),
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "\€0.00",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: kSecondaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 190,
-                          child: TextButton(
-                            child: Text(
-                                "Check out"), // hide check out button when not logged in
-                            style: TextButton.styleFrom(
-                              primary: Colors.white,
-                              backgroundColor: kSecondaryColor,
-                              onSurface: Colors.grey,
-                            ),
-                            onPressed: () {
-                              if (OutFittedApp.sharedPreferences
-                                      .getStringList(
-                                          OutFittedApp.customerCartList)
-                                      .length ==
-                                  1) {
-                                Fluttertoast.showToast(
-                                  msg: 'Your cart is empty.',
-                                  textColor: kWhiteColor,
-                                  backgroundColor: Color(0xffeb4034),
-                                );
-                              } else {
-                                Scaffold.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      "Purchase...",
-                                    ),
-                                  ),
-                                );
-                                // Navigate customer to fill in address screen.
-                              }
-                            },
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
+                          // Navigate customer to fill in address screen.
+                        }
+                      },
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      )
+          : Container(),
     );
   }
 
@@ -213,9 +203,20 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   List<Cart> getItemsForCustomerCart(AsyncSnapshot<QuerySnapshot> pSnapshot){
     for (var i = 0; i < pSnapshot.data.docs.length; i++) {
       Product productFromJson = Product.fromJson(pSnapshot.data.docs[i].data());
-      totalPriceOfCart += productFromJson.price;
+      totalAmount += productFromJson.price;
+
       //todo: need to add amount of product in product detail screen
       shoppingCartList.add(Cart(product: productFromJson, amountItems: 0));
+
+      //todo: good?
+      if (pSnapshot.data.docs.length - 1 == i) {
+        WidgetsBinding.instance
+            .addPostFrameCallback((t) {
+          Provider.of<TotalAmount>(context,
+              listen: false)
+              .displayResult(totalAmount);
+        });
+      }
     }
     return shoppingCartList;
   }
@@ -245,7 +246,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
       Provider.of<CartItemCounter>(context, listen: false).displayResult();
 
-      totalPriceOfCart -= productPrice;
+      totalAmount = 0;
     });
   }
 }
