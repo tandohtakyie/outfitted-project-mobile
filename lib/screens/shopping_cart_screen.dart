@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfitted_flutter_mobile/components/list_dismissible.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
@@ -58,8 +59,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             // als snapshot (aka database) leeg is?
             // todo: Remove? Text below always shows when screen is loading
             return Center(
-              child: Text(
-                  'No data available! Please check database (is probably empty)'
+              child: SpinKitDualRing(
+                color: kSecondaryColor,
+                size: 50,
               )
             );
           }
