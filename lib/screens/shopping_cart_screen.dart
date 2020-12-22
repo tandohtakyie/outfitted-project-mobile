@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfitted_flutter_mobile/components/list_dismissible.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
-import 'package:outfitted_flutter_mobile/components/shopping_cart_item_card.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/counters/total_amount.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
@@ -18,17 +17,14 @@ class ShoppingCartScreen extends StatefulWidget {
 }
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
-  double totalAmount;
-  Stream<QuerySnapshot> cartData = OutFittedApp.firestore
-      .collection(OutFittedApp.collectionProduct)
-      .where("name",
-      whereIn: OutFittedApp.sharedPreferences
-          .getStringList(OutFittedApp.customerCartList)).snapshots();
+  double totalPriceOfCart;
+  // Initialize empty list as if shopping cart is empty
+  List<Cart> shoppingCartList = List<Cart>();
 
   @override
   void initState() {
     super.initState();
-    totalAmount = 0;
+    totalPriceOfCart = 0;
     Provider.of<TotalAmount>(context, listen: false).displayResult(0);
   }
 
@@ -56,51 +52,25 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     .getStringList(OutFittedApp.customerCartList))
             .snapshots(),
         builder: (context, snapshot) {
-          /*
-
-              if(!snapshot.hasData){
-                // als snapshot (aka database) leeg is, dan niet verder naar ListDismissible oproepen()
-                return Center(child: Text('No data!'),)
-              }
-              else{
-                /*vanaf hier ListDismissible() roepen --> snapshot en context*/
-                // vanaf regel 66 tot 92 moet hierin (voor nu, maar je moet het wel fixen)
-              }
-
-          */
-          return !snapshot.hasData
-              ? Center(
-                  child: Text('No data!'),
-                )
-              : snapshot.data.docs.length == 0
-                  ? beginBuildingCart()
-                  : ListView.builder(
-                      itemCount:
-                          snapshot.hasData ? snapshot.data.docs.length : 0,
-                      itemBuilder: (context, index) {
-                        Product product =
-                            Product.fromJson(snapshot.data.docs[index].data());
-                        if (index == 0) {
-                          totalAmount = 0;
-                          totalAmount = product.price + totalAmount;
-                        } else {
-                          totalAmount = product.price + totalAmount;
-                        }
-
-                        if (snapshot.data.docs.length - 1 == index) {
-                          WidgetsBinding.instance.addPostFrameCallback((t) {
-                            Provider.of<TotalAmount>(context, listen: false)
-                                .displayResult(totalAmount);
-                          });
-                        }
-
-                        return cartItems(product, context,
-                            removeCartFunction: () =>
-                                removeItemFromCustomerCart(product.name));
-                      },
-                    );
+          if(!snapshot.hasData){
+            // als snapshot (aka database) leeg is?
+            // todo: Remove? Text below always shows when screen is loading
+            return Center(
+              child: Text(
+                  'No data available! Please check database (is probably empty)'
+              )
+            );
+          }
+          else{
+            return ListDismissible(
+                emptyListText:"Add a product by pressing the 🛒️ icon",
+                list: snapshot.data.docs.length == 0 ? shoppingCartList : getItemsForCustomerCart(snapshot),
+                funcOnDismissible: removeItemFromCustomerCart
+            );
+          }
         },
       ),
+      //todo: hide when not logged in?
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
         // height: 175,
@@ -168,7 +138,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                   text: cartProvider.count == 0 ||
                                           cartProvider.count == null
                                       ? "\€0.00"
-                                      : "\€${amountProvider.totalAmount.toStringAsFixed(2)}" /*todo: use real sum*/,
+                                      : "\€${totalPriceOfCart.toStringAsFixed(2)}" /*todo: @Gibbs works only after adding something to cart, close app and then open app again. Something wrong with cartprovider? */ ,
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: kSecondaryColor,
@@ -186,7 +156,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             ),
                             children: [
                               TextSpan(
-                                text: "\€0.00" /*todo: use real sum*/,
+                                text: "\€0.00",
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: kSecondaryColor,
@@ -237,13 +207,22 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     );
   }
 
-  beginBuildingCart() {
-    return Center(
-      child: Text('Cart is empty'),
-    );
+  // Get list of products from Firebase snapshot
+  List<Cart> getItemsForCustomerCart(AsyncSnapshot<QuerySnapshot> pSnapshot){
+    for (var i = 0; i < pSnapshot.data.docs.length; i++) {
+      Product productFromJson = Product.fromJson(pSnapshot.data.docs[i].data());
+      totalPriceOfCart += productFromJson.price;
+      //todo: need to add amount of product in product detail screen
+      shoppingCartList.add(Cart(product: productFromJson, amountItems: 0));
+    }
+    return shoppingCartList;
   }
 
-  removeItemFromCustomerCart(String productName) {
+  removeItemFromCustomerCart(Product pProduct) {
+    String productName = pProduct.name;
+    double productPrice = pProduct.price;
+
+    //todo: update values live, without refreshing screen (now only updates if screen has been refreshed)
     List tempCartList = OutFittedApp.sharedPreferences
         .getStringList(OutFittedApp.customerCartList);
     tempCartList.remove(productName);
@@ -264,21 +243,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
       Provider.of<CartItemCounter>(context, listen: false).displayResult();
 
-      totalAmount = 0;
+      totalPriceOfCart -= productPrice;
     });
-  }
-
-  Widget cartItems(Product productModel, BuildContext context,
-      {Color background, removeCartFunction}) {
-    return ShoppingCartItemCard(
-      price: productModel.price.toStringAsFixed(2),
-      image: productModel.productImage,
-      productName: productModel.name,
-      totalOfItems: '3',
-      productKey: productModel.name,
-      onSwiped: (direction) {
-        removeItemFromCustomerCart(productModel.name);
-      },
-    );
   }
 }

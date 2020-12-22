@@ -77,9 +77,8 @@ class _ListItemDismissible extends State<ListDismissible>{
               ),
               onDismissed: (direction) {
                 setState(() {
-                  // todo: Remove the item from the list (retrieved from function in parameter)
-                  // todo: @Gibbs do you think that this is necessary to use? (function via parameter)
-                  funcOnDismissible();
+                  // todo: Remove the item from the list (retrieved from function in parameter) --> need to make sure that every method takes only product as parameter
+                  funcOnDismissible(list[index].product);
                   list.removeAt(index);
                 });
                 // todo: @Gibbs do you think we need this? (snackbar after dismiss)

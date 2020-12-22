@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
-import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/Cart.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
-import 'package:provider/provider.dart';
 
 List<Widget> buildShoppingCartCard({@required Cart cartItem,}) {
 
@@ -23,8 +20,8 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem,}) {
             color: Color(0xfff5f6f9),
             borderRadius: BorderRadius.circular(15),
           ),
-          child: Image.asset(image),
-          //  child: Image.network(image),
+           child: Image.network(image),
+          // child: Image.asset(image),
         ),
       ),
     ),

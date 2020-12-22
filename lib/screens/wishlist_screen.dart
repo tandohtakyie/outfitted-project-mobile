@@ -25,7 +25,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
     );
   }
 
-  // todo: @Gibbs do you think we need this?
   void onDismissed(){
     print("JAA REMOVED WISH ITEM!");
   }

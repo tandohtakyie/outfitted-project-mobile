@@ -1,5 +1,4 @@
 
-/* todo: @Gibbs de products in database moeten nog attribute 'id' krijgen (ik kan het doen, maar heb je hulp nodig)*/
 class Product{
   int id;
   String name;
@@ -20,7 +19,7 @@ class Product{
   });
 
   Product.fromJson(Map<String, dynamic> json){
-    name = json['id'];
+    id = json['id'];
     name = json['name'];
     productImage = json['productImage'];
     supplier = json['supplier'];
