@@ -5,6 +5,7 @@ import 'package:outfitted_flutter_mobile/components/list_dismissible.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/counters/total_amount.dart';
+import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/Cart.dart';
 import 'package:outfitted_flutter_mobile/model/Product.dart';
@@ -165,45 +166,46 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             ],
                           ),
                         ),
-                  SizedBox(
-                    width: 190,
-                    child: TextButton(
-                        child: Text(
-                            "Check out"), // hide check out button when not logged in
-                        style: TextButton.styleFrom(
-                          primary: Colors.white,
-                          backgroundColor: kSecondaryColor,
-                          onSurface: Colors.grey,
-                        ),
-                        onPressed: () {
-                          if (OutFittedApp.sharedPreferences
-                                  .getStringList(OutFittedApp.customerCartList)
-                                  .length ==
-                              1) {
-                            Fluttertoast.showToast(
-                              msg: 'Your cart is empty.',
-                              textColor: kWhiteColor,
-                              backgroundColor: Color(0xffeb4034),
-                            );
-                          } else {
-                            Scaffold.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "Purchase...",
-                                ),
-                              ),
-                            );
-
-                            // Navigate customer to fill in address screen.
-                          }
-                        }),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
+                        SizedBox(
+                          width: 190,
+                          child: TextButton(
+                            child: Text(
+                                "Check out"), // hide check out button when not logged in
+                            style: TextButton.styleFrom(
+                              primary: Colors.white,
+                              backgroundColor: kSecondaryColor,
+                              onSurface: Colors.grey,
+                            ),
+                            onPressed: () {
+                              if (OutFittedApp.sharedPreferences
+                                      .getStringList(
+                                          OutFittedApp.customerCartList)
+                                      .length ==
+                                  1) {
+                                Fluttertoast.showToast(
+                                  msg: 'Your cart is empty.',
+                                  textColor: kWhiteColor,
+                                  backgroundColor: Color(0xffeb4034),
+                                );
+                              } else {
+                                Scaffold.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      "Purchase...",
+                                    ),
+                                  ),
+                                );
+                                // Navigate customer to fill in address screen.
+                              }
+                            },
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
     );
   }
 
