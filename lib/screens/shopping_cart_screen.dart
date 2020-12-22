@@ -144,7 +144,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                               text: cartProvider.count == 0 ||
                                   cartProvider.count == null
                                   ? "\€0.00"
-                                  : "\€${amountProvider.totalAmount.toStringAsFixed(2)}" /*todo: @Gibbs works only after adding something to cart, close app and then open app again. Something wrong with cartprovider? */ ,,
+                                  : "\€${amountProvider.totalAmount.toStringAsFixed(2)}", /*todo: @Gibbs works only after adding something to cart, close app and then open app again. Something wrong with cartprovider? */
                               style: TextStyle(
                                 fontSize: 16,
                                 color: kSecondaryColor,
