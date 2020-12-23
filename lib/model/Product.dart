@@ -1,15 +1,12 @@
 
 class Product{
-  int id;
-  String name;
-  String productImage;
-  String supplier;
-  String productDescription;
-  int stock;
+  int id, stock;
+  String category, name, productImage, supplier, productDescription;
   double price;
 
   Product({
     this.id,
+    this.category,
     this.name,
     this.productImage,
     this.supplier,
@@ -21,18 +18,20 @@ class Product{
   Product.fromJson(Map<String, dynamic> json){
     // id = json['id']; @todo: @Gibbs we need to fix this
     name = json['name'];
+    category = json['category'];
     productImage = json['productImage'];
     supplier = json['supplier'];
     productDescription = json['productDescription'];
     stock = json['stock'];
     //price = json['price'];
     // stock = int.parse(json['stock']);
-    price = double.parse(json['price'].toString());
+    price = double.parse(json['price'].toString().replaceAll(',','.'));
   }
 
   Map<String, dynamic> toJson(){
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['category'] = this.category;
     data['name'] = this.name;
     data['productImage'] = this.productImage;
     data['supplier'] = this.supplier;
@@ -47,6 +46,7 @@ class Product{
 
   Product.fromJsonApi(Map<String, dynamic> json){
     id = json['id'];
+    category = json['category'];
     name = json['name'];
     productImage = json['productImage'];
     supplier = json['supplier'];
@@ -58,6 +58,7 @@ class Product{
   Map<String, dynamic> toJsonApi(){
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['category'] = this.category;
     data['name'] = this.name;
     data['productImage'] = this.productImage;
     data['supplier'] = this.supplier;
