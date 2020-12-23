@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class CollectionCategory {
-  int id;
+  String id;
   String categoryName;
   String categoryImage;
 

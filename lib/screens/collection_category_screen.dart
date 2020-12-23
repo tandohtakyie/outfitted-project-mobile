@@ -24,7 +24,7 @@ class CollectionCategoryScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: buildOutFittedCustomAppBar(
-          title: 'Collections of $categoryName',
+          title: 'Collections',
           customIcon: Icon(Icons.search),
       ),
       floatingActionButton: FloatingActionButton(
@@ -35,7 +35,7 @@ class CollectionCategoryScreen extends StatelessWidget {
       backgroundColor: kBackgroundOutFitted,
       body: Column(
         children: [
-          Text('hello'),
+          Text(categoryName),
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection("products")

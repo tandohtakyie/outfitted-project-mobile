@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/model/CollectionCategory.dart';
 
 class StoreCategory extends StatelessWidget {
   const StoreCategory({
     Key key,
-    this.categoryName,
+    this.collectionCategory,
     this.press,
   }) : super(key: key);
-  final String categoryName;
+  final CollectionCategory collectionCategory;
   final Function press;
 
   @override
@@ -25,9 +26,10 @@ class StoreCategory extends StatelessWidget {
                   Flex(
                     direction: Axis.vertical,
                     children: [
-                      Image.asset(
-                        'assets/images/category_bg.png',
-                      ),
+                      Expanded(
+                        child: Image.asset(collectionCategory.categoryImage),
+                      // Image.asset('assets/images/category_bg_shoes.png',),
+                      )
                     ],
                   ),
                   Container(
@@ -53,7 +55,7 @@ class StoreCategory extends StatelessWidget {
                           style: TextStyle(color: Colors.white),
                           children: [
                             TextSpan(
-                              text: categoryName,
+                              text: collectionCategory.categoryName,
                               style: TextStyle(
                                   fontSize: 28,
                                   fontFamily: "Muli",

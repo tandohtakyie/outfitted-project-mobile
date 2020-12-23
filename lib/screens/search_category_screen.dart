@@ -31,7 +31,7 @@ class _SearchCategoryScreenState extends State<SearchCategoryScreen> {
         padding: EdgeInsets.all(10),
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection(OutFittedApp.collectionProduct)
+              .collection(OutFittedApp.collectionCategory)
               .snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError)
@@ -59,11 +59,11 @@ class _SearchCategoryScreenState extends State<SearchCategoryScreen> {
   }
 }
 
-Widget categoryInfo(CollectionCategory category, BuildContext context) {
+Widget categoryInfo(CollectionCategory pCollectionCategory, BuildContext context) {
   return StoreCategory(
-    categoryName: category.categoryName,
+    collectionCategory: pCollectionCategory,
     press: (){
-      Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : category.categoryName));
+      Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : pCollectionCategory.categoryName));
       Navigator.push(context, route);
     },
   );
