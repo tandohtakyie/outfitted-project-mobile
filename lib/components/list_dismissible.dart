@@ -13,9 +13,6 @@ class ListDismissible extends StatefulWidget{
   * dynamic list = list with certain content which must be visible
   * Function funcOnDismissible = function which must be invoked after item has been dismissed
   * */
-  /* todo: @Gibbs is er een betere manier om dit te doen?
-      Voor nu declareer ik deze variablen twee keer (in ListDismissible en _ListDismissible)
-   */
   final String emptyListText;
   final dynamic list;
   final Function funcOnDismissible;
@@ -35,6 +32,7 @@ class _ListItemDismissible extends State<ListDismissible>{
 
   /* todo: @Gibbs is er een betere manier om dit te doen?
       Voor nu declareer ik deze variablen twee keer (in ListDismissible en _ListDismissible)
+      Answer --> Gebruik "widget." om de variabelen in parent class (ListDismissible in dit geval) te kunnen gebruiken
    */
   final String emptyListText;
   final dynamic list;
