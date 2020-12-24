@@ -209,10 +209,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       totalAmount += productFromJson.price;
       productFromJson.id = pSnapshot.data.docs[i].id;
 
-      //todo: need to add amount of product in product detail screen
+      //todo: need to add amount of product in product detail screen (or in shopping cart?)
       shoppingCartList.add(Cart(product: productFromJson, amountItems: 0));
 
-      //todo: good?
+      //todo: @Gibbs is this good?
       if (pSnapshot.data.docs.length - 1 == i) {
         WidgetsBinding.instance
             .addPostFrameCallback((t) {

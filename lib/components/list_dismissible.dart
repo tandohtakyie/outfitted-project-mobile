@@ -9,10 +9,10 @@ import 'list_item_card_wishlist.dart';
 
 class ListDismissible extends StatefulWidget{
 
-  /*
-  * dynamic list = list with certain content which must be visible
-  * Function funcOnDismissible = function which must be invoked after item has been dismissed
-  * */
+  /// *
+  ///   dynamic list = list with certain content which must be visible
+  ///   Function funcOnDismissible = function which must be invoked after item has been dismissed
+  /// *
   final String emptyListText;
   final dynamic list;
   final Function funcOnDismissible;
@@ -65,12 +65,12 @@ class _ListItemDismissible extends State<ListDismissible>{
               ),
               onDismissed: (direction) {
                 setState(() {
-                  // todo: Remove the item from the list (retrieved from function in parameter) --> need to make sure that every method takes only product as parameter
+                  /// --> @Developers please make sure that every method only takes product as parameter
                   widget.funcOnDismissible(widget.list[index].product);
                   widget.list.removeAt(index);
                 });
                 // todo: @Gibbs do you think we need this? (snackbar after dismiss)
-                // Show a snackbar. This snackbar could also contain "Undo" actions.
+                /// Show a snackbar --> This snackbar could also contain "Undo" actions.
                 /*Scaffold
                     .of(context)
                     .showSnackBar(SnackBar(content: Text("Dismiss?")));*/
