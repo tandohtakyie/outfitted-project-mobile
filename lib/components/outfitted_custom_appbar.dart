@@ -26,7 +26,7 @@ AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon cust
         ),
       ),
     ),
-    title: underTitle == "" ? Text(
+    title: underTitle.isEmpty ? Text(
       title,
       style: TextStyle(
         fontFamily: "Muli",
@@ -91,6 +91,22 @@ AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon cust
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // replace text with consumer to keep up the counter
+                      /*
+                        todo: @Gibbs dit zorgt voor die error bij het inloggen/registreren
+                            --> Probleem is dat
+                            OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerCartList).length
+                            null is als je app eerst verwijderd en dan helemaal opnieuw laat installeren op je telefoon
+
+                            Dit is de error die ik zag bij console:
+
+                            ════════ Exception caught by widgets library ═══════════════════════════════════════════════════════
+                            The getter 'length' was called on null.
+                            Receiver: null
+                            Tried calling: length
+                            The relevant error-causing widget was:
+                              Consumer<CartItemCounter> /lib/components/outfitted_custom_appbar.dart:94:23
+                            ════════════════════════════════════════════════════════════════════════════════════════════════════
+                      */
                       Consumer<CartItemCounter>(
                         builder: (context, counter, _){
                           return Text(

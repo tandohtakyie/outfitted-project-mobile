@@ -16,7 +16,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     Future readData(User fUser) async {
       FirebaseFirestore.instance
           .collection("customers")
@@ -28,6 +27,9 @@ class LoginScreen extends StatelessWidget {
         await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName, dataSnapshot.data()[OutFittedApp.customerName]);
 
         List<String> cartList = dataSnapshot.data()[OutFittedApp.customerCartList].cast<String>();
+        // todo: remove this print() after error (login/register) is fixed
+        print("LISTTT " + cartList.length.toString());
+
         await OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerCartList, cartList);
 
       });

@@ -14,7 +14,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildOutFittedCustomAppBar(
-          title: 'WishList',
+          title: 'Wishlist',
           customIcon: Icon(Icons.search),
       ),
       backgroundColor: kBackgroundOutFitted,
