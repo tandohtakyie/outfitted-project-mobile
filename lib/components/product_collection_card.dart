@@ -26,7 +26,7 @@ class ProductCollectionCard extends StatelessWidget {
         child: Column(
           children: [
             AspectRatio(
-              aspectRatio: 1.02,
+              aspectRatio: 1.0,
               child: Container(
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
@@ -38,7 +38,7 @@ class ProductCollectionCard extends StatelessWidget {
             ),
             Text(
               '$model',
-              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontSize: 14
               ),
@@ -53,16 +53,15 @@ class ProductCollectionCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(5),
-                  width: 28,
-                  height: 28,
+                  width: 30,
+                  height: 30,
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: kPrimaryColor,
                     shape: BoxShape.circle
                   ),
                   child: Icon(
                     Icons.favorite_border,
-                    color: Colors.blue,
+                    color: kWhiteColor,
                   ),
                 ),
               ],

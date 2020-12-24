@@ -72,12 +72,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.product.supplier +
-                                  " " +
                                   widget.product.name,
                               style: Theme.of(context).textTheme.headline6,
                             ),
-                            Text("€ 250"),
+                            Text('€' + widget.product.price.toStringAsFixed(2)),
                           ],
                         ),
                       ),
@@ -192,41 +190,44 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
     );
   }
-}
 
-void checkItemInCart(String productName, BuildContext context) {
-  OutFittedApp.sharedPreferences
-          .getStringList(OutFittedApp.customerCartList)
-          .contains(productName)
-      ? Fluttertoast.showToast(
-          msg: '$productName is already added.',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          backgroundColor: kSecondaryColor,
-          fontSize: 15,
-        )
-      : addItemToCart(productName, context);
-}
+  void checkItemInCart(String productName, BuildContext context) {
+    OutFittedApp.sharedPreferences
+        .getStringList(OutFittedApp.customerCartList)
+        .contains(productName)
+        ? Fluttertoast.showToast(
+      msg: widget.product.name + ' is already added.',
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: kSecondaryColor,
+      fontSize: 15,
+    )
+        : addItemToCart(productName, context);
+  }
 
-void addItemToCart(String productName, BuildContext context) {
-  List tempCartList = OutFittedApp.sharedPreferences
-      .getStringList(OutFittedApp.customerCartList);
-  tempCartList.add(productName);
+  void addItemToCart(String productName, BuildContext context) {
+    List tempCartList = OutFittedApp.sharedPreferences
+        .getStringList(OutFittedApp.customerCartList);
+    tempCartList.add(productName);
 
-  OutFittedApp.firestore
-      .collection(OutFittedApp.collectionCustomer)
-      .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
-      .update({OutFittedApp.customerCartList: tempCartList}).then((v) {
-    Fluttertoast.showToast(
-        msg: '$productName added to cart successfully.',
+    OutFittedApp.firestore
+        .collection(OutFittedApp.collectionCustomer)
+        .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
+        .update({OutFittedApp.customerCartList: tempCartList}).then((v) {
+      Fluttertoast.showToast(
+        msg: widget.product.name + ' added to cart successfully.',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         backgroundColor: Color(0xff5eba7d),
         fontSize: 15,
-    );
-    OutFittedApp.sharedPreferences
-        .setStringList(OutFittedApp.customerCartList, tempCartList);
+      );
+      OutFittedApp.sharedPreferences
+          .setStringList(OutFittedApp.customerCartList, tempCartList);
 
-    Provider.of<CartItemCounter>(context, listen: false).displayResult();
-  });
+      Provider.of<CartItemCounter>(context, listen: false).displayResult();
+    });
+  }
+
 }
+
+
