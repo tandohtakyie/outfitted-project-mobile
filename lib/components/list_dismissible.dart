@@ -29,12 +29,7 @@ class ListDismissible extends StatefulWidget{
 }
 
 class _ListItemDismissible extends State<ListDismissible>{
-
-  /* todo: @Gibbs is er een betere manier om dit te doen?
-      Voor nu declareer ik deze variablen twee keer (in ListDismissible en _ListDismissible)
-      Answer --> Gebruik "widget." om de variabelen in parent class (ListDismissible in dit geval) te kunnen gebruiken
-   */
-
+  
   @override
   Widget build(BuildContext context) {
     return widget.list.isEmpty ?
