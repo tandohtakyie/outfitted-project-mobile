@@ -72,9 +72,8 @@ class CollectionCategoryScreen extends StatelessWidget {
                           crossAxisCount: 2,
                         ),
                         itemBuilder: (context, index) {
-                          print(snapshot.data.docs[index].id);
                           Product product = Product.fromJson(snapshot.data.docs[index].data());
-
+                          // set name of document as id of the product
                           product.id = snapshot.data.docs[index].id;
 
                           return productInfo(product, context);

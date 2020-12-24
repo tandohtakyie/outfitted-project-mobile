@@ -25,7 +25,7 @@ class ListDismissible extends StatefulWidget{
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ListItemDismissible(emptyListText, list, funcOnDismissible);
+  State<StatefulWidget> createState() => _ListItemDismissible();
 }
 
 class _ListItemDismissible extends State<ListDismissible>{
@@ -34,18 +34,13 @@ class _ListItemDismissible extends State<ListDismissible>{
       Voor nu declareer ik deze variablen twee keer (in ListDismissible en _ListDismissible)
       Answer --> Gebruik "widget." om de variabelen in parent class (ListDismissible in dit geval) te kunnen gebruiken
    */
-  final String emptyListText;
-  final dynamic list;
-  final Function funcOnDismissible;
-
-  _ListItemDismissible(this.emptyListText, this.list, this.funcOnDismissible);
 
   @override
   Widget build(BuildContext context) {
-    return list.isEmpty ?
+    return widget.list.isEmpty ?
     Center(
       child: Text(
-          emptyListText,
+          widget.emptyListText,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: kWhiteColor,
@@ -54,7 +49,7 @@ class _ListItemDismissible extends State<ListDismissible>{
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ListView.builder(
-          itemCount: list.length,
+          itemCount: widget.list.length,
           itemBuilder: (context, index) => Padding(
             padding: EdgeInsets.symmetric(vertical: 7),
             child: Dismissible(
@@ -76,8 +71,8 @@ class _ListItemDismissible extends State<ListDismissible>{
               onDismissed: (direction) {
                 setState(() {
                   // todo: Remove the item from the list (retrieved from function in parameter) --> need to make sure that every method takes only product as parameter
-                  funcOnDismissible(list[index].product);
-                  list.removeAt(index);
+                  widget.funcOnDismissible(widget.list[index].product);
+                  widget.list.removeAt(index);
                 });
                 // todo: @Gibbs do you think we need this? (snackbar after dismiss)
                 // Show a snackbar. This snackbar could also contain "Undo" actions.
@@ -89,9 +84,9 @@ class _ListItemDismissible extends State<ListDismissible>{
                   children:
                   /* Check which list-item-card must be created:
                       items for shopping cart or items for wishlist */
-                  list is List<Cart> ?
-                  buildShoppingCartCard(cartItem: list[index])
-                      : buildWishListCard(wishListItem: list[index])
+                  widget.list is List<Cart> ?
+                  buildShoppingCartCard(cartItem: widget.list[index])
+                      : buildWishListCard(wishListItem: widget.list[index])
               ),
             ),
           )
