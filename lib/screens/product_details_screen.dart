@@ -12,9 +12,8 @@ import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
-  final String productID;
 
-  const ProductDetailScreen({Key key, this.product, this.productID,}) : super(key: key);
+  const ProductDetailScreen({Key key, this.product}) : super(key: key);
 
   @override
   _ProductDetailScreenState createState() => _ProductDetailScreenState();
@@ -31,7 +30,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       backgroundColor: kBackgroundOutFitted,
       body: SingleChildScrollView(
         child: Column(
-    children: [
+          children: [
             SizedBox(
               //   width: 238,
               child: AspectRatio(
@@ -199,37 +198,38 @@ void checkItemInCart(String productName, BuildContext context) {
   print("ID PRODUCT: " + productName);
   OutFittedApp.sharedPreferences
           .getStringList(OutFittedApp.customerCartList)
-          .contains(productID)
+          .contains(productName)
       ? Fluttertoast.showToast(
-          msg: '$productID is already added.',
+          msg: '$productName is already added.',
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           backgroundColor: kSecondaryColor,
           fontSize: 15,
         )
-      : addItemToCart(productID, context);
+      : addItemToCart(productName, context);
 }
 
-void addItemToCart(String productID, BuildContext context) {
+void addItemToCart(String productName, BuildContext context) {
   List tempCartList = OutFittedApp.sharedPreferences
       .getStringList(OutFittedApp.customerCartList);
-  tempCartList.add(productID);
+  tempCartList.add(productName);
 
   OutFittedApp.firestore
       .collection(OutFittedApp.collectionCustomer)
       .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
       .update({OutFittedApp.customerCartList: tempCartList}).then((v) {
     Fluttertoast.showToast(
-        msg: '$productID added to cart successfully.',
+        msg: '$productName added to cart successfully.',
         toastLength: Toast.LENGTH_LONG,
+
+
+
         gravity: ToastGravity.CENTER,
         backgroundColor: Color(0xff5eba7d),
         fontSize: 15,
     );
     OutFittedApp.sharedPreferences
         .setStringList(OutFittedApp.customerCartList, tempCartList);
-
-    OutFittedApp.productIDInCart = productID;
 
     Provider.of<CartItemCounter>(context, listen: false).displayResult();
   });
