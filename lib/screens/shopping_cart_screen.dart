@@ -48,6 +48,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       backgroundColor: kBackgroundOutFitted,
       body: OutFittedApp.auth.currentUser != null
           ? StreamBuilder<QuerySnapshot>(
+       // stream: OutFittedApp.firestore.collection(OutFittedApp.collectionProduct).doc(OutFittedApp.productIDInCart).snapshots() as DocumentSnapshot,
         stream: OutFittedApp.firestore
             .collection(OutFittedApp.collectionProduct)
             .where("name",
@@ -56,8 +57,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             .snapshots(),
         builder: (context, snapshot) {
           if(!snapshot.hasData){
-            // als snapshot (aka database) leeg is?
-            // todo: Remove? Text below always shows when screen is loading
             return Center(
               child: SpinKitDualRing(
                 color: kSecondaryColor,

@@ -12,8 +12,9 @@ import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
+  final String productID;
 
-  const ProductDetailScreen({Key key, this.product}) : super(key: key);
+  const ProductDetailScreen({Key key, this.product, this.productID,}) : super(key: key);
 
   @override
   _ProductDetailScreenState createState() => _ProductDetailScreenState();
@@ -30,7 +31,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       backgroundColor: kBackgroundOutFitted,
       body: SingleChildScrollView(
         child: Column(
-          children: [
+    children: [
             SizedBox(
               //   width: 238,
               child: AspectRatio(
@@ -159,7 +160,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 onPressed: () async {
                                   if (await OutFittedApp.auth.currentUser !=
                                       null) {
-                                    checkItemInCart(widget.product.name, context);
+                                    checkItemInCart(widget.productID, context);
                                   } else {
                                     showDialog(
                                         context: context,
@@ -194,41 +195,40 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 }
 
-void checkItemInCart(String productName, BuildContext context) {
+void checkItemInCart(String productID, BuildContext context) {
   OutFittedApp.sharedPreferences
           .getStringList(OutFittedApp.customerCartList)
-          .contains(productName)
+          .contains(productID)
       ? Fluttertoast.showToast(
-          msg: '$productName is already added.',
+          msg: '$productID is already added.',
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           backgroundColor: kSecondaryColor,
           fontSize: 15,
         )
-      : addItemToCart(productName, context);
+      : addItemToCart(productID, context);
 }
 
-void addItemToCart(String productName, BuildContext context) {
+void addItemToCart(String productID, BuildContext context) {
   List tempCartList = OutFittedApp.sharedPreferences
       .getStringList(OutFittedApp.customerCartList);
-  tempCartList.add(productName);
+  tempCartList.add(productID);
 
   OutFittedApp.firestore
       .collection(OutFittedApp.collectionCustomer)
       .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
       .update({OutFittedApp.customerCartList: tempCartList}).then((v) {
     Fluttertoast.showToast(
-        msg: '$productName added to cart successfully.',
+        msg: '$productID added to cart successfully.',
         toastLength: Toast.LENGTH_LONG,
-
-
-
         gravity: ToastGravity.CENTER,
         backgroundColor: Color(0xff5eba7d),
         fontSize: 15,
     );
     OutFittedApp.sharedPreferences
         .setStringList(OutFittedApp.customerCartList, tempCartList);
+
+    OutFittedApp.productIDInCart = productID;
 
     Provider.of<CartItemCounter>(context, listen: false).displayResult();
   });
