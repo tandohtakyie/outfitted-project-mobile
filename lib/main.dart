@@ -23,9 +23,9 @@ void main() async {
 
   OutFittedApp.auth = FirebaseAuth.instance;
   OutFittedApp.firestore = FirebaseFirestore.instance;
-  OutFittedApp.sharedPreferences = await SharedPreferences.getInstance();
 
   runApp(MainApp());
+  OutFittedApp.sharedPreferences = await SharedPreferences.getInstance();
 }
 
 class MainApp extends StatelessWidget {

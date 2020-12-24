@@ -44,6 +44,8 @@ dependencies:
   http: ^0.12.2
   fluttertoast: ^7.1.5
 
+  flutter_spinkit: ^4.1.2+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
