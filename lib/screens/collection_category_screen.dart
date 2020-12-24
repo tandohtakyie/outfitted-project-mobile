@@ -75,10 +75,9 @@ class CollectionCategoryScreen extends StatelessWidget {
                           print(snapshot.data.docs[index].id);
                           Product product =
                           Product.fromJson(snapshot.data.docs[index].data());
-
-                          // hier gaan eraan werken
-                          product.id = 1;
-                          return productInfo(product, context, snapshot.data.docs[index].id);
+                          // hier gaan eraan werken @todo: @Gibbs werkt het?
+                          product.id = int.parse(snapshot.data.docs[index].id);
+                          return productInfo(product, context);
                         },
                       ),
                     );
@@ -92,8 +91,7 @@ class CollectionCategoryScreen extends StatelessWidget {
   }
 }
 
-Widget productInfo(Product productModel, BuildContext context, String productID,
-    {Color background, removeCartFunction}) {
+Widget productInfo(Product productModel, BuildContext context,) {
   return ProductCollectionCard(
     image: productModel.productImage,
     brand: productModel.supplier,
