@@ -50,7 +50,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           ? StreamBuilder<QuerySnapshot>(
         stream: OutFittedApp.firestore
             .collection(OutFittedApp.collectionProduct)
-            .where("name",
+            .where(FieldPath.documentId, /*todo: hier moet document naam gedaan worden*/
                 whereIn: OutFittedApp.sharedPreferences
                     .getStringList(OutFittedApp.customerCartList))
             .snapshots(),

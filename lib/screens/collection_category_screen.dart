@@ -71,6 +71,8 @@ class CollectionCategoryScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         Product product =
                             Product.fromJson(snapshot.data.docs[index].data());
+                        // todo: id hier declareren? Moet doc name van snaphot halen
+                        product.id = 1;
                         return productInfo(product, context);
                       },
                     ),

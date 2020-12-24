@@ -159,7 +159,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 onPressed: () async {
                                   if (await OutFittedApp.auth.currentUser !=
                                       null) {
-                                    checkItemInCart(widget.product.name, context);
+                                    checkItemInCart(widget.product.id.toString(), context);
                                   } else {
                                     showDialog(
                                         context: context,
@@ -195,6 +195,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 }
 
 void checkItemInCart(String productName, BuildContext context) {
+  print("ID PRODUCT: " + productName);
   OutFittedApp.sharedPreferences
           .getStringList(OutFittedApp.customerCartList)
           .contains(productName)
