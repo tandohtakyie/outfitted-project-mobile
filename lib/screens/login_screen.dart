@@ -7,7 +7,6 @@ import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/dialog/loading_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/navigation/bottom_nav_bar.dart';
-import 'package:outfitted_flutter_mobile/screens/register_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class LoginScreen extends StatelessWidget {

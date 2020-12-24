@@ -239,7 +239,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
         .update({OutFittedApp.customerCartList: tempCartList}).then((v) {
       Fluttertoast.showToast(
-        msg: '$productName removed from cart successfully.',
+        msg: '${pProduct.name} removed from cart successfully.',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Color(0xfff7b0b7),

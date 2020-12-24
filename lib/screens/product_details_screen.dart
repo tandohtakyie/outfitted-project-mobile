@@ -215,7 +215,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
         .update({OutFittedApp.customerCartList: tempCartList}).then((v) {
       Fluttertoast.showToast(
-        msg: widget.product.name + ' added to cart successfully.',
+        msg: widget.product.name + ' added to cart successfully 🎉',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         backgroundColor: Color(0xff5eba7d),
