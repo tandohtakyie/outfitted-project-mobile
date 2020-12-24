@@ -19,7 +19,7 @@ class CollectionCategoryScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     /*24 is for notification bar on Android*/
-    final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 2.6;
     final double itemWidth = size.width / 2;
 
     return Scaffold(
@@ -36,24 +36,16 @@ class CollectionCategoryScreen extends StatelessWidget {
       body: Column(
         children: [
           Text(categoryName),
-          StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection("products")
-                .where('category', isEqualTo: categoryName)
-                .snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError)
-                return Center(
-                  child: Text('Error: ${snapshot.error}'),
-                );
-              if (!snapshot.hasData)
-                return Center(
-                  child: Text('There are no products yet! Sign up for updates'),
-                );
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("products")
+                  .where('category', isEqualTo: categoryName)
+                  .snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError)
                   return Center(
-                    child: Text('Loading'),
+                    child: Text('Error: ${snapshot.error}'),
                   );
                 default:
                   return Padding(
@@ -77,8 +69,37 @@ class CollectionCategoryScreen extends StatelessWidget {
                       },
                     ),
                   );
-              }
-            },
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Center(
+                      child: Text('Loading'),
+                    );
+                  default:
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        top: 5,
+                        right: 5,
+                      ),
+                      child: GridView.builder(
+                        physics: ScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.docs.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: MediaQuery.of(context).size.width /
+                              (MediaQuery.of(context).size.height / 1.6),
+                            crossAxisCount: 2,
+                        ),
+                        itemBuilder: (context, index) {
+                          print(snapshot.data.docs[index].id);
+                          Product product =
+                              Product.fromJson(snapshot.data.docs[index].data());
+                          return productInfo(product, context, snapshot.data.docs[index].id);
+                        },
+                      ),
+                    );
+                }
+              },
+            ),
           ),
         ],
       ),
@@ -86,7 +107,7 @@ class CollectionCategoryScreen extends StatelessWidget {
   }
 }
 
-Widget productInfo(Product productModel, BuildContext context,
+Widget productInfo(Product productModel, BuildContext context, String productID,
     {Color background, removeCartFunction}) {
   return ProductCollectionCard(
     image: productModel.productImage,
@@ -94,7 +115,7 @@ Widget productInfo(Product productModel, BuildContext context,
     model: productModel.name,
     price: productModel.price.toStringAsFixed(2),
     press: () {
-      Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen(product: productModel));
+      Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen(product: productModel, productID : productID));
       Navigator.push(context, route);
     },
   );
