@@ -19,14 +19,12 @@ class Product{
   });
 
   Product.fromJson(Map<String, dynamic> json){
-    // id = json['id']; @todo: @Gibbs we need to fix this
+    id = json['id'];
     name = json['name'];
     productImage = json['productImage'];
     supplier = json['supplier'];
     productDescription = json['productDescription'];
     stock = json['stock'];
-    //price = json['price'];
-    // stock = int.parse(json['stock']);
     price = double.parse(json['price'].toString());
   }
 

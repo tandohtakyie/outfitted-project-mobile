@@ -18,7 +18,7 @@ class StoreCategory extends StatelessWidget {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 235,
+            height: 280,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Stack(
@@ -26,10 +26,7 @@ class StoreCategory extends StatelessWidget {
                   Flex(
                     direction: Axis.vertical,
                     children: [
-                      Expanded(
-                        child: Image.asset(collectionCategory.categoryImage),
-                      // Image.asset('assets/images/category_bg_shoes.png',),
-                      )
+                      Image.asset(collectionCategory.categoryImage)
                     ],
                   ),
                   Container(
