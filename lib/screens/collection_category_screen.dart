@@ -73,10 +73,10 @@ class CollectionCategoryScreen extends StatelessWidget {
                         ),
                         itemBuilder: (context, index) {
                           print(snapshot.data.docs[index].id);
-                          Product product =
-                          Product.fromJson(snapshot.data.docs[index].data());
-                          // hier gaan eraan werken @todo: @Gibbs werkt het?
-                          product.id = int.parse(snapshot.data.docs[index].id);
+                          Product product = Product.fromJson(snapshot.data.docs[index].data());
+
+                          product.id = snapshot.data.docs[index].id;
+
                           return productInfo(product, context);
                         },
                       ),
@@ -98,6 +98,7 @@ Widget productInfo(Product productModel, BuildContext context,) {
     model: productModel.name,
     price: productModel.price.toStringAsFixed(2),
     press: () {
+
       Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen(product: productModel));
       Navigator.push(context, route);
     },

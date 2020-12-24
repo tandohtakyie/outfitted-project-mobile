@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
+import 'package:outfitted_flutter_mobile/screens/shopping_cart_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:provider/provider.dart';
 
-AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon customIcon}) {
+AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon customIcon, BuildContext context}) {
   return AppBar(
     elevation: 0.1,
     backgroundColor: kBackgroundOutFitted,
@@ -57,7 +58,12 @@ AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon cust
                 onTap: (){
                   /*todo: go to shopping cart screen.
                      @Gibbs is het niet beter als user alleen via knopje bovenin shopping cart kan bereiken?*/
-                  print("PRESSS");
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ShoppingCartScreen())
+                    );
+                  // Route route = MaterialPageRoute(builder: (c) => ShoppingCartScreen());
+                  // Navigator.push(buildContext, route);
+                  //ShoppingCartScreen
               },
                 child: Container(
                   height: 45,

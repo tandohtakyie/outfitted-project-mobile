@@ -34,6 +34,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildOutFittedCustomAppBar(
+        context: context,
         title: 'Shopping cart',
         underTitle: OutFittedApp.auth.currentUser != null
             ? (OutFittedApp.sharedPreferences
@@ -206,6 +207,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     for (var i = 0; i < pSnapshot.data.docs.length; i++) {
       Product productFromJson = Product.fromJson(pSnapshot.data.docs[i].data());
       totalAmount += productFromJson.price;
+      productFromJson.id = pSnapshot.data.docs[i].id;
 
       //todo: need to add amount of product in product detail screen
       shoppingCartList.add(Cart(product: productFromJson, amountItems: 0));
@@ -224,7 +226,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   }
 
   removeItemFromCustomerCart(Product pProduct) {
-    String productName = pProduct.name;
+    String productName = pProduct.id;
     double productPrice = pProduct.price;
 
     //todo: update values live, without refreshing screen (now only updates if screen has been refreshed)

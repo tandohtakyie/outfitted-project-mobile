@@ -56,7 +56,7 @@ class _ListItemDismissible extends State<ListDismissible>{
       child: ListView.builder(
           itemCount: list.length,
           itemBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 7),
+            padding: EdgeInsets.symmetric(vertical: 7),
             child: Dismissible(
               key: UniqueKey(),
               direction: DismissDirection.endToStart,

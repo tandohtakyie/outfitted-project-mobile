@@ -31,12 +31,16 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem,}) {
     Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          productName,
-          style: TextStyle(
-            fontSize: 16,
+        SizedBox(
+          width: 200,
+          child: Text(
+            '$productName',
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 16,
+            ),
+            maxLines: 2,
           ),
-          maxLines: 2,
         ),
         SizedBox(
           height: 10,

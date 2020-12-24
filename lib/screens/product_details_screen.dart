@@ -159,7 +159,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 onPressed: () async {
                                   if (await OutFittedApp.auth.currentUser !=
                                       null) {
-                                    checkItemInCart(widget.product.id.toString(), context);
+                                    checkItemInCart(widget.product.id, context);
                                   } else {
                                     showDialog(
                                         context: context,
