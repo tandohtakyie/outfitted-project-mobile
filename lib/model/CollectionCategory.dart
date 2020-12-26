@@ -13,7 +13,7 @@ class CollectionCategory {
 
    CollectionCategory.fromJson(Map<String, dynamic> json) {
      id = json['id'];
-     categoryName = json['categoryName'];
+     categoryName = json['name'];
      categoryImage = json['categoryImage'];
   }
 
