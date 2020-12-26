@@ -51,14 +51,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           ? StreamBuilder<QuerySnapshot>(
         stream: OutFittedApp.firestore
             .collection(OutFittedApp.collectionProduct)
-            .where(FieldPath.documentId, /*todo: hier moet document naam gedaan worden*/
+            .where(FieldPath.documentId,
                 whereIn: OutFittedApp.sharedPreferences
                     .getStringList(OutFittedApp.customerCartList))
             .snapshots(),
         builder: (context, snapshot) {
           if(!snapshot.hasData){
             // als snapshot (aka database) leeg is?
-            // todo: Remove? Text below always shows when screen is loading
             return Center(
               child: SpinKitDualRing(
                 color: kSecondaryColor,
@@ -198,7 +197,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           ),
         ),
       )
-          : Container(),
+          : null,
     );
   }
 
@@ -238,15 +237,15 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         .collection(OutFittedApp.collectionCustomer)
         .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
         .update({OutFittedApp.customerCartList: tempCartList}).then((v) {
-      Fluttertoast.showToast(
-        msg: '${pProduct.name} removed from cart successfully.',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Color(0xfff7b0b7),
-        fontSize: 15,
-      );
-      OutFittedApp.sharedPreferences
-          .setStringList(OutFittedApp.customerCartList, tempCartList);
+          Fluttertoast.showToast(
+            msg: '${pProduct.name} removed from cart successfully.',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Color(0xfff7b0b7),
+            fontSize: 15,
+          );
+          OutFittedApp.sharedPreferences
+              .setStringList(OutFittedApp.customerCartList, tempCartList);
 
       Provider.of<CartItemCounter>(context, listen: false).displayResult();
 
