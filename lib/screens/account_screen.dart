@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/rounded_button.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/screens/login_screen.dart';
@@ -16,9 +17,10 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildOutFittedCustomAppBar(
+      appBar: OutFittedCustomAppBarV2(
         title: 'Account',
         customIcon: Icon(Icons.search),
+        appBar: AppBar(),
       ),
       backgroundColor: kBackgroundOutFitted,
       body: OutFittedApp.auth.currentUser != null

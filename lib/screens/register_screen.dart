@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/rounded_button.dart';
 import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
@@ -92,9 +93,10 @@ class RegisterScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: buildOutFittedCustomAppBar(
+      appBar: OutFittedCustomAppBarV2(
         title: 'Register',
-        customIcon: Icon(Icons.search),
+        customIcon: Icon(Icons.arrow_back),
+        appBar: AppBar(),
       ),
       backgroundColor: kBackgroundOutFitted,
       body: Center(

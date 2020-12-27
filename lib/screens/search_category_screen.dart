@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/store_category.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/CollectionCategory.dart';
@@ -17,9 +18,10 @@ class _SearchCategoryScreenState extends State<SearchCategoryScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: buildOutFittedCustomAppBar(
-          title: 'Search Category',
-        customIcon: Icon(Icons.search),
+      appBar: OutFittedCustomAppBarV2(
+        title: 'Search Category',
+        customIcon: Icon(Icons.arrow_back),
+        appBar: AppBar(),
       ),
       resizeToAvoidBottomPadding: false,
       backgroundColor: kBackgroundOutFitted,

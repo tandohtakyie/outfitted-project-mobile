@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
@@ -14,9 +15,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     run();
     return Scaffold(
-      appBar: buildOutFittedCustomAppBar(
+      appBar: OutFittedCustomAppBarV2(
         title: 'OutFitted',
-        customIcon: Icon(Icons.search),
+          customIcon: Icon(Icons.search),
+        appBar: AppBar(),
       ),
       backgroundColor: kBackgroundOutFitted,
       body: Center(

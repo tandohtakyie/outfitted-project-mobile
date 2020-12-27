@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/list_dismissible.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/model/Wishlist.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
@@ -13,9 +14,10 @@ class _WishlistScreenState extends State<WishlistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildOutFittedCustomAppBar(
-          title: 'Wishlist',
-          customIcon: Icon(Icons.search),
+      appBar: OutFittedCustomAppBarV2(
+        title: 'Wishlist',
+        customIcon: Icon(Icons.arrow_back),
+        appBar: AppBar(),
       ),
       backgroundColor: kBackgroundOutFitted,
       body: ListDismissible(

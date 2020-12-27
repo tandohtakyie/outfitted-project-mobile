@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfitted_flutter_mobile/components/list_dismissible.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/counters/total_amount.dart';
 import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
@@ -33,8 +34,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildOutFittedCustomAppBar(
-        context: context,
+      appBar: OutFittedCustomAppBarV2(
+        appBar: AppBar(),
         title: 'Shopping cart',
         underTitle: OutFittedApp.auth.currentUser != null
             ? (OutFittedApp.sharedPreferences
