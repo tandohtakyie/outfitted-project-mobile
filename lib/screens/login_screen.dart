@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/rounded_button.dart';
@@ -41,8 +42,11 @@ class LoginScreen extends StatelessWidget {
       showDialog(
           context: context,
           builder: (c) {
-        return LoadingAlertDialog(
-          message: 'Logging in...',
+        return Center(
+            child: SpinKitDualRing(
+              color: kSecondaryColor,
+              size: 50,
+            )
         );
       });
 

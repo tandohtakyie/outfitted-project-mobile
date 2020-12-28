@@ -11,9 +11,9 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem,}) {
 
   return [
     SizedBox(
-      width: 88,
+      width: 92,
       child: AspectRatio(
-        aspectRatio: 0.88,
+        aspectRatio: 0.92,
         child: Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -30,6 +30,7 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem,}) {
     ),
     Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         SizedBox(
           width: 200,
@@ -59,6 +60,50 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem,}) {
               ),
             ],
           ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: [
+            Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(4)
+              ),
+              child: Icon(
+                Icons.remove,
+                color: kWhiteColor,
+                size: 20,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
+              child: Text(
+                '$totalOfItems',
+              ),
+            ),
+            Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                  color: kSecondaryColor,
+                  borderRadius: BorderRadius.circular(4)
+              ),
+              child: Icon(
+                Icons.add,
+                color: kWhiteColor,
+                size: 20,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10,
         ),
       ],
     ),

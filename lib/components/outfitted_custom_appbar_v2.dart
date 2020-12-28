@@ -7,13 +7,14 @@ import 'package:provider/provider.dart';
 
 class OutFittedCustomAppBarV2 extends StatelessWidget implements PreferredSizeWidget {
   const OutFittedCustomAppBarV2({
-    Key key, this.title, this.underTitle = "", this.customIcon, this.appBar,
+    Key key, this.title, this.underTitle = "", this.customIcon, this.appBar, this.onLeftIconPress,
   }) : super(key: key);
 
   final String title;
   final String underTitle;
   final Icon customIcon;
   final AppBar appBar;
+  final Function onLeftIconPress;
 
   @override
   Size get preferredSize => Size.fromHeight(appBar.preferredSize.height);
@@ -36,7 +37,10 @@ class OutFittedCustomAppBarV2 extends StatelessWidget implements PreferredSizeWi
               color: Colors.black26,
               shape: BoxShape.circle,
             ),
-            child: customIcon,
+            child: GestureDetector(
+              onTap: onLeftIconPress,
+                child: customIcon,
+            ),
           ),
         ),
       ),
@@ -70,12 +74,8 @@ class OutFittedCustomAppBarV2 extends StatelessWidget implements PreferredSizeWi
               children: [
                 GestureDetector(
                   onTap: (){
-                    /*todo: go to shopping cart screen.
-                     @Gibbs is het niet beter als user alleen via knopje bovenin shopping cart kan bereiken?*/
-
                     Route route = MaterialPageRoute(builder: (c) => ShoppingCartScreen());
                     Navigator.push(context, route);
-
                   },
                   child: Container(
                     height: 45,

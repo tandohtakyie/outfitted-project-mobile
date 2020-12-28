@@ -20,7 +20,7 @@ class _SearchCategoryScreenState extends State<SearchCategoryScreen> {
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
         title: 'Search Category',
-        customIcon: Icon(Icons.arrow_back),
+        customIcon: Icon(Icons.search),
         appBar: AppBar(),
       ),
       resizeToAvoidBottomPadding: false,

@@ -17,17 +17,15 @@ class CollectionCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    /*24 is for notification bar on Android*/
-    final double itemHeight = (size.height - kToolbarHeight - 24) / 2.6;
-    final double itemWidth = size.width / 2;
 
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
         title: 'Collection',
-        customIcon: Icon(Icons.search),
+        customIcon: Icon(Icons.arrow_back),
         appBar: AppBar(),
+        onLeftIconPress: (){
+          Navigator.pop(context);
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){},

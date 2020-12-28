@@ -20,6 +20,7 @@ class ShoppingCartScreen extends StatefulWidget {
 }
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   double totalAmount;
   // Initialize empty list as if shopping cart is empty
   List<Cart> shoppingCartList = List<Cart>();
@@ -34,8 +35,12 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: OutFittedCustomAppBarV2(
         appBar: AppBar(),
+        onLeftIconPress: (){
+          Navigator.pop(context);
+        },
         title: 'Shopping cart',
         underTitle: OutFittedApp.auth.currentUser != null
             ? (OutFittedApp.sharedPreferences
@@ -45,7 +50,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             .toString() +
             " items"
             : '',
-        customIcon: Icon(Icons.search),
+        customIcon: Icon(Icons.arrow_back),
       ),
       backgroundColor: kBackgroundOutFitted,
       body: OutFittedApp.auth.currentUser != null
@@ -180,13 +185,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             backgroundColor: Color(0xffeb4034),
                           );
                         } else {
-                          Scaffold.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                "Purchase...",
-                              ),
-                            ),
-                          );
+                          final snackBar = SnackBar(content: Text(
+                            "Purchase...",
+                          ));
+                          _scaffoldKey.currentState.showSnackBar(snackBar);
                           // Navigate customer to fill in address screen.
                         }
                       },

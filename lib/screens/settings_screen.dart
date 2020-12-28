@@ -14,6 +14,9 @@ class SettingsScreen extends StatelessWidget {
         title: 'Settings',
         customIcon: Icon(Icons.arrow_back),
         appBar: AppBar(),
+        onLeftIconPress: (){
+          Navigator.pop(context);
+        },
       ),
       backgroundColor: kBackgroundOutFitted,
       body: Center(
@@ -22,7 +25,6 @@ class SettingsScreen extends StatelessWidget {
           buttonColor: kPrimaryColor,
           press: () async {
             OutFittedApp.auth.signOut().then((c) {
-                Route route = MaterialPageRoute(builder: (c) => BottomNavBar());
                 Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/settings'));
             });
           },

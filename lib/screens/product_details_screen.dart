@@ -28,6 +28,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         title: 'OutFitted',
         customIcon: Icon(Icons.arrow_back),
         appBar: AppBar(),
+        onLeftIconPress: (){
+          Navigator.pop(context);
+        },
       ),
       backgroundColor: kBackgroundOutFitted,
       body: SingleChildScrollView(

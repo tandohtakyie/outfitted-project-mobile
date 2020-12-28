@@ -16,7 +16,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
         title: 'Wishlist',
-        customIcon: Icon(Icons.arrow_back),
+        customIcon: Icon(Icons.search),
         appBar: AppBar(),
       ),
       backgroundColor: kBackgroundOutFitted,

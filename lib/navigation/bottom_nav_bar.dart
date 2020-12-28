@@ -17,7 +17,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
     HomeScreen(),
     SearchCategoryScreen(),
     WishlistScreen(),
-    ShoppingCartScreen(),
     AccountScreen(),
   ];
 
@@ -66,13 +65,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 color: Colors.white.withOpacity(0.8),
               ),
               label: 'Wishlist',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.shopping_bag_outlined,
-                color: Colors.white.withOpacity(0.8),
-              ),
-              label: 'Shopping Bag',
             ),
             BottomNavigationBarItem(
               icon: Icon(
