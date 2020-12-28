@@ -29,6 +29,7 @@ class RegisterScreen extends StatelessWidget {
     }
 
     Future saveCustomerInfo(User fUser) async {
+      DateTime now = new DateTime.now();
       FirebaseFirestore.instance
           .collection(OutFittedApp.collectionCustomer)
           .doc(fUser.uid)
@@ -36,6 +37,7 @@ class RegisterScreen extends StatelessWidget {
         "uid": fUser.uid,
         "email": fUser.email,
         "name": name.text.trim(),
+        "dateCreated" : now.day.toString() + "-" + now.month.toString()+ "-" + now.year.toString(),
         OutFittedApp.customerCartList: ["garbageValue"],
         OutFittedApp.customerWishList: ["garbageValue"],
       });
