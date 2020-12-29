@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/rounded_button.dart';
 import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
@@ -30,6 +31,7 @@ class RegisterScreen extends StatelessWidget {
     }
 
     Future saveCustomerInfo(User fUser) async {
+      DateTime now = new DateTime.now();
       FirebaseFirestore.instance
           .collection(OutFittedApp.collectionCustomer)
           .doc(fUser.uid)
@@ -37,6 +39,7 @@ class RegisterScreen extends StatelessWidget {
         "uid": fUser.uid,
         "email": fUser.email,
         "name": name.text.trim(),
+        "dateCreated" : now.day.toString() + "-" + now.month.toString()+ "-" + now.year.toString(),
         OutFittedApp.customerCartList: ["garbageValue"],
         OutFittedApp.customerWishList: ["garbageValue"],
       });
@@ -94,9 +97,10 @@ class RegisterScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: buildOutFittedCustomAppBar(
+      appBar: OutFittedCustomAppBarV2(
         title: 'Register',
-        customIcon: Icon(Icons.search),
+        customIcon: Icon(Icons.arrow_back),
+        appBar: AppBar(),
       ),
       backgroundColor: kBackgroundOutFitted,
       body: Center(

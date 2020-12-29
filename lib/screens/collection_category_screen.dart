@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/product_collection_card.dart';
 import 'package:outfitted_flutter_mobile/model/Product.dart';
 import 'package:outfitted_flutter_mobile/screens/product_details_screen.dart';
@@ -16,16 +17,15 @@ class CollectionCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    /*24 is for notification bar on Android*/
-    final double itemHeight = (size.height - kToolbarHeight - 24) / 2.6;
-    final double itemWidth = size.width / 2;
 
     return Scaffold(
-      appBar: buildOutFittedCustomAppBar(
-        title: 'Collections',
-        customIcon: Icon(Icons.search),
+      appBar: OutFittedCustomAppBarV2(
+        title: 'Collection',
+        customIcon: Icon(Icons.arrow_back),
+        appBar: AppBar(),
+        onLeftIconPress: (){
+          Navigator.pop(context);
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){},

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/store_category.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/CollectionCategory.dart';
@@ -15,15 +16,12 @@ class SearchCategoryScreen extends StatefulWidget {
 class _SearchCategoryScreenState extends State<SearchCategoryScreen> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    /*24 is for notification bar on Android*/
-    final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
-    final double itemWidth = size.width / 2;
 
     return Scaffold(
-      appBar: buildOutFittedCustomAppBar(
-          title: 'Search Category',
+      appBar: OutFittedCustomAppBarV2(
+        title: 'Search Category',
         customIcon: Icon(Icons.search),
+        appBar: AppBar(),
       ),
       resizeToAvoidBottomPadding: false,
       backgroundColor: kBackgroundOutFitted,

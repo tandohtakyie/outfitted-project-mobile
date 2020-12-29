@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfitted_flutter_mobile/components/list_dismissible.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
+import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/counters/total_amount.dart';
 import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
@@ -19,6 +20,7 @@ class ShoppingCartScreen extends StatefulWidget {
 }
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   double totalAmount;
   // Initialize empty list as if shopping cart is empty
   List<Cart> shoppingCartList = List<Cart>();
@@ -33,8 +35,12 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildOutFittedCustomAppBar(
-        context: context,
+      key: _scaffoldKey,
+      appBar: OutFittedCustomAppBarV2(
+        appBar: AppBar(),
+        onLeftIconPress: (){
+          Navigator.pop(context);
+        },
         title: 'Shopping cart',
         underTitle: OutFittedApp.auth.currentUser != null
             ? (OutFittedApp.sharedPreferences
@@ -44,21 +50,20 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             .toString() +
             " items"
             : '',
-        customIcon: Icon(Icons.search),
+        customIcon: Icon(Icons.arrow_back),
       ),
       backgroundColor: kBackgroundOutFitted,
       body: OutFittedApp.auth.currentUser != null
           ? StreamBuilder<QuerySnapshot>(
         stream: OutFittedApp.firestore
             .collection(OutFittedApp.collectionProduct)
-            .where(FieldPath.documentId, /*todo: hier moet document naam gedaan worden*/
+            .where(FieldPath.documentId,
                 whereIn: OutFittedApp.sharedPreferences
                     .getStringList(OutFittedApp.customerCartList))
             .snapshots(),
         builder: (context, snapshot) {
           if(!snapshot.hasData){
             // als snapshot (aka database) leeg is?
-            // todo: Remove? Text below always shows when screen is loading
             return Center(
               child: SpinKitDualRing(
                 color: kSecondaryColor,
@@ -180,13 +185,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             backgroundColor: Color(0xffeb4034),
                           );
                         } else {
-                          Scaffold.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                "Purchase...",
-                              ),
-                            ),
-                          );
+                          final snackBar = SnackBar(content: Text(
+                            "Purchase...",
+                          ));
+                          _scaffoldKey.currentState.showSnackBar(snackBar);
                           // Navigate customer to fill in address screen.
                         }
                       },
@@ -198,7 +200,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           ),
         ),
       )
-          : Container(),
+          : null,
     );
   }
 
@@ -238,15 +240,15 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         .collection(OutFittedApp.collectionCustomer)
         .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
         .update({OutFittedApp.customerCartList: tempCartList}).then((v) {
-      Fluttertoast.showToast(
-        msg: '$productName removed from cart successfully.',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Color(0xfff7b0b7),
-        fontSize: 15,
-      );
-      OutFittedApp.sharedPreferences
-          .setStringList(OutFittedApp.customerCartList, tempCartList);
+          Fluttertoast.showToast(
+            msg: '${pProduct.name} removed from cart successfully.',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Color(0xfff7b0b7),
+            fontSize: 15,
+          );
+          OutFittedApp.sharedPreferences
+              .setStringList(OutFittedApp.customerCartList, tempCartList);
 
       Provider.of<CartItemCounter>(context, listen: false).displayResult();
 

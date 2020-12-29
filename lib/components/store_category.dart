@@ -26,7 +26,9 @@ class StoreCategory extends StatelessWidget {
                   Flex(
                     direction: Axis.vertical,
                     children: [
-                      Image.asset(collectionCategory.categoryImage)
+                      Image.network(
+                          collectionCategory.categoryImage,
+                      ),
                     ],
                   ),
                   Container(
@@ -35,8 +37,9 @@ class StoreCategory extends StatelessWidget {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                          Color(0xff343434).withOpacity(0.20),
-                          Color(0xff343434).withOpacity(0.20),
+                          Color(0xff343434).withOpacity(0.6),
+                          Color(0xff343434).withOpacity(0.4),
+                              Color(0xff343434).withOpacity(0.7),
                         ],
                         ),
                     ),
