@@ -244,7 +244,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
           .update({OutFittedApp.customerCartList: sharedPrefWishList}).then((v) {
             Fluttertoast.showToast(
-              msg: widget.product.name + ' removed from wish successfully.',
+              msg: widget.product.name + ' removed from wishlist successfully.',
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               backgroundColor: Color(0xfff7b0b7),

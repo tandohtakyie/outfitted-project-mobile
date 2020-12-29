@@ -144,7 +144,8 @@ class LoginScreen extends StatelessWidget {
                       color: kWhiteColor.withOpacity(0.8),
                     ),
                     suffixIcon: Icon(
-                      Icons.visibility,
+                      // todo: onPress --> change textfieldtype (of password) to text (class must be Stateful)
+                    Icons.visibility,
                       color: kWhiteColor.withOpacity(0.8),
                     ),
                     hintText: 'Your Password',
