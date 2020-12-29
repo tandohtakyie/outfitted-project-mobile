@@ -17,6 +17,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final node = FocusScope.of(context);
+
     Future readData(User fUser) async {
       FirebaseFirestore.instance
           .collection("customers")
@@ -27,17 +29,32 @@ class LoginScreen extends StatelessWidget {
         await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerEmail, dataSnapshot.data()[OutFittedApp.customerEmail]);
         await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName, dataSnapshot.data()[OutFittedApp.customerName]);
 
-        List<String> cartList = dataSnapshot.data()[OutFittedApp.customerCartList].cast<String>();
+        List<String> cartList = dataSnapshot.data()[OutFittedApp.customerCartList].cast<String>(),
+                     wishList = dataSnapshot.data()[OutFittedApp.customerWishList].cast<String>();
         // todo: remove this print() after error (login/register) is fixed
         print("LISTTT " + cartList.length.toString());
+        print("LISTTT2 " + wishList.length.toString());
 
         await OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerCartList, cartList);
-
+        await OutFittedApp.sharedPreferences.setStringList(OutFittedApp.customerWishList, wishList);
       });
     }
 
     FirebaseAuth _auth = FirebaseAuth.instance;
     void signInCustomer() async {
+      // first check if both textfields are filled. Stop method and show alert if that isn't the case.
+      if(email.text.isEmpty || password.text.isEmpty){
+        showDialog(
+            context: context,
+            builder: (c) {
+              return ErrorAlertDialog(
+                message: "Please, fill all the fields...",
+              );
+            }
+        );
+        return;
+      }
+      // else (if both textfields are filled) continue below
       showDialog(
           context: context,
           builder: (c) {
@@ -94,6 +111,8 @@ class LoginScreen extends StatelessWidget {
               TextFieldContainer(
                 child: TextFormField(
                   controller: email,
+                  textInputAction: TextInputAction.next,     // Set 'next' button in keyboard
+                  onEditingComplete: () => node.nextFocus(), // Focus next textfield when pressing 'next'
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     icon: Icon(
@@ -111,6 +130,8 @@ class LoginScreen extends StatelessWidget {
               TextFieldContainer(
                 child: TextFormField(
                   controller: password,
+                  textInputAction: TextInputAction.done,     // Set 'done' button in keyboard
+                  onEditingComplete: () => signInCustomer(), // Invoke method when pressing 'done' button
                   obscureText: true,
                   decoration: InputDecoration(
                     icon: Icon(
@@ -136,18 +157,7 @@ class LoginScreen extends StatelessWidget {
                 buttonColor: kPrimaryColor,
                 buttonText: 'LOGIN',
                 press: () {
-                  if(email.text.isNotEmpty && password.text.isNotEmpty){
-                    signInCustomer();
-                  }else{
-                    showDialog(
-                        context: context,
-                        builder: (c) {
-                          return ErrorAlertDialog(
-                            message: "Please, fill all the fields...",
-                          );
-                        }
-                    );
-                  }
+                  signInCustomer();
                 },
               ),
               SizedBox(

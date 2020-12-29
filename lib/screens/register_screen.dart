@@ -17,6 +17,8 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final node = FocusScope.of(context);
+
     displayDialog(String msg) {
       showDialog(
           context: context,
@@ -105,6 +107,8 @@ class RegisterScreen extends StatelessWidget {
               TextFieldContainer(
                 child: TextFormField(
                   controller: name,
+                  textInputAction: TextInputAction.next,     // Set 'next' button in keyboard
+                  onEditingComplete: () => node.nextFocus(), // Focus next textfield when pressing 'next'
                   decoration: InputDecoration(
                     icon: Icon(
                       Icons.person,
@@ -122,6 +126,8 @@ class RegisterScreen extends StatelessWidget {
                 child: TextFormField(
                   controller: email,
                   keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,     // Set 'next' button in keyboard
+                  onEditingComplete: () => node.nextFocus(), // Focus next textfield when pressing 'next'
                   decoration: InputDecoration(
                     icon: Icon(
                       Icons.alternate_email,
@@ -138,6 +144,8 @@ class RegisterScreen extends StatelessWidget {
               TextFieldContainer(
                 child: TextFormField(
                   controller: password,
+                  textInputAction: TextInputAction.next,     // Set 'next' button in keyboard
+                  onEditingComplete: () => node.nextFocus(), // Focus next textfield when pressing 'next'
                   obscureText: true,
                   decoration: InputDecoration(
                     icon: Icon(
@@ -159,6 +167,8 @@ class RegisterScreen extends StatelessWidget {
               TextFieldContainer(
                 child: TextFormField(
                   controller: confirmPassword,
+                  textInputAction: TextInputAction.done,       // Set 'done' button in keyboard
+                  onEditingComplete: () => registerCustomer(), // Invoke method when pressing 'done' button
                   obscureText: true,
                   decoration: InputDecoration(
                     icon: Icon(
