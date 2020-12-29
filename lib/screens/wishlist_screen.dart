@@ -79,19 +79,21 @@ class _WishlistScreenState extends State<WishlistScreen> {
     //todo: update values live, without refreshing screen (now only updates if screen has been refreshed)
     List tempWishList = OutFittedApp.sharedPreferences
         .getStringList(OutFittedApp.customerWishList);
+
     tempWishList.remove(pProduct.id);
 
     OutFittedApp.firestore
         .collection(OutFittedApp.collectionCustomer)
         .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
-        .update({OutFittedApp.customerCartList: tempWishList}).then((v) {
+        .update({OutFittedApp.customerWishList: tempWishList}).then((v) {
           Fluttertoast.showToast(
-            msg: '${pProduct.name} removed from wishlist successfully.',
+            msg: pProduct.name + ' removed from wishlist successfully.',
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             backgroundColor: Color(0xfff7b0b7),
             fontSize: 15,
           );
+
           OutFittedApp.sharedPreferences
               .setStringList(OutFittedApp.customerWishList, tempWishList);
         });
