@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/components/address_card.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/textfield_container.dart';
+import 'package:outfitted_flutter_mobile/counters/address_changer.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:outfitted_flutter_mobile/model/Address.dart';
+import 'package:provider/provider.dart';
 
 class AddressScreen extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
@@ -36,9 +40,66 @@ class AddressScreen extends StatelessWidget {
         customIcon: Icon(Icons.arrow_back),
       ),
       backgroundColor: kBackgroundOutFitted,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                  'Select/Add address',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: kWhiteColor,
+                ),
+              ),
+            ),
+          ),
+          Consumer<AddressChanger>(
+            builder: (context, address, c) {
+              return Flexible(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: OutFittedApp.firestore
+                      .collection(OutFittedApp.collectionCustomer)
+                      .doc(OutFittedApp.sharedPreferences
+                          .getString(OutFittedApp.customerUID))
+                      .collection(OutFittedApp.subCollectionAddress)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    return !snapshot.hasData
+                        ? Center(
+                            child: Text('Loading'),
+                          )
+                        : snapshot.data.docs.length == 0
+                            ? Center(
+                                child: Text(
+                                    'No address added yet. Add new address to proceed.'),
+                              )
+                            : ListView.builder(
+                                itemCount: snapshot.data.docs.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return AddressCard(
+                                    currentIndex: address.count,
+                                    value: index,
+                                    addressID: snapshot.data.docs[index].id,
+                                    // totalAmount: widget,
+                                    addressModel: Address.fromJson(
+                                        snapshot.data.docs[index].data()),
+                                  );
+                                });
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          addAddressModalBottomSheet(context);
+          showAddressModalBottomSheet(context);
         },
         label: Text(
           "Add new address",
@@ -52,7 +113,7 @@ class AddressScreen extends StatelessWidget {
     );
   }
 
-  void addAddressModalBottomSheet(context) {
+  void showAddressModalBottomSheet(context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -237,35 +298,37 @@ class AddressScreen extends StatelessWidget {
                     height: 55,
                     color: kSecondaryColor,
                     onPressed: () {
-                      if(formKey.currentState.validate()){
+                      if (formKey.currentState.validate()) {
                         final addressModel = Address(
-                            name: cName.text.trim(),
-                            streetAndNumber: cStreetAndNumber.text.trim(),
-                            postCode: cPostCode.text.trim(),
-                            cityOrTown: cCityOrTown.text.trim(),
-                            phone: cPhone.text.trim(),
-                            country: cCountry.text.trim(),
+                          name: cName.text.trim(),
+                          streetAndNumber: cStreetAndNumber.text.trim(),
+                          postCode: cPostCode.text.trim(),
+                          cityOrTown: cCityOrTown.text.trim(),
+                          phone: cPhone.text.trim(),
+                          country: cCountry.text.trim(),
                         ).toJson();
 
                         // add address to firestore
-                        OutFittedApp.firestore.collection(OutFittedApp.collectionCustomer)
-                        .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
-                        .collection(OutFittedApp.subCollectionAddress)
-                        .doc(DateTime.now().microsecondsSinceEpoch.toString())
-                        .set(addressModel)
-                        .then((value){
-                         // final snackBar = SnackBar(content: Text("Address added successfully."));
+                        OutFittedApp.firestore
+                            .collection(OutFittedApp.collectionCustomer)
+                            .doc(OutFittedApp.sharedPreferences
+                                .getString(OutFittedApp.customerUID))
+                            .collection(OutFittedApp.subCollectionAddress)
+                            .doc(DateTime.now()
+                                .microsecondsSinceEpoch
+                                .toString())
+                            .set(addressModel)
+                            .then((value) {
                           FocusScope.of(context).requestFocus(FocusNode());
                           formKey.currentState.reset();
+                          Navigator.of(context).pop();
                         });
-
                       }
                     },
                     child: Text(
                       "Add Shipping Address",
                       style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
