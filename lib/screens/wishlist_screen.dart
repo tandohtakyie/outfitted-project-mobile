@@ -85,7 +85,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
     OutFittedApp.firestore
         .collection(OutFittedApp.collectionCustomer)
         .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
-        .update({OutFittedApp.customerCartList: tempWishList}).then((v) {
+        .update({OutFittedApp.customerWishList: tempWishList}).then((v) {
           Fluttertoast.showToast(
             msg: pProduct.name + ' removed from wishlist successfully.',
             toastLength: Toast.LENGTH_LONG,
