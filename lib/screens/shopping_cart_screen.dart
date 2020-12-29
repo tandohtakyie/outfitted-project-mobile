@@ -11,6 +11,7 @@ import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/Cart.dart';
 import 'package:outfitted_flutter_mobile/model/Product.dart';
+import 'package:outfitted_flutter_mobile/screens/address_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:provider/provider.dart';
 
@@ -185,11 +186,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             backgroundColor: Color(0xffeb4034),
                           );
                         } else {
-                          final snackBar = SnackBar(content: Text(
-                            "Purchase...",
-                          ));
-                          _scaffoldKey.currentState.showSnackBar(snackBar);
+                          // final snackBar = SnackBar(content: Text(
+                          //   "Purchase...",
+                          // ));
+                          // _scaffoldKey.currentState.showSnackBar(snackBar);
                           // Navigate customer to fill in address screen.
+                          Route route = MaterialPageRoute(builder: (c) => AddressScreen());
+                          Navigator.push(context, route);
                         }
                       },
                     ),

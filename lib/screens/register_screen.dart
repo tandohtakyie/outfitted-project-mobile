@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/rounded_button.dart';
+import 'package:outfitted_flutter_mobile/components/textfield_container.dart';
 import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/navigation/bottom_nav_bar.dart';
-import 'package:outfitted_flutter_mobile/screens/login_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -101,6 +100,9 @@ class RegisterScreen extends StatelessWidget {
         title: 'Register',
         customIcon: Icon(Icons.arrow_back),
         appBar: AppBar(),
+        onLeftIconPress: (){
+          Navigator.pop(context);
+        },
       ),
       backgroundColor: kBackgroundOutFitted,
       body: Center(
@@ -109,6 +111,7 @@ class RegisterScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFieldContainer(
+                backgroundColor: kPrimaryColor.withOpacity(0.6),
                 child: TextFormField(
                   controller: name,
                   textInputAction: TextInputAction.next,     // Set 'next' button in keyboard
@@ -127,6 +130,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
               TextFieldContainer(
+                backgroundColor: kPrimaryColor.withOpacity(0.6),
                 child: TextFormField(
                   controller: email,
                   keyboardType: TextInputType.emailAddress,
@@ -146,6 +150,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
               TextFieldContainer(
+                backgroundColor: kPrimaryColor.withOpacity(0.6),
                 child: TextFormField(
                   controller: password,
                   textInputAction: TextInputAction.next,     // Set 'next' button in keyboard
@@ -170,6 +175,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
               TextFieldContainer(
+                backgroundColor: kPrimaryColor.withOpacity(0.6),
                 child: TextFormField(
                   controller: confirmPassword,
                   textInputAction: TextInputAction.done,       // Set 'done' button in keyboard

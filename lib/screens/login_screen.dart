@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/rounded_button.dart';
+import 'package:outfitted_flutter_mobile/components/textfield_container.dart';
 import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/dialog/loading_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
@@ -97,8 +98,11 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
         title: 'Login',
-        customIcon: Icon(Icons.search),
+        customIcon: Icon(Icons.arrow_back),
         appBar: AppBar(),
+        onLeftIconPress: (){
+          Navigator.pop(context);
+        },
       ),
       backgroundColor: kBackgroundOutFitted,
       body: Center(
@@ -114,6 +118,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               TextFieldContainer(
+                backgroundColor: kPrimaryColor.withOpacity(0.6),
                 child: TextFormField(
                   controller: email,
                   textInputAction: TextInputAction.next,     // Set 'next' button in keyboard
@@ -133,6 +138,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               TextFieldContainer(
+                backgroundColor: kPrimaryColor.withOpacity(0.6),
                 child: TextFormField(
                   controller: password,
                   textInputAction: TextInputAction.done,     // Set 'done' button in keyboard
@@ -177,26 +183,4 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class TextFieldContainer extends StatelessWidget {
-  const TextFieldContainer({
-    Key key,
-    this.child,
-  }) : super(key: key);
 
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      width: size.width * 0.8,
-      decoration: BoxDecoration(
-          color: kPrimaryColor.withOpacity(0.6),
-          borderRadius: BorderRadius.circular(30)),
-      child: child,
-    );
-  }
-}

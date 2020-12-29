@@ -12,6 +12,7 @@ import 'package:outfitted_flutter_mobile/screens/login_screen.dart';
 import 'package:outfitted_flutter_mobile/screens/register_screen.dart';
 import 'package:outfitted_flutter_mobile/screens/settings_screen.dart';
 import 'package:outfitted_flutter_mobile/screens/splash_screen_outfitted.dart';
+import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,15 +55,13 @@ class MainApp extends StatelessWidget {
         },
         theme: ThemeData(
           textTheme: Theme.of(context).textTheme.apply(
-                bodyColor: Colors.white.withOpacity(0.5),
+                bodyColor: kWhiteColor.withOpacity(0.5),
                 fontFamily: "Muli",
               ),
+          canvasColor: Colors.transparent,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-      //  home: SplashScreenOutFitted(),
       ),
     );
   }
 }
-
-
