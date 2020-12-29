@@ -21,8 +21,15 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  List sharedPrefCartList = OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerCartList),
+       sharedPrefWishList = OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerWishList);
+
+  bool isFavorite;
+
   @override
   Widget build(BuildContext context) {
+    isFavorite = sharedPrefWishList.contains(widget.product.id);
+
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
         title: 'OutFitted',
@@ -99,9 +106,27 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               bottomLeft: Radius.circular(20),
                             ),
                           ),
-                          child: Icon(
-                            Icons.favorite,
-                            color: Color(0xFFFF4848),
+                          child: IconButton(
+                            icon: new Icon(Icons.favorite,
+                                color:(isFavorite) ? Color(0xFFFF4848) : Color(0xff9A9A9A)),     // todo: fix this
+                            onPressed: () async {
+                              if (OutFittedApp.auth.currentUser != null) {
+                                // todo: determine if item must be added or removed from wishlist
+                                addItemToWish(widget.product.id, context);
+                                setState((){
+                                  isFavorite = true; // todo: fix this
+                                });
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (c) {
+                                      return ErrorAlertDialog(
+                                        message:
+                                        'Create an account or Login to add to your cart.',
+                                      );
+                                    });
+                              }
+                            },
                           ),
                         ),
                       ),
@@ -210,6 +235,57 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         : addItemToCart(productName, context);
   }
 
+  void addItemToWish(String productName, BuildContext context){
+    if(sharedPrefWishList.contains(productName)){
+      sharedPrefWishList.remove(productName);
+
+      OutFittedApp.firestore
+          .collection(OutFittedApp.collectionCustomer)
+          .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
+          .update({OutFittedApp.customerCartList: sharedPrefWishList}).then((v) {
+            Fluttertoast.showToast(
+              msg: widget.product.name + ' removed from wish successfully.',
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Color(0xfff7b0b7),
+              fontSize: 15,
+            );
+
+            OutFittedApp.sharedPreferences
+                .setStringList(OutFittedApp.customerWishList, sharedPrefWishList);
+
+            setIsFavorite(false);
+      });
+      return;
+    }
+
+    sharedPrefWishList.add(productName);
+
+    OutFittedApp.firestore
+        .collection(OutFittedApp.collectionCustomer)
+        .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
+        .update({OutFittedApp.customerWishList: sharedPrefWishList}).then((v) {
+          Fluttertoast.showToast(
+            msg: widget.product.name + ' added to wish successfully 🎉',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Color(0xff5eba7d),
+            fontSize: 15,
+          );
+
+          OutFittedApp.sharedPreferences
+          .setStringList(OutFittedApp.customerWishList, sharedPrefWishList);
+
+          setIsFavorite(true);
+    });
+  }
+
+  void setIsFavorite(bool pStatus){
+    setState(() {
+      isFavorite = pStatus;
+    });
+  }
+
   void addItemToCart(String productName, BuildContext context) {
     List tempCartList = OutFittedApp.sharedPreferences
         .getStringList(OutFittedApp.customerCartList);
@@ -232,7 +308,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       Provider.of<CartItemCounter>(context, listen: false).displayResult();
     });
   }
-
 }
 
 
