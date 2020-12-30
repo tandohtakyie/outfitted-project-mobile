@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/components/screen_animation_route.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/screens/shopping_cart_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
@@ -74,8 +75,15 @@ class OutFittedCustomAppBarV2 extends StatelessWidget implements PreferredSizeWi
               children: [
                 GestureDetector(
                   onTap: (){
-                    Route route = MaterialPageRoute(builder: (c) => ShoppingCartScreen());
-                    Navigator.push(context, route);
+                    Navigator.push(
+                      context,
+                      ScreenAnimationRoute(
+                        animationType: Curves.bounceIn,
+                        screenToGoTo: ShoppingCartScreen(),
+                      )
+                    );
+                    // Route route = MaterialPageRoute(builder: (c) => ShoppingCartScreen());
+                    // Navigator.push(context, route);
                   },
                   child: Container(
                     height: 45,

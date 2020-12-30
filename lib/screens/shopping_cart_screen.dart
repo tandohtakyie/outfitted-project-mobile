@@ -186,19 +186,15 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             backgroundColor: Color(0xffeb4034),
                           );
                         } else {
-                          // final snackBar = SnackBar(content: Text(
-                          //   "Purchase...",
-                          // ));
-                          // _scaffoldKey.currentState.showSnackBar(snackBar);
                           // Navigate customer to fill in address screen.
-                          Route route = MaterialPageRoute(builder: (c) => AddressScreen());
-                          Navigator.push(context, route);
+                          Route route = MaterialPageRoute(builder: (c) => AddressScreen(totalAmount: totalAmount,));
+                          Navigator.push(context, route,);
                         }
                       },
                     ),
                   )
                 ],
-              )
+              ),
             ],
           ),
         ),
