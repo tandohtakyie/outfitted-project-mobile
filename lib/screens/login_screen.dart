@@ -2,20 +2,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/rounded_button.dart';
 import 'package:outfitted_flutter_mobile/components/textfield_container.dart';
 import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
-import 'package:outfitted_flutter_mobile/dialog/loading_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/navigation/bottom_nav_bar.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+
+  bool isPasswordInvisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,7 @@ class LoginScreen extends StatelessWidget {
         await OutFittedApp.sharedPreferences.setString(OutFittedApp.customerName, dataSnapshot.data()[OutFittedApp.customerName]);
 
         List<String> cartList = dataSnapshot.data()[OutFittedApp.customerCartList].cast<String>(),
-                     wishList = dataSnapshot.data()[OutFittedApp.customerWishList].cast<String>();
+            wishList = dataSnapshot.data()[OutFittedApp.customerWishList].cast<String>();
         // todo: remove this print() after error (login/register) is fixed
         print("LISTTT " + cartList.length.toString());
         print("LISTTT2 " + wishList.length.toString());
@@ -60,13 +64,13 @@ class LoginScreen extends StatelessWidget {
       showDialog(
           context: context,
           builder: (c) {
-        return Center(
-            child: SpinKitDualRing(
-              color: kSecondaryColor,
-              size: 50,
-            )
-        );
-      });
+            return Center(
+                child: SpinKitDualRing(
+                  color: kSecondaryColor,
+                  size: 50,
+                )
+            );
+          });
 
       User firebaseUser;
       await _auth.signInWithEmailAndPassword(
@@ -86,12 +90,12 @@ class LoginScreen extends StatelessWidget {
       });
 
       if(firebaseUser != null){
-          MaterialPageRoute route;
-          readData(firebaseUser).then((s) => {
-            Navigator.pop(context),
-            route = MaterialPageRoute(builder: (c) => BottomNavBar()),
-            Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/login'))
-          });
+        MaterialPageRoute route;
+        readData(firebaseUser).then((s) => {
+          Navigator.pop(context),
+          route = MaterialPageRoute(builder: (c) => BottomNavBar()),
+          Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/login'))
+        });
       }
     }
 
@@ -111,9 +115,9 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-              width: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: Image.asset(
-                    'assets/images/lady_on_couch.png',
+                  'assets/images/lady_on_couch.png',
                   width: 200,
                 ),
               ),
@@ -141,18 +145,29 @@ class LoginScreen extends StatelessWidget {
                 backgroundColor: kPrimaryColor.withOpacity(0.6),
                 child: TextFormField(
                   controller: password,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.done,     // Set 'done' button in keyboard
                   onEditingComplete: () => signInCustomer(), // Invoke method when pressing 'done' button
-                  obscureText: true,
+                  obscureText: isPasswordInvisible,
                   decoration: InputDecoration(
                     icon: Icon(
                       Icons.lock,
                       color: kWhiteColor.withOpacity(0.8),
                     ),
-                    suffixIcon: Icon(
-                      // todo: onPress --> change textfieldtype (of password) to text (class must be Stateful)
-                    Icons.visibility,
-                      color: kWhiteColor.withOpacity(0.8),
+                    suffixIcon: IconButton(
+                      icon: new Icon(
+                          (isPasswordInvisible ? Icons.visibility
+                                               : Icons.visibility_off),
+                          color: kWhiteColor.withOpacity(0.8)
+                      ),
+                      onPressed: (){
+                        /*If isInvisible is true, then set false. Else set true.*/
+                        setState(() {
+                          isPasswordInvisible = isPasswordInvisible ? false : true;
+                        });
+                      },
                     ),
                     hintText: 'Your Password',
                     hintStyle: TextStyle(
@@ -182,5 +197,3 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
-
-

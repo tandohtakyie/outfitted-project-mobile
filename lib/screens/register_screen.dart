@@ -9,11 +9,19 @@ import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/navigation/bottom_nav_bar.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
+
+  bool isPasswordInvisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -64,12 +72,12 @@ class RegisterScreen extends StatelessWidget {
           User firebaseUser;
           await _auth
               .createUserWithEmailAndPassword(
-                email: email.text.trim(),
-                password: password.text.trim(),
-              )
+            email: email.text.trim(),
+            password: password.text.trim(),
+          )
               .then((auth) => {firebaseUser = auth.user})
               .catchError((error) {
-          //  Navigator.pop(context);
+            //  Navigator.pop(context);
             showDialog(
                 context: context,
                 builder: (c) {
@@ -82,10 +90,10 @@ class RegisterScreen extends StatelessWidget {
           if (firebaseUser != null) {
             MaterialPageRoute route;
             saveCustomerInfo(firebaseUser).then((value) => {
-                  Navigator.pop(context),
-                  route = MaterialPageRoute(builder: (c) => BottomNavBar()),
-                  Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/register'))
-                });
+              Navigator.pop(context),
+              route = MaterialPageRoute(builder: (c) => BottomNavBar()),
+              Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/register'))
+            });
           }
         } else {
           displayDialog('Password do not match...');
@@ -97,7 +105,7 @@ class RegisterScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
-        title: 'Register',
+        title: 'Create an account',
         customIcon: Icon(Icons.arrow_back),
         appBar: AppBar(),
         onLeftIconPress: (){
@@ -153,18 +161,29 @@ class RegisterScreen extends StatelessWidget {
                 backgroundColor: kPrimaryColor.withOpacity(0.6),
                 child: TextFormField(
                   controller: password,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.next,     // Set 'next' button in keyboard
                   onEditingComplete: () => node.nextFocus(), // Focus next textfield when pressing 'next'
-                  obscureText: true,
+                  obscureText: isPasswordInvisible,
                   decoration: InputDecoration(
                     icon: Icon(
                       Icons.lock,
                       color: kWhiteColor.withOpacity(0.8),
                     ),
-                    suffixIcon: Icon(
-                      // todo: onPress --> change textfieldtype (of password) to text (class must be Stateful)
-                      Icons.visibility,
-                      color: kWhiteColor.withOpacity(0.8),
+                    suffixIcon: IconButton(
+                      icon: new Icon(
+                          (isPasswordInvisible ? Icons.visibility
+                              : Icons.visibility_off),
+                          color: kWhiteColor.withOpacity(0.8)
+                      ),
+                      onPressed: (){
+                        /*If isInvisible is true, then set false. Else set true.*/
+                        setState(() {
+                          isPasswordInvisible = isPasswordInvisible ? false : true;
+                        });
+                      },
                     ),
                     hintText: 'Your Password',
                     hintStyle: TextStyle(
@@ -178,17 +197,29 @@ class RegisterScreen extends StatelessWidget {
                 backgroundColor: kPrimaryColor.withOpacity(0.6),
                 child: TextFormField(
                   controller: confirmPassword,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.done,       // Set 'done' button in keyboard
                   onEditingComplete: () => registerCustomer(), // Invoke method when pressing 'done' button
-                  obscureText: true,
+                  obscureText: isPasswordInvisible,
                   decoration: InputDecoration(
                     icon: Icon(
                       Icons.lock,
                       color: kWhiteColor.withOpacity(0.8),
                     ),
-                    suffixIcon: Icon(
-                      Icons.visibility,
-                      color: kWhiteColor.withOpacity(0.8),
+                    suffixIcon: IconButton(
+                      icon: new Icon(
+                          (isPasswordInvisible ? Icons.visibility
+                              : Icons.visibility_off),
+                          color: kWhiteColor.withOpacity(0.8)
+                      ),
+                      onPressed: (){
+                        /*If isInvisible is true, then set false. Else set true.*/
+                        setState(() {
+                          isPasswordInvisible = isPasswordInvisible ? false : true;
+                        });
+                      },
                     ),
                     hintText: 'Confirm Password',
                     hintStyle: TextStyle(
