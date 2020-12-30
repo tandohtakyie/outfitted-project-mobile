@@ -11,6 +11,9 @@ import 'package:outfitted_flutter_mobile/model/Address.dart';
 import 'package:provider/provider.dart';
 
 class AddressScreen extends StatelessWidget {
+
+  final double totalAmount;
+
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController cName = TextEditingController();
@@ -20,8 +23,11 @@ class AddressScreen extends StatelessWidget {
   TextEditingController cPhone = TextEditingController();
   TextEditingController cCountry = TextEditingController();
 
+  AddressScreen({Key key, this.totalAmount}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    print('total amount is €$totalAmount');
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
         appBar: AppBar(),
@@ -85,7 +91,7 @@ class AddressScreen extends StatelessWidget {
                                     currentIndex: address.count,
                                     value: index,
                                     addressID: snapshot.data.docs[index].id,
-                                    // totalAmount: widget,
+                                    totalAmount: this.totalAmount,
                                     addressModel: Address.fromJson(
                                         snapshot.data.docs[index].data()),
                                   );
