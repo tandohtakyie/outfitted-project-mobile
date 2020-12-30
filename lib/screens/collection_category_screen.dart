@@ -92,12 +92,8 @@ class CollectionCategoryScreen extends StatelessWidget {
 
 Widget productInfo(Product productModel, BuildContext context,) {
   return ProductCollectionCard(
-    image: productModel.productImage,
-    brand: productModel.supplier,
-    model: productModel.name,
-    price: productModel.price.toStringAsFixed(2),
+    product: productModel,
     press: () {
-
       Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen(product: productModel));
       Navigator.push(context, route);
     },

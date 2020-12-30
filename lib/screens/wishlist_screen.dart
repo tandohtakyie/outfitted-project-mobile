@@ -76,7 +76,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
   }
 
   removeItemFromWishList(Product pProduct) {
-    //todo: update values live, without refreshing screen (now only updates if screen has been refreshed)
     List tempWishList = OutFittedApp.sharedPreferences
         .getStringList(OutFittedApp.customerWishList);
 

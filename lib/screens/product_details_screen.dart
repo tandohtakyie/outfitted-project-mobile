@@ -114,13 +114,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             icon: new Icon(Icons.favorite,
                                 color: (isFavorite)
                                     ? Color(0xFFFF4848)
-                                    : Color(0xff9A9A9A)), // todo: fix this
+                                    : Color(0xff9A9A9A)),
                             onPressed: () async {
                               if (OutFittedApp.auth.currentUser != null) {
-                                // todo: determine if item must be added or removed from wishlist
                                 addItemToWish(widget.product.id, context);
                                 setState(() {
-                                  isFavorite = true; // todo: fix this
+                                  isFavorite = true;
                                 });
                               } else {
                                 showDialog(

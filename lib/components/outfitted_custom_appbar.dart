@@ -56,14 +56,9 @@ AppBar buildOutFittedCustomAppBar({String title, String underTitle="", Icon cust
             children: [
               GestureDetector(
                 onTap: (){
-                  /*todo: go to shopping cart screen.
-                     @Gibbs is het niet beter als user alleen via knopje bovenin shopping cart kan bereiken?*/
-                    Navigator.of(context).push(
+                  Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => ShoppingCartScreen())
-                    );
-                  // Route route = MaterialPageRoute(builder: (c) => ShoppingCartScreen());
-                  // Navigator.push(buildContext, route);
-                  //ShoppingCartScreen
+                  );
               },
                 child: Container(
                   height: 45,
