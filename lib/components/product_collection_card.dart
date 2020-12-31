@@ -39,7 +39,7 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
         child: Column(
           children: [
             AspectRatio(
-              aspectRatio: 1.95,
+              aspectRatio: 0.95,
               child: Container(
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
