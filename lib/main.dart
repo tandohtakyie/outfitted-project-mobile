@@ -9,6 +9,7 @@ import 'package:outfitted_flutter_mobile/counters/total_amount.dart';
 import 'package:outfitted_flutter_mobile/navigation/bottom_nav_bar.dart';
 import 'package:outfitted_flutter_mobile/screens/account_screen.dart';
 import 'package:outfitted_flutter_mobile/screens/login_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/payment_screen.dart';
 import 'package:outfitted_flutter_mobile/screens/register_screen.dart';
 import 'package:outfitted_flutter_mobile/screens/settings_screen.dart';
 import 'package:outfitted_flutter_mobile/screens/splash_screen_outfitted.dart';
@@ -52,6 +53,7 @@ class MainApp extends StatelessWidget {
           '/settings': (context) => SettingsScreen(),
           '/login': (context) => LoginScreen(),
           '/register': (context) => RegisterScreen(),
+          '/payment': (context) => PaymentScreen(),
         },
         theme: ThemeData(
           textTheme: Theme.of(context).textTheme.apply(

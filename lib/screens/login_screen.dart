@@ -64,7 +64,7 @@ class LoginScreen extends StatelessWidget {
             child: SpinKitDualRing(
               color: kSecondaryColor,
               size: 50,
-            )
+            ),
         );
       });
 
@@ -90,7 +90,7 @@ class LoginScreen extends StatelessWidget {
           readData(firebaseUser).then((s) => {
             Navigator.pop(context),
             route = MaterialPageRoute(builder: (c) => BottomNavBar()),
-            Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/login'))
+            Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/login'),),
           });
       }
     }
