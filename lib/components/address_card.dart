@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/rounded_button.dart';
 import 'package:outfitted_flutter_mobile/counters/address_changer.dart';
 import 'package:outfitted_flutter_mobile/model/Address.dart';
+import 'package:outfitted_flutter_mobile/screens/payment_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:provider/provider.dart';
 
@@ -84,6 +85,11 @@ class _AddressCardState extends State<AddressCard> {
                 press: (){
                   // navigate customer to payment screen
                   // with address id and the total amount
+                  Route route = MaterialPageRoute(builder: (c) => PaymentScreen(
+                    addressID: widget.addressID,
+                    totalAmount: widget.totalAmount,
+                  ));
+                  Navigator.push(context, route);
                 },
               )
                   : Container(),

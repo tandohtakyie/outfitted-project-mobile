@@ -90,12 +90,12 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       if(firebaseUser != null){
-        MaterialPageRoute route;
-        readData(firebaseUser).then((s) => {
-          Navigator.pop(context),
-          route = MaterialPageRoute(builder: (c) => BottomNavBar()),
-          Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/login'))
-        });
+          MaterialPageRoute route;
+          readData(firebaseUser).then((s) => {
+            Navigator.pop(context),
+            route = MaterialPageRoute(builder: (c) => BottomNavBar()),
+            Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/login'))
+          });
       }
     }
 

@@ -55,7 +55,7 @@ class AddressScreen extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(10),
               child: Text(
-                  'Select/Add address',
+                  'Address',
                 style: TextStyle(
                   fontSize: 16,
                   color: kWhiteColor,
