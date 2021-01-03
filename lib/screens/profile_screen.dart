@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_card.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
+import 'package:outfitted_flutter_mobile/screens/all_orders_screen.dart';
 import 'package:outfitted_flutter_mobile/screens/settings_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
@@ -137,7 +138,10 @@ class ProfileScreen extends StatelessWidget {
                     Icons.store_outlined,
                     color: kWhiteColor,
                   ),
-                  press: () {},
+                  press: () {
+                    Route route = MaterialPageRoute(builder: (c) => AllOrdersScreen());
+                    Navigator.push(context, route);
+                  },
                 ),
                 SettingsIcons(
                   text: 'Messages',
