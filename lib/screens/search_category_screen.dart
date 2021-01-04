@@ -6,6 +6,7 @@ import 'package:outfitted_flutter_mobile/components/store_category.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/CollectionCategory.dart';
 import 'package:outfitted_flutter_mobile/screens/collection_category_screen.dart';
+import 'package:outfitted_flutter_mobile/screens/search_product_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class SearchCategoryScreen extends StatefulWidget {
@@ -22,6 +23,10 @@ class _SearchCategoryScreenState extends State<SearchCategoryScreen> {
         title: 'Search Category',
         customIcon: Icon(Icons.search),
         appBar: AppBar(),
+        onLeftIconPress: () {
+          Route route = MaterialPageRoute(builder: (c) => SearchProductScreen());
+          Navigator.push(context, route);
+        },
       ),
       resizeToAvoidBottomPadding: false,
       backgroundColor: kBackgroundOutFitted,

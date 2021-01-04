@@ -29,11 +29,9 @@ class OutFittedCustomAppBarV2 extends StatelessWidget implements PreferredSizeWi
       leading: GestureDetector(
         onTap: () {
           //Navigate to search screen
-          Route route = MaterialPageRoute(builder: (c) => SearchProductScreen());
-          Navigator.push(context, route);
         },
         child: Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: EdgeInsets.all(5.0),
           child: Container(
             height: 45,
             width: 45,
