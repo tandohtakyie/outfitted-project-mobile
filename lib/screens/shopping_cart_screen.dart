@@ -206,7 +206,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   // Get list of products from Firebase snapshot
   List<Cart> getItemsForCustomerCart(AsyncSnapshot<QuerySnapshot> pSnapshot){
     for (var i = 0; i < pSnapshot.data.docs.length; i++) {
-      Product productFromJson = Product.fromJson(pSnapshot.data.docs[i].data());
+      Product productFromJson = Product();
+      productFromJson.fromJson(pSnapshot.data.docs[i].data());
       totalAmount += productFromJson.price;
       productFromJson.id = pSnapshot.data.docs[i].id;
 

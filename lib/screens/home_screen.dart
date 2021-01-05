@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
+import 'package:outfitted_flutter_mobile/screens/search_product_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,6 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
         title: 'OutFitted',
           customIcon: Icon(Icons.search),
         appBar: AppBar(),
+        onLeftIconPress: () {
+          Route route = MaterialPageRoute(builder: (c) => SearchProductScreen());
+          Navigator.push(context, route);
+        },
       ),
       backgroundColor: kBackgroundOutFitted,
       body: Center(

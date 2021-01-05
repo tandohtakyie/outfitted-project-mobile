@@ -7,6 +7,7 @@ import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.d
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/Product.dart';
 import 'package:outfitted_flutter_mobile/model/Wishlist.dart';
+import 'package:outfitted_flutter_mobile/screens/search_product_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class WishlistScreen extends StatefulWidget {
@@ -27,6 +28,10 @@ class _WishlistScreenState extends State<WishlistScreen> {
         title: 'Wishlist',
         customIcon: Icon(Icons.search),
         appBar: AppBar(),
+          onLeftIconPress: () {
+    Route route = MaterialPageRoute(builder: (c) => SearchProductScreen());
+    Navigator.push(context, route);
+    },
       ),
       backgroundColor: kBackgroundOutFitted,
       body: OutFittedApp.auth.currentUser != null
@@ -67,7 +72,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
   // Get list of products from Firebase snapshot
   List<WishList> getItemsForWishList(AsyncSnapshot<QuerySnapshot> pSnapshot){
     for (var i = 0; i < pSnapshot.data.docs.length; i++) {
-      Product productFromJson = Product.fromJson(pSnapshot.data.docs[i].data());
+      Product productFromJson = Product();
+      productFromJson.fromJson(pSnapshot.data.docs[i].data());
       productFromJson.id = pSnapshot.data.docs[i].id;
 
       wishList.add(WishList(product: productFromJson));
