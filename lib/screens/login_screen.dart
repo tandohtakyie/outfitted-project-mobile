@@ -8,6 +8,7 @@ import 'package:outfitted_flutter_mobile/components/textfield_container.dart';
 import 'package:outfitted_flutter_mobile/dialog/error_alert_dialog.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/navigation/bottom_nav_bar.dart';
+import 'package:outfitted_flutter_mobile/screens/forgot_password_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -189,6 +190,18 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(
                 height: 10,
+              ),
+              FlatButton(
+                  onPressed: (){
+                    Route route = MaterialPageRoute(builder: (c) => ForgotPasswordScreen());
+                    Navigator.push(context, route);
+                  },
+                  child: Text(
+                    'Forgot Password?',
+                    style: TextStyle(
+                      color: kWhiteColor.withOpacity(0.5),
+                    ),
+                  ),
               ),
             ],
           ),
