@@ -21,8 +21,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("SHARD WISHLIST: " + OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerWishList).toString());
-
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
         title: 'Wishlist',

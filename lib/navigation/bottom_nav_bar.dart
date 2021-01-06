@@ -54,7 +54,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.list,
+                Icons.list_outlined,
                 color: Colors.white.withOpacity(0.8),
               ),
               label: 'Search',

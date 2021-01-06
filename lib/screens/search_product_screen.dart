@@ -16,7 +16,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                               newProductSearchList;
   bool isNotSearching = true, noResults = true;
 
-  // todo: dit moet lijst gevonden producten refreshen en updaten -->
+  // Refresh and update list which contains search-based products
   Future<void> updateSearch(String searchedValue) async {
     CollectionReference col1 = FirebaseFirestore.instance.collection(OutFittedApp.collectionProduct);
     /// Method to collect documents by multiple where clauses based on @searchedValue
@@ -30,7 +30,6 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
 
     newProductSearchList = (await snapshots.first).toList();
 
-    //todo: setState zodat nieuwe lijst in variable komt die lijst weergeeft --> Bij die variable moet gekeken worden of lijst leeg is of niet, als leeg laat tekst zien. als niet leeg laat lijst zien
     setState(() {
       productSearchList = newProductSearchList;
       noResults = productSearchList.isEmpty;
@@ -38,15 +37,25 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
   }
 
   Widget getContent(){
+    // if user is not searching or if there is no search-result,
     if(isNotSearching || productSearchList.isEmpty){
-      String contentText;
-      // todo: switch with cases
-      //  --> case isNotSearching is true ---> set contentText --> "Use searchbox to search {search emoji}"
-      //  --> case productSearchList.isEmpty is true ---> set contextText to --> "No results :("
 
-      // todo: return same layout, but only different contentText based on switch-cases
-      return null;
+      String contentText = isNotSearching
+          ? "Use the 🔍 -field to\nsearch products"
+          : "No products found 😔..";
+
+      // Return same layout, but only different contentText
+      return Center(
+        child: Text(
+          contentText,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 20
+          ),
+        ),
+      );
     }
+
     // else return list with results
     return Padding(
       padding: EdgeInsets.only(
