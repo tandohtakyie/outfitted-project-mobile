@@ -16,7 +16,10 @@ class Product{
     return instance;
   }
 
-
+  @override
+  String toString() {
+    return this.name + " " + this.id;
+  }
 
   // Product({
   //   this.id,
@@ -36,6 +39,18 @@ class Product{
     productDescription = json['productDescription'];
     stock = json['stock'];
     price = double.parse(json['price'].toString());
+  }
+
+  Product getFromJson(Map<String, dynamic> json){
+    id = json['id'];
+    name = json['name'];
+    productImage = json['productImage'];
+    supplier = json['supplier'];
+    productDescription = json['productDescription'];
+    stock = json['stock'];
+    price = double.parse(json['price'].toString());
+
+    return this;
   }
 
   Map<String, dynamic> toJson(){

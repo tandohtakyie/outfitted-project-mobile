@@ -12,15 +12,62 @@ class SearchProductScreen extends StatefulWidget {
 
 class _SearchProductScreenState extends State<SearchProductScreen> {
 
-  Stream<QuerySnapshot> productSearchList;
+  List<QueryDocumentSnapshot> productSearchList = List<QueryDocumentSnapshot>(),
+                              newProductSearchList;
+  bool isNotSearching = true, noResults = true;
 
-  void searchProduct(String searchedValue) async {
-    productSearchList = FirebaseFirestore.instance.collection(OutFittedApp.collectionProduct)
-    // .where('productDescription', isGreaterThanOrEqualTo: searchedValue)
-        .where('productDescription', isGreaterThanOrEqualTo: searchedValue)
-    // .where('name', isGreaterThanOrEqualTo: searchedValue)
-    //.where('supplier', isEqualTo: searchedValue)
-        .snapshots();
+  // todo: dit moet lijst gevonden producten refreshen en updaten -->
+  Future<void> updateSearch(String searchedValue) async {
+    CollectionReference col1 = FirebaseFirestore.instance.collection(OutFittedApp.collectionProduct);
+    /// Method to collect documents by multiple where clauses based on @searchedValue
+    final snapshots = col1.snapshots().map(
+            (snapshot) => snapshot.docs.where((doc) =>
+                doc["category"].toLowerCase().contains(searchedValue) ||
+                doc["name"].toLowerCase().contains(searchedValue) ||
+                doc["productDescription"].toLowerCase().contains(searchedValue) ||
+                doc["supplier"].toLowerCase().contains(searchedValue)
+            ));
+
+    newProductSearchList = (await snapshots.first).toList();
+    print("SIZE VAN GEVONDEN PRODUCTEN " + newProductSearchList.length.toString());
+
+    //todo: setState zodat nieuwe lijst in variable komt die lijst weergeeft --> Bij die variable moet gekeken worden of lijst leeg is of niet, als leeg laat tekst zien. als niet leeg laat lijst zien
+    setState(() {
+      productSearchList = newProductSearchList;
+      noResults = productSearchList.isEmpty;
+    });
+  }
+
+  Widget getContent(){
+    if(isNotSearching || productSearchList.isEmpty){
+      String contentText;
+      // todo: switch with cases
+      //  --> case isNotSearching is true ---> set contentText --> "Use searchbox to search {search emoji}"
+      //  --> case productSearchList.isEmpty is true ---> set contextText to --> "No results :("
+
+      // todo: return same layout, but only different contentText based on switch-cases
+      return null;
+    }
+    // else return list with results
+    return Padding(
+      padding: EdgeInsets.only(
+        top: 5,
+        right: 5,
+      ),
+      child: GridView.builder(
+        physics: ScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: productSearchList.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: MediaQuery.of(context).size.width /
+              (MediaQuery.of(context).size.height / 1.6),
+          crossAxisCount: 2,
+        ),
+        itemBuilder: (context, index) {
+          return productInfo(Product().getFromJson(productSearchList[index].data()), context);
+        },
+      ),
+    );
   }
 
   @override
@@ -29,66 +76,26 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
       appBar: AppBar(
         title: TextField(
           onChanged: (value){
+            // only invoke updateSearch if value is not empty,
+            if(value.isNotEmpty){
+              updateSearch(value.toLowerCase());
+            }
+            /* but always invoke setState to update isNotSearching variable
+                (so that it stays updated if value is empty or not empty) */
             setState(() {
-              searchProduct(value);
+              isNotSearching = value.isEmpty;
             });
           },
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: 'Search...',
             hintStyle: TextStyle(color: kWhiteColor.withOpacity(0.5)),
-
           ),
         ),
         backgroundColor: kBackgroundOutFitted,
       ),
       backgroundColor: kBackgroundOutFitted,
-      body: StreamBuilder<QuerySnapshot>(
-        stream: productSearchList,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError)
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          if (!snapshot.hasData)
-            return Center(
-              child: Text('There are no products yet! Sign up for updates'),
-            );
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(
-                child: Text('Loading'),
-              );
-            default:
-              return Padding(
-                padding: EdgeInsets.only(
-                  top: 5,
-                  right: 5,
-                ),
-                child: GridView.builder(
-                  physics: ScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.docs.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 1.6),
-                    crossAxisCount: 2,
-                  ),
-                  itemBuilder: (context, index) {
-                    Product product = Product();
-                    product.fromJson(snapshot.data.docs[index].data());
-                    // set name of document as id of the product
-                    product.id = snapshot.data.docs[index].id;
-
-                    return productInfo(product, context);
-                  },
-                ),
-              );
-          }
-        },
-      ),
+      body: getContent(),
     );
   }
-
-
 }
