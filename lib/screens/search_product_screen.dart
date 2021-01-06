@@ -29,7 +29,6 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
             ));
 
     newProductSearchList = (await snapshots.first).toList();
-    print("SIZE VAN GEVONDEN PRODUCTEN " + newProductSearchList.length.toString());
 
     //todo: setState zodat nieuwe lijst in variable komt die lijst weergeeft --> Bij die variable moet gekeken worden of lijst leeg is of niet, als leeg laat tekst zien. als niet leeg laat lijst zien
     setState(() {
@@ -64,7 +63,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
           crossAxisCount: 2,
         ),
         itemBuilder: (context, index) {
-          return productInfo(Product().getFromJson(productSearchList[index].data()), context);
+          return productInfo(Product.fromJson(productSearchList[index].data()), context);
         },
       ),
     );
