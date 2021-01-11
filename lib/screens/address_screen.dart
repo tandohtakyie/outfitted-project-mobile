@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:outfitted_flutter_mobile/components/address_card.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/textfield_container.dart';
@@ -76,8 +77,11 @@ class AddressScreen extends StatelessWidget {
                   builder: (context, snapshot) {
                     return !snapshot.hasData
                         ? Center(
-                            child: Text('Loading'),
-                          )
+                      child: SpinKitDualRing(
+                        color: kSecondaryColor,
+                        size: 50,
+                      ),
+                    )
                         : snapshot.data.docs.length == 0
                             ? Center(
                                 child: Text(
@@ -104,6 +108,7 @@ class AddressScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'showButtonSheetToAddAddress',
         onPressed: () {
           showAddressModalBottomSheet(context);
         },

@@ -1,11 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_card.dart';
+import 'package:outfitted_flutter_mobile/components/settingsIcon.dart';
+import 'package:outfitted_flutter_mobile/components/settings_address_card.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
+import 'package:outfitted_flutter_mobile/model/Address.dart';
 import 'package:outfitted_flutter_mobile/screens/all_orders_screen.dart';
 import 'package:outfitted_flutter_mobile/screens/settings_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class ProfileScreen extends StatelessWidget {
+  Address address;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -60,60 +66,39 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            OutFittedCustomCard(
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Ajax Arena 58',
-                          style: TextStyle(
-                            color: kWhiteColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'Amsterdam, 1585 NT',
-                          style: TextStyle(
-                            color: kWhiteColor,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              WidgetSpan(
-                                child: Icon(
-                                  Icons.check_box_outlined,
-                                  color: kWhiteColor.withOpacity(0.5),
-                                ),
-                              ),
-                              TextSpan(text: 'Delivery address')
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        FloatingActionButton(
-                          heroTag: 'btnAddressEdit',
-                          onPressed: () {},
-                          child: Icon(
-                            Icons.edit_outlined,
-                          ),
-                          backgroundColor: kSecondaryColor,
-                        ),
-                      ],
+            StreamBuilder<QuerySnapshot>(
+              stream: OutFittedApp.firestore
+                  .collection(OutFittedApp.collectionCustomer)
+                  .doc(OutFittedApp.sharedPreferences
+                  .getString(OutFittedApp.customerUID))
+                  .collection(OutFittedApp.subCollectionAddress)
+                  .snapshots(),
+                builder: (context, snapshot){
+                  return !snapshot.hasData
+                      ? Center(
+                    child: SpinKitDualRing(
+                      color: kSecondaryColor,
+                      size: 50,
                     ),
-                  ],
-                ),
-              ),
+                  )
+                      : snapshot.data.docs.length == 0
+                      ? Text('Add address')
+                      : Container(
+                          height: 250,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.docs.length,
+                            itemBuilder: (context, index){
+                              return SettingsAddressCard(
+                                address: Address.fromJson(
+                                  snapshot.data.docs[index].data()
+                                ),
+                              );
+                            }
+                  ),
+                      );
+                }
             ),
             SizedBox(
               height: 30,
@@ -132,7 +117,8 @@ class ProfileScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SettingsIcons(
+                SettingsIcon(
+                  uniqueHeroTag: 'Orders',
                   text: 'Orders',
                   icon: Icon(
                     Icons.store_outlined,
@@ -143,7 +129,8 @@ class ProfileScreen extends StatelessWidget {
                     Navigator.push(context, route);
                   },
                 ),
-                SettingsIcons(
+                SettingsIcon(
+                  uniqueHeroTag: 'Messages',
                   text: 'Messages',
                   icon: Icon(
                     Icons.mail_outline_outlined,
@@ -151,7 +138,8 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   press: () {},
                 ),
-                SettingsIcons(
+                SettingsIcon(
+                  uniqueHeroTag: 'Cards',
                   text: 'Cards',
                   icon: Icon(
                     Icons.credit_card_outlined,
@@ -159,7 +147,8 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   press: () {},
                 ),
-                SettingsIcons(
+                SettingsIcon(
+                  uniqueHeroTag: 'Settings',
                   text: 'Settings',
                   icon: Icon(
                     Icons.settings,
@@ -193,38 +182,4 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-class SettingsIcons extends StatelessWidget {
-  const SettingsIcons({
-    Key key,
-    this.icon,
-    this.press,
-    this.text,
-  }) : super(key: key);
-  final Icon icon;
-  final Function press;
-  final String text;
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: press,
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.all(15),
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 2,
-                color: kWhiteColor,
-              ),
-              shape: BoxShape.circle,
-            ),
-            child: icon,
-          ),
-          Text(text),
-        ],
-      ),
-    );
-  }
-}

@@ -127,7 +127,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           Container(
                             child: Text(
                               'Total : €' +
-                                  dataMap[OutFittedApp.totalAmount].toString(),
+                                  double.parse(dataMap[OutFittedApp.totalAmount].toString()).toStringAsFixed(2),
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
