@@ -40,8 +40,7 @@ class OrderCard extends StatelessWidget {
             itemCount: itemCount,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (c, index){
-                Product product = Product();
-                product.fromJson(data[index].data());
+                Product product = Product.fromJson(data[index].data());
                 return productInfo(product, context);
               }
           ),

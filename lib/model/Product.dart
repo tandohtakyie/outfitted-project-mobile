@@ -1,4 +1,3 @@
-
 class Product{
   String id;
   String name;
@@ -8,27 +7,17 @@ class Product{
   int stock;
   double price;
 
-  Product._privateConstructor();
+  Product({
+    this.id,
+    this.name,
+    this.productImage,
+    this.supplier,
+    this.productDescription,
+    this.stock,
+    this.price
+  });
 
-  static final Product instance = Product._privateConstructor();
-
-  factory Product(){
-    return instance;
-  }
-
-
-
-  // Product({
-  //   this.id,
-  //   this.name,
-  //   this.productImage,
-  //   this.supplier,
-  //   this.productDescription,
-  //   this.stock,
-  //   this.price
-  // });
-
- fromJson(Map<String, dynamic> json){
+  Product.fromJson(Map<String, dynamic> json){
     id = json['id'];
     name = json['name'];
     productImage = json['productImage'];
@@ -77,4 +66,3 @@ class Product{
   }
 // End of API
 }
-

@@ -21,8 +21,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("SHARD WISHLIST: " + OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerWishList).toString());
-
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
         title: 'Wishlist',
@@ -72,8 +70,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
   // Get list of products from Firebase snapshot
   List<WishList> getItemsForWishList(AsyncSnapshot<QuerySnapshot> pSnapshot){
     for (var i = 0; i < pSnapshot.data.docs.length; i++) {
-      Product productFromJson = Product();
-      productFromJson.fromJson(pSnapshot.data.docs[i].data());
+      Product productFromJson = Product.fromJson(pSnapshot.data.docs[i].data());
       productFromJson.id = pSnapshot.data.docs[i].id;
 
       wishList.add(WishList(product: productFromJson));
