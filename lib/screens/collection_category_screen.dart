@@ -29,6 +29,7 @@ class CollectionCategoryScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'filterCollection',
         onPressed: (){},
         child: Icon(Icons.filter_list_outlined),
         backgroundColor: kSecondaryColor,
