@@ -25,23 +25,23 @@ class ListDismissible extends StatefulWidget{
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ListItemDismissible();
+  State<StatefulWidget> createState() => _ListDismissible();
 }
 
-class _ListItemDismissible extends State<ListDismissible>{
+class _ListDismissible extends State<ListDismissible>{
   
   @override
   Widget build(BuildContext context) {
-    return widget.list.isEmpty ?
-    Center(
+    return widget.list.isEmpty
+        ? Center(
       child: Text(
           widget.emptyListText,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: kWhiteColor,
           )),
-    ) :
-    Padding(
+    )
+        : Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ListView.builder(
           itemCount: widget.list.length,
