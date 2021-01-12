@@ -7,7 +7,9 @@ Widget productInfo(Product productModel, BuildContext context,) {
   return ProductCollectionCard(
     product: productModel,
     press: () {
-      Route route = MaterialPageRoute(builder: (c) => ProductDetailScreen(product: productModel));
+      Route route = MaterialPageRoute(
+          builder: (c) => ProductDetailScreen(product: productModel)
+      );
       Navigator.push(context, route);
     },
   );

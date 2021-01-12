@@ -16,19 +16,38 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     run();
     return Scaffold(
-      appBar: OutFittedCustomAppBarV2(
-        title: 'OutFitted',
-          customIcon: Icon(Icons.search),
-        appBar: AppBar(),
-        onLeftIconPress: () {
-          Route route = MaterialPageRoute(builder: (c) => SearchProductScreen());
-          Navigator.push(context, route);
-        },
+     
+      backgroundColor: Color(0xffa19d95),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.only(left: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 100),
+                  child: Text('New Collection',
+                    style:  TextStyle(
+                      fontSize: 35
+                    ),
+                  ),
+                ),
+              ),
+              Image.asset(
+                'assets/images/dp.jpg',
+                height: 350,
+              ),
+              Text(
+                'See All', style: TextStyle(
+                fontSize: 30
+              ),
+              )
+            ],
+          ),
+        ),
       ),
-      backgroundColor: kBackgroundOutFitted,
-      body: Center(
-        child: Text('This is Home screen!'),
-      ),
+
     );
   }
 

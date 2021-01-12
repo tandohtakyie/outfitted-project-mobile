@@ -36,7 +36,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
-        title: 'OutFitted',
+        title: widget.product.name,
         customIcon: Icon(Icons.arrow_back),
         appBar: AppBar(),
         onLeftIconPress: () {
