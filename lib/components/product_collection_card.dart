@@ -10,11 +10,13 @@ class ProductCollectionCard extends StatefulWidget {
 
   final Product product;
   final Function press;
+  final double pDiscount;
 
   const ProductCollectionCard({
     Key key,
     this.product,
     this.press,
+    this.pDiscount,
   }) : super(key: key);
 
   @override
@@ -29,8 +31,11 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     isFavorite = sharedPrefWishList.contains(widget.product.id);
+    double discount = 0;
+    if(widget.product.discountPercentage != 0){
+      discount = widget.product.price * widget.product.discountPercentage / 100;
+    }
 
     return GestureDetector(
       onTap: widget.press,
@@ -77,11 +82,19 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '€${widget.product.price.toStringAsFixed(2)}',
+                    '€${(widget.product.price - discount).toStringAsFixed(2)}',
                     style: TextStyle(
                         color: kSecondaryColor
                     ),
                   ),
+                  widget.product.discountPercentage != 0
+                  ? Text(
+                    '€${widget.product.price.toStringAsFixed(2)}',
+                    style: TextStyle(
+                        decoration: TextDecoration.lineThrough
+                    ),
+                  )
+                  : Container(),
                   Container(
                     width: 40,
                     height: 40,
