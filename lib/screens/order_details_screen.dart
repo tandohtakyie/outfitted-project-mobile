@@ -82,7 +82,7 @@ class OrderDetailsScreen extends StatelessWidget {
                               builder: (c, snapsho2) {
                                 return snapsho2.hasData
                                     ? ShippingInfoDetails(
-                                        address: Address.fromJson(
+                                        address: Address.getAddressFromJson(
                                             snapsho2.data.data()),
                                         dateOrdered: DateFormat(
                                                 'dd MMMM, yyyy - hh:mm aa')

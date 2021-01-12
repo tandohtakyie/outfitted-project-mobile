@@ -335,7 +335,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       OutFittedApp.sharedPreferences
           .setStringList(OutFittedApp.customerCartList, tempCartList);
 
-      Provider.of<CartItemCounter>(context, listen: false).displayResult();
+      Provider.of<CartItemCounter>(context, listen: false).displayItemCounterResult();
     });
   }
 

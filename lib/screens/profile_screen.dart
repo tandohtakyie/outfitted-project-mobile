@@ -91,7 +91,7 @@ class ProfileScreen extends StatelessWidget {
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index){
                               return SettingsAddressCard(
-                                address: Address.fromJson(
+                                address: Address.getAddressFromJson(
                                   snapshot.data.docs[index].data()
                                 ),
                               );

@@ -50,7 +50,7 @@ class _SearchCategoryScreenState extends State<SearchCategoryScreen> {
                 return ListView.builder(
                   itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index){
-                       CollectionCategory category = CollectionCategory.fromJson(snapshot.data.docs[index].data());
+                       CollectionCategory category = CollectionCategory.getCategoryFromJson(snapshot.data.docs[index].data());
                         return categoryInfo(category, context);
                     }
                 );

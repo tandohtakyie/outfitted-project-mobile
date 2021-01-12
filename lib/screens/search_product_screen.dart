@@ -72,7 +72,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
           crossAxisCount: 2,
         ),
         itemBuilder: (context, index) {
-          return productInfo(Product.fromJson(productSearchList[index].data()), context);
+          return productInfo(Product.getProductFromJson(productSearchList[index].data()), context);
         },
       ),
     );

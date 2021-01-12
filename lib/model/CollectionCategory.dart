@@ -11,7 +11,7 @@ class CollectionCategory {
     @required this.categoryImage
   });
 
-   CollectionCategory.fromJson(Map<String, dynamic> json) {
+   CollectionCategory.getCategoryFromJson(Map<String, dynamic> json) {
      id = json['id'];
      categoryName = json['name'];
      categoryImage = json['categoryImage'];

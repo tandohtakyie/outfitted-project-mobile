@@ -17,7 +17,7 @@ class Product{
     this.price
   });
 
-  Product.fromJson(Map<String, dynamic> json){
+  Product.getProductFromJson(Map<String, dynamic> json){
     id = json['id'];
     name = json['name'];
     productImage = json['productImage'];

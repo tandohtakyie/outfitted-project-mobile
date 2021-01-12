@@ -30,7 +30,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   void initState() {
     super.initState();
     totalAmount = 0;
-    Provider.of<TotalAmount>(context, listen: false).displayResult(0);
+    Provider.of<TotalAmount>(context, listen: false).displayTotalAmountResult(0);
   }
 
   @override
@@ -206,7 +206,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   // Get list of products from Firebase snapshot
   List<Cart> getItemsForCustomerCart(AsyncSnapshot<QuerySnapshot> pSnapshot){
     for (var i = 0; i < pSnapshot.data.docs.length; i++) {
-      Product productFromJson = Product.fromJson(pSnapshot.data.docs[i].data());
+      Product productFromJson = Product.getProductFromJson(pSnapshot.data.docs[i].data());
       totalAmount += productFromJson.price;
       productFromJson.id = pSnapshot.data.docs[i].id;
 
@@ -219,7 +219,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             .addPostFrameCallback((t) {
           Provider.of<TotalAmount>(context,
               listen: false)
-              .displayResult(totalAmount);
+              .displayTotalAmountResult(totalAmount);
         });
       }
     }
@@ -249,7 +249,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           OutFittedApp.sharedPreferences
               .setStringList(OutFittedApp.customerCartList, tempCartList);
 
-      Provider.of<CartItemCounter>(context, listen: false).displayResult();
+      Provider.of<CartItemCounter>(context, listen: false).displayItemCounterResult();
 
       totalAmount = 0;
     });
