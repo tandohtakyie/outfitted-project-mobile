@@ -207,7 +207,12 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   List<Cart> getItemsForCustomerCart(AsyncSnapshot<QuerySnapshot> pSnapshot){
     for (var i = 0; i < pSnapshot.data.docs.length; i++) {
       Product productFromJson = Product.getProductFromJson(pSnapshot.data.docs[i].data());
+      double discount = 0;
+      if(productFromJson.discountPercentage != 0){
+        discount = productFromJson.price * productFromJson.discountPercentage / 100;
+      }
       totalAmount += productFromJson.price;
+      totalAmount = totalAmount - discount;
       productFromJson.id = pSnapshot.data.docs[i].id;
 
       //todo: need to add amount of product in product detail screen (or in shopping cart?)

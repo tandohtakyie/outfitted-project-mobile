@@ -4,10 +4,17 @@ import 'package:outfitted_flutter_mobile/style/style.dart';
 
 List<Widget> buildShoppingCartCard({@required Cart cartItem,}) {
 
+  double discount = 0;
+  if(cartItem.product.discountPercentage != 0){
+    discount = cartItem.product.price * cartItem.product.discountPercentage / 100;
+  }
+
   final String image = cartItem.product.productImage,
                productName = cartItem.product.name,
-               price = cartItem.product.price.toStringAsFixed(2),
-               totalOfItems = cartItem.amountItems.toString();
+               price = cartItem.product.discountPercentage == 0
+                ? cartItem.product.price.toStringAsFixed(2)
+               : (cartItem.product.price - discount).toStringAsFixed(2),
+               totalOfItems = (cartItem.amountItems + 1).toString();
 
   return [
     SizedBox(
@@ -46,20 +53,24 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem,}) {
         SizedBox(
           height: 10,
         ),
-        Text.rich(
-          TextSpan(
-            text: '€$price',
-            style: TextStyle(color: kSecondaryColor),
-            children: [
+        Row(
+          children: [
+            Text.rich(
               TextSpan(
-                text: ' x$totalOfItems',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.5),
-                  fontSize: 15
-                ),
+                text: '€$price',
+                style: TextStyle(color: kSecondaryColor),
+                children: [
+                  TextSpan(
+                    text: ' x$totalOfItems',
+                    style: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                        fontSize: 15
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         SizedBox(
           height: 10,

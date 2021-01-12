@@ -10,13 +10,11 @@ class ProductCollectionCard extends StatefulWidget {
 
   final Product product;
   final Function press;
-  final double pDiscount;
 
   const ProductCollectionCard({
     Key key,
     this.product,
     this.press,
-    this.pDiscount,
   }) : super(key: key);
 
   @override
@@ -54,7 +52,37 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
                     topRight: Radius.circular(5),
                   ),
                 ),
-                child: Image.network(widget.product.productImage),
+                child: Stack(
+                  children: [
+                    Center(
+                        child: Image.network(widget.product.productImage),
+                    ),
+                    widget.product.discountPercentage != 0
+                    ? Positioned(
+                      right: 5,
+                      top: 3,
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        decoration: BoxDecoration(
+                          color: kPrimaryColor.withOpacity(0.9),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            widget.product.discountPercentage.toString() + '%',
+                              style: TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold
+                              ),
+                              textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    )
+                        : Container(),
+                  ],
+                ),
               ),
             ),
             Container(
