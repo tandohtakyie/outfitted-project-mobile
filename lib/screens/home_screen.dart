@@ -29,7 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.symmetric(vertical: 100),
                   child: Text('New Collection',
                     style:  TextStyle(
-                      fontSize: 35
+                      fontSize: 35,
+                      color: Colors.black
+
                     ),
                   ),
                 ),
