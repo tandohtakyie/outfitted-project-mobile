@@ -96,7 +96,7 @@ class AddressScreen extends StatelessWidget {
                                     value: index,
                                     addressID: snapshot.data.docs[index].id,
                                     totalAmount: this.totalAmount,
-                                    addressModel: Address.fromJson(
+                                    addressModel: Address.getAddressFromJson(
                                         snapshot.data.docs[index].data()),
                                   );
                                 });
@@ -317,7 +317,7 @@ class AddressScreen extends StatelessWidget {
                           cityOrTown: cCityOrTown.text.trim(),
                           phone: cPhone.text.trim(),
                           country: cCountry.text.trim(),
-                        ).toJson();
+                        ).createAddressToJson();
 
                         // add address to firestore
                         OutFittedApp.firestore

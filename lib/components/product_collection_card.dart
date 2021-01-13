@@ -29,8 +29,11 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     isFavorite = sharedPrefWishList.contains(widget.product.id);
+    double discount = 0;
+    if(widget.product.discountPercentage != 0){
+      discount = widget.product.price * widget.product.discountPercentage / 100;
+    }
 
     return GestureDetector(
       onTap: widget.press,
@@ -39,7 +42,7 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
         child: Column(
           children: [
             AspectRatio(
-              aspectRatio: 2.02,
+              aspectRatio: 1.02,
               child: Container(
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
@@ -49,7 +52,37 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
                     topRight: Radius.circular(5),
                   ),
                 ),
-                child: Image.network(widget.product.productImage),
+                child: Stack(
+                  children: [
+                    Center(
+                        child: Image.network(widget.product.productImage),
+                    ),
+                    widget.product.discountPercentage != 0
+                    ? Positioned(
+                      right: 5,
+                      top: 3,
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        decoration: BoxDecoration(
+                          color: kPrimaryColor.withOpacity(0.9),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            widget.product.discountPercentage.toString() + '%',
+                              style: TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold
+                              ),
+                              textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    )
+                        : Container(),
+                  ],
+                ),
               ),
             ),
             Container(
@@ -77,11 +110,19 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '€${widget.product.price.toStringAsFixed(2)}',
+                    '€${(widget.product.price - discount).toStringAsFixed(2)}',
                     style: TextStyle(
                         color: kSecondaryColor
                     ),
                   ),
+                  widget.product.discountPercentage != 0
+                  ? Text(
+                    '€${widget.product.price.toStringAsFixed(2)}',
+                    style: TextStyle(
+                        decoration: TextDecoration.lineThrough
+                    ),
+                  )
+                  : Container(),
                   Container(
                     width: 40,
                     height: 40,

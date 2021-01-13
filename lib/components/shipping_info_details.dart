@@ -18,8 +18,17 @@ class ShippingInfoDetails extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(address.streetAndNumber),
-              Text(address.postCode + ', ' + address.cityOrTown),
+              Text(
+                  address.streetAndNumber,
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
+              Text(
+                address.postCode + ', ' + address.cityOrTown,
+                style: TextStyle(
+                  fontSize: 12,
+                ),),
               SizedBox(
                 height: 5,
               ),
@@ -33,7 +42,12 @@ class ShippingInfoDetails extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(dateOrdered),
+              Text(
+                  dateOrdered,
+                style: TextStyle(
+                  fontSize: 10,
+                ),
+              ),
               SizedBox(
                 height: 5,
               ),

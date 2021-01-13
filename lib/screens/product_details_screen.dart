@@ -33,6 +33,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     isFavorite = sharedPrefWishList.contains(widget.product.id);
+    double discount = 0;
+    if(widget.product.discountPercentage != 0){
+      discount = widget.product.price * widget.product.discountPercentage / 100;
+    }
 
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
@@ -91,7 +95,28 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               widget.product.name,
                               style: Theme.of(context).textTheme.headline6,
                             ),
-                            Text('€' + widget.product.price.toStringAsFixed(2)),
+                            Row(
+                              children: [
+                                Text(
+                                  '€' + (widget.product.price - discount).toStringAsFixed(2),
+                                  style: TextStyle(
+                                    color: kSecondaryColor
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                widget.product.discountPercentage != 0
+                                ?
+                                Text(
+                                  '€' + widget.product.price.toStringAsFixed(2),
+                                  style: TextStyle(
+                                      decoration: TextDecoration.lineThrough
+                                  ),
+                                )
+                                    : Container(),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -335,7 +360,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       OutFittedApp.sharedPreferences
           .setStringList(OutFittedApp.customerCartList, tempCartList);
 
-      Provider.of<CartItemCounter>(context, listen: false).displayResult();
+      Provider.of<CartItemCounter>(context, listen: false).displayItemCounterResult();
     });
   }
 

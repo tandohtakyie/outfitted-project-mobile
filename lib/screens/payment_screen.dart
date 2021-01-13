@@ -94,6 +94,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       OutFittedApp.paymentDetails: paymentMethod,
       OutFittedApp.orderTime: DateTime.now().microsecondsSinceEpoch.toString(),
       OutFittedApp.isSuccess: true,
+      OutFittedApp.orderStatus: 'Order Pending',
     });
 
     saveOrderDetailsForAdmin({
@@ -106,6 +107,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       OutFittedApp.paymentDetails: paymentMethod,
       OutFittedApp.orderTime: DateTime.now().microsecondsSinceEpoch.toString(),
       OutFittedApp.isSuccess: true,
+      OutFittedApp.orderStatus: 'Order Pending',
     }).whenComplete(() => {
           emptyCart(),
         });
@@ -125,7 +127,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }).then((value) {
       OutFittedApp.sharedPreferences
           .setStringList(OutFittedApp.customerCartList, tempList);
-      Provider.of<CartItemCounter>(context, listen: false).displayResult();
+      Provider.of<CartItemCounter>(context, listen: false).displayItemCounterResult();
     });
 
     _scaffoldKey.currentState.showSnackBar(

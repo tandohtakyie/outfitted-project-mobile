@@ -32,4 +32,5 @@ class OutFittedApp {
   static final String paymentDetails = 'paymentDetails';
   static final String orderTime = 'orderTime';
   static final String isSuccess = 'isSuccess';
+  static final String orderStatus = 'orderStatus';
 }

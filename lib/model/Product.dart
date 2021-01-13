@@ -4,7 +4,7 @@ class Product{
   String productImage;
   String supplier;
   String productDescription;
-  int stock;
+  int stock, discountPercentage;
   double price;
 
   Product({
@@ -14,16 +14,18 @@ class Product{
     this.supplier,
     this.productDescription,
     this.stock,
+    this.discountPercentage,
     this.price
   });
 
-  Product.fromJson(Map<String, dynamic> json){
+  Product.getProductFromJson(Map<String, dynamic> json){
     id = json['id'];
     name = json['name'];
     productImage = json['productImage'];
     supplier = json['supplier'];
     productDescription = json['productDescription'];
     stock = json['stock'];
+    discountPercentage = int.parse(json['discount'].toString());
     price = double.parse(json['price'].toString());
   }
 
@@ -35,6 +37,7 @@ class Product{
     data['supplier'] = this.supplier;
     data['productDescription'] = this.productDescription;
     data['stock'] = this.stock;
+    data['discount'] = this.discountPercentage;
     data['price'] = this.price;
 
     return data;

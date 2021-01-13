@@ -15,7 +15,7 @@ class Address{
       this.country
   });
 
-  Address.fromJson(Map<String, dynamic> json){
+  Address.getAddressFromJson(Map<String, dynamic> json){
     name = json['name'];
     streetAndNumber = json['streetAndNumber'];
     postCode = json['postCode'];
@@ -24,7 +24,7 @@ class Address{
     country = json['country'];
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> createAddressToJson(){
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['streetAndNumber'] = this.streetAndNumber;

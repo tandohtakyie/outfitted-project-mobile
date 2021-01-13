@@ -70,7 +70,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
   // Get list of products from Firebase snapshot
   List<WishList> getItemsForWishList(AsyncSnapshot<QuerySnapshot> pSnapshot){
     for (var i = 0; i < pSnapshot.data.docs.length; i++) {
-      Product productFromJson = Product.fromJson(pSnapshot.data.docs[i].data());
+      Product productFromJson = Product.getProductFromJson(pSnapshot.data.docs[i].data());
       productFromJson.id = pSnapshot.data.docs[i].id;
 
       wishList.add(WishList(product: productFromJson));
