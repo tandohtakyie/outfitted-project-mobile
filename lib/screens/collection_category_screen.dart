@@ -4,6 +4,7 @@ import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/productInfo.dart';
 import 'package:outfitted_flutter_mobile/components/product_collection_card.dart';
+import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/Product.dart';
 import 'package:outfitted_flutter_mobile/screens/product_details_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
@@ -40,8 +41,12 @@ class CollectionCategoryScreen extends StatelessWidget {
           Text(categoryName),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection("products")
+              stream: categoryName == 'All'
+                ? OutFittedApp.firestore
+                  .collection(OutFittedApp.collectionProduct)
+                  .snapshots()
+              : OutFittedApp.firestore
+                  .collection(OutFittedApp.collectionProduct)
                   .where('category', isEqualTo: categoryName)
                   .snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

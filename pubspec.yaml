@@ -69,6 +69,14 @@ flutter:
           weight: 700
         - asset: assets/fonts/muli/Muli-Light.ttf
           weight: 300
+
+    - family: BodoniModa
+      fonts:
+        - asset: assets/fonts/BodoniModa/BodoniModa-Black.ttf
+        - asset: assets/fonts/BodoniModa/BodoniModa-Bold.ttf
+          weight: 700
+
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

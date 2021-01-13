@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/model/CollectionCategory.dart';
+import 'dart:io' show Platform;
 
 class StoreCategory extends StatelessWidget {
   const StoreCategory({
@@ -18,7 +19,9 @@ class StoreCategory extends StatelessWidget {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 280,
+            height: Platform.isIOS
+            ?251
+            :280,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Stack(
