@@ -70,20 +70,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             fit: BoxFit.contain,
                           ),
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              'See All ', style: TextStyle(
-                              fontSize: 30,
-                                color: kPrimaryColor,
-                              fontFamily: 'BodoniModa',
-                            ),
-                            ),
-                            IconButton(icon: Icon(Icons.arrow_forward_sharp), onPressed: (){
-                              Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'All'));
-                              Navigator.push(context, route);
-                            })
-                          ],
+                        GestureDetector(
+                          onTap: (){
+                            Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'All'));
+                            Navigator.push(context, route);
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                'See All ',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                    color: kPrimaryColor,
+                                  fontFamily: 'BodoniModa',
+                                ),
+                              ),
+                               Icon(Icons.arrow_forward_sharp),
+                            ],
+                          ),
                         ),
                       ],
                     ),
