@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
@@ -5,6 +6,8 @@ import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.d
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/screens/search_product_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
+
+import 'collection_category_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -18,38 +21,80 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
      
       backgroundColor: Color(0xffa19d95),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 100),
-                  child: Text('New Collection',
-                    style:  TextStyle(
-                      fontSize: 35,
-                      color: Colors.black
+              Positioned(
+                right: 0,
+                top: 0,
+                child: Image.asset(
+                  'assets/images/dp2.jpg',
+                  height: 500,
 
-                    ),
-                  ),
                 ),
               ),
-              Image.asset(
-                'assets/images/dp.jpg',
-                height: 350,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 100),
+                      child: Text('New Collection',
+                        style:  TextStyle(
+                          fontSize: 45,
+                          color: kPrimaryColor,
+                          fontFamily: 'BodoniModa',
+                        ),
+                      ),
+                    ),
+                  ),
+                  Image.asset(
+                    'assets/images/dp3.jpg',
+                    height: 340,
+                  ),
+                  SizedBox(
+                    height: 30,
+
+                  ),
+                  Container(
+                    height: 380,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          right: 0,
+                          child: Image.asset(
+                            'assets/images/dp.jpg',
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'See All ', style: TextStyle(
+                              fontSize: 30,
+                                color: kPrimaryColor,
+                              fontFamily: 'BodoniModa',
+                            ),
+                            ),
+                            IconButton(icon: Icon(Icons.arrow_forward_sharp), onPressed: (){
+                              Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'All'));
+                              Navigator.push(context, route);
+                            })
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                ],
               ),
-              Text(
-                'See All', style: TextStyle(
-                fontSize: 30
-              ),
-              )
             ],
           ),
         ),
       ),
-
     );
   }
 
