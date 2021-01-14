@@ -31,7 +31,9 @@ class CollectionCategoryScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'filterCollection',
-        onPressed: (){},
+        onPressed: (){
+          showFilterModalBottomSheet(context);
+        },
         child: Icon(Icons.filter_list_outlined),
         backgroundColor: kSecondaryColor,
       ),
@@ -94,6 +96,19 @@ class CollectionCategoryScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void showFilterModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext buildContext) {
+      return Container(
+        height: 50,
+        child: Text('Test'),
+      );
+      }
+      );
   }
 }
 
