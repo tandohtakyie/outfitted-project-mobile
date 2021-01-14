@@ -1,9 +1,14 @@
-import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
-import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
+import 'package:outfitted_flutter_mobile/components/brand_logo.dart';
+import 'package:outfitted_flutter_mobile/components/discount_products.dart';
+import 'package:outfitted_flutter_mobile/components/productInfo.dart';
+import 'package:outfitted_flutter_mobile/components/title_with_button.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
+import 'package:outfitted_flutter_mobile/model/Product.dart';
 import 'package:outfitted_flutter_mobile/screens/search_product_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
@@ -18,12 +23,18 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     run();
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+      )
+    );
     return Scaffold(
-     
       backgroundColor: Color(0xffa19d95),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(left: 20),
+          padding: EdgeInsets.only(
+              left: 15
+          ),
           child: Stack(
             children: [
               Positioned(
@@ -32,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Image.asset(
                   'assets/images/dp2.jpg',
                   height: 500,
-
                 ),
               ),
               Column(
@@ -56,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(
                     height: 30,
-
                   ),
                   Container(
                     height: 380,
@@ -92,7 +101,73 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: 15
+                    ),
+                    child: TitleWithButton(
+                      title: 'Best Sales',
+                      press: (){
 
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  DiscountProducts(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        right: 15
+                    ),
+                    child: TitleWithButton(
+                      title: 'Shop by Brand',
+                      press: (){
+
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                        BrandLogo(
+                          brandName: 'Nike',
+                          image: 'assets/icons/nike.png',
+                        ),
+                        BrandLogo(
+                          brandName: 'Adidas',
+                          image: 'assets/icons/adidas.png',
+                        ),
+                        BrandLogo(
+                          brandName: 'Jordans',
+                          image: 'assets/icons/jordans.png',
+                        ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      BrandLogo(
+                        brandName: 'Emporio',
+                        image: 'assets/icons/emporio.png',
+                      ),
+                      BrandLogo(
+                        brandName: 'Puma',
+                        image: 'assets/icons/puma.png',
+                      ),
+                      BrandLogo(
+                        brandName: 'Gucci',
+                        image: 'assets/icons/gucci.png',
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ],
