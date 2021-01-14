@@ -50,6 +50,11 @@ class CollectionCategoryScreen extends StatelessWidget {
                   .collection(OutFittedApp.collectionProduct)
                   .where('supplier', isEqualTo: brandName)
                   .snapshots()
+              : categoryName == 'Sale'
+                  ? OutFittedApp.firestore
+                  .collection(OutFittedApp.collectionProduct)
+                  .where('discount', isGreaterThan: 0)
+                  .snapshots()
               : OutFittedApp.firestore
                   .collection(OutFittedApp.collectionProduct)
                   .snapshots(),

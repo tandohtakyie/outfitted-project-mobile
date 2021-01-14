@@ -10,7 +10,8 @@ class DiscountProducts extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: OutFittedApp.firestore
           .collection(OutFittedApp.collectionProduct)
-          .where('discount', isGreaterThan: 0.toString())
+          .where('discount', isGreaterThan: 0)
+          .limit(5)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError)

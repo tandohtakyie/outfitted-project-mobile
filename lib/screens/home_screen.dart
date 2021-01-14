@@ -30,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     return Scaffold(
       backgroundColor: Color(0xffa19d95),
+      //backgroundColor: kWhiteColor,
+
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(
@@ -111,7 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: TitleWithButton(
                       title: 'Best Sales',
                       press: (){
-
+                        Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'Sale'));
+                        Navigator.push(context, route);
                       },
                     ),
                   ),
@@ -126,6 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: TitleWithButton(
                       title: 'Shop by Brand',
                       press: (){
+                        Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'All'));
+                        Navigator.push(context, route);
 
                       },
                     ),
