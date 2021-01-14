@@ -23,14 +23,14 @@ class CollectionCategoryScreen extends StatefulWidget {
 
 class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
 
-  int selectedRadio = -1;
-
-
+  int selectedRadio = 0;
 
   void setSelectedRadioValue(int val){
     setState(() {
       selectedRadio = val;
     });
+    print('selected Radio value ====>> $selectedRadio');
+    print('selected Radio value ====>> $val');
   }
 
 
@@ -129,99 +129,117 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext buildContext) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        height: 400,
-          decoration: BoxDecoration(
-            color: kPrimaryColor
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 15),
-                child: Text(
-                  'Filter',
-                  style: TextStyle(
-                    fontSize: 30
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter state){
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            height: 400,
+            decoration: BoxDecoration(
+                color: kPrimaryColor
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  child: Text(
+                    'Filter',
+                    style: TextStyle(
+                        fontSize: 30
+                    ),
                   ),
                 ),
-              ),
-              // Divider(
-              //   thickness: 1,
-              //   color: kWhiteColor.withOpacity(0.3),
-              //),
-              Text('Sort By'),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 28,
-                    child: RadioListTile(
-                        value: 0,
-                        groupValue: selectedRadio,
-                        title: Text(
-                          'Sale'
-                        ),
-                        onChanged: (val){
-                          setSelectedRadioValue(val);
-                        }),
-                  ),
-                  SizedBox(
-                    height: 28,
-                    child: RadioListTile(
-                        value: 1,
-                        groupValue: selectedRadio,
-                        title: Text(
-                            'Newest'
-                        ),
-                        onChanged: (val){
-                          setSelectedRadioValue(val);
-                        }),
-                  ),
-                  SizedBox(
-                    height: 28,
-                    child: RadioListTile(
-                        value: 2,
-                        groupValue: selectedRadio,
-                        title: Text(
-                            'Price High-Low'
-                        ),
-                        onChanged: (val){
-                          setSelectedRadioValue(val);
-                        }),
-                  ),
-                  SizedBox(
-                    height: 28,
-                    child: RadioListTile(
-                        value: 3,
-                        groupValue: selectedRadio,
-                        title: Text(
-                            'Price Low-High'
-                        ),
-                        onChanged: (val){
-                          setSelectedRadioValue(val);
-                        }),
-                  )
+                // Divider(
+                //   thickness: 1,
+                //   color: kWhiteColor.withOpacity(0.3),
+                //),
+                Text('Sort By'),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 35,
+                      child: RadioListTile(
+                          value: 0,
+                          groupValue: selectedRadio,
+                          title: Text(
+                              'Sale'
+                          ),
+                          onChanged: (val){
+                            print('radio button value sale $val');
+                            state((){
+                              selectedRadio = val;
+                            });
+                          }),
+                    ),
+                    SizedBox(
+                      height: 35,
+                      child: RadioListTile(
+                          value: 1,
+                          groupValue: selectedRadio,
+                          title: Text(
+                              'Newest'
+                          ),
+                          onChanged: (val){
+                            print('radio button value newest $val');
+                            state((){
+                              selectedRadio = val;
+                            });
+                          }),
+                    ),
+                    SizedBox(
+                      height: 35,
+                      child: RadioListTile(
+                          value: 2,
+                          groupValue: selectedRadio,
+                          title: Text(
+                              'Price High-Low'
+                          ),
+                          onChanged: (val){
+                            print('radio button value high $val');
+                            state((){
+                              selectedRadio = val;
+                            });
+                          }),
+                    ),
+                    SizedBox(
+                      height: 35,
+                      child: RadioListTile(
+                          value: 3,
+                          groupValue: selectedRadio,
+                          title: Text(
+                              'Price Low-High'
+                          ),
+                          onChanged: (val){
+                            print('radio button value low $val');
+                            state((){
+                              selectedRadio = val;
+                            });
+                          }),
+                    )
 
-                ],
-              ),
-              SizedBox(
-                height:20,
-              ),
-              Divider(
-                thickness: 1,
-                color: kWhiteColor.withOpacity(0.3),
-              ),
-              Text('Price Range'),
-              Divider(
-                thickness: 1,
-                color: kWhiteColor.withOpacity(0.3),
-              ),
-              Text('Brand'),
-            ],
-          ),
-        );
-      });
+                  ],
+                ),
+                SizedBox(
+                  height:20,
+                ),
+                Divider(
+                  thickness: 1,
+                  color: kWhiteColor.withOpacity(0.3),
+                ),
+                Text('Price Range'),
+                Divider(
+                  thickness: 1,
+                  color: kWhiteColor.withOpacity(0.3),
+                ),
+                Text('Brand'),
+              ],
+            ),
+          );
+        },
+
+      );
+      }
+      );
 
   }
 }
