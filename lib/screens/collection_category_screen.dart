@@ -12,10 +12,10 @@ import 'package:outfitted_flutter_mobile/style/style.dart';
 class CollectionCategoryScreen extends StatelessWidget {
   const CollectionCategoryScreen({
     Key key,
-    this.categoryName,
+    this.categoryName, this.brandName,
   }) : super(key: key);
 
-  final String categoryName;
+  final String categoryName, brandName;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +47,16 @@ class CollectionCategoryScreen extends StatelessWidget {
                 ? OutFittedApp.firestore
                   .collection(OutFittedApp.collectionProduct)
                   .snapshots()
+              : categoryName == brandName
+                ? OutFittedApp.firestore
+                  .collection(OutFittedApp.collectionProduct)
+                  .where('supplier', isEqualTo: brandName)
+                  .snapshots()
+              : categoryName == 'Sale'
+                  ? OutFittedApp.firestore
+                  .collection(OutFittedApp.collectionProduct)
+                  .where('discount', isGreaterThan: 0)
+                  .snapshots()
               : OutFittedApp.firestore
                   .collection(OutFittedApp.collectionProduct)
                   .where('category', isEqualTo: categoryName)
@@ -76,8 +86,7 @@ class CollectionCategoryScreen extends StatelessWidget {
                         shrinkWrap: true,
                         itemCount: snapshot.data.docs.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: MediaQuery.of(context).size.width /
-                              (MediaQuery.of(context).size.height / 1.6),
+                          childAspectRatio: 0.7,
                           crossAxisCount: 2,
                         ),
                         itemBuilder: (context, index) {
