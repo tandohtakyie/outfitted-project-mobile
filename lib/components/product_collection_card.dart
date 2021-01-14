@@ -38,51 +38,48 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
     return GestureDetector(
       onTap: widget.press,
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(5),
         child: Column(
           children: [
-            AspectRatio(
-              aspectRatio: 1.02,
-              child: Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: kWhiteColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(5),
-                    topRight: Radius.circular(5),
-                  ),
+            Container(
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: kWhiteColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(5),
+                  topRight: Radius.circular(5),
                 ),
-                child: Stack(
-                  children: [
-                    Center(
-                        child: Image.network(widget.product.productImage),
-                    ),
-                    widget.product.discountPercentage != 0
-                    ? Positioned(
-                      right: 5,
-                      top: 3,
-                      child: Container(
-                        height: 32,
-                        width: 32,
-                        decoration: BoxDecoration(
-                          color: kPrimaryColor.withOpacity(0.9),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: Text(
-                            widget.product.discountPercentage.toString() + '%',
-                              style: TextStyle(
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold
-                              ),
-                              textAlign: TextAlign.center,
-                          ),
+              ),
+              child: Stack(
+                children: [
+                  Center(
+                      child: Image.network(widget.product.productImage),
+                  ),
+                  widget.product.discountPercentage != 0
+                  ? Positioned(
+                    right: 5,
+                    top: 3,
+                    child: Container(
+                      height: 32,
+                      width: 32,
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor.withOpacity(0.9),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          widget.product.discountPercentage.toString() + '%',
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold
+                            ),
+                            textAlign: TextAlign.center,
                         ),
                       ),
-                    )
-                        : Container(),
-                  ],
-                ),
+                    ),
+                  )
+                      : Container(),
+                ],
               ),
             ),
             Container(
