@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
+import 'package:outfitted_flutter_mobile/components/price_range_slider.dart';
 import 'package:outfitted_flutter_mobile/components/productInfo.dart';
 import 'package:outfitted_flutter_mobile/components/product_collection_card.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
@@ -12,43 +13,40 @@ import 'package:outfitted_flutter_mobile/style/style.dart';
 class CollectionCategoryScreen extends StatefulWidget {
   const CollectionCategoryScreen({
     Key key,
-    this.categoryName, this.brandName,
+    this.categoryName,
+    this.brandName,
   }) : super(key: key);
 
   final String categoryName, brandName;
 
   @override
-  _CollectionCategoryScreenState createState() => _CollectionCategoryScreenState();
+  _CollectionCategoryScreenState createState() =>
+      _CollectionCategoryScreenState();
 }
 
 class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
+  int selectedSortByRadio = 0;
 
-  int selectedRadio = 0;
-
-  void setSelectedRadioValue(int val){
+  void setSelectedRadioValue(int val) {
     setState(() {
-      selectedRadio = val;
+      selectedSortByRadio = val;
     });
-    print('selected Radio value ====>> $selectedRadio');
-    print('selected Radio value ====>> $val');
   }
-
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: OutFittedCustomAppBarV2(
         title: 'Collection',
         customIcon: Icon(Icons.arrow_back),
         appBar: AppBar(),
-        onLeftIconPress: (){
+        onLeftIconPress: () {
           Navigator.pop(context);
         },
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'filterCollection',
-        onPressed: (){
+        onPressed: () {
           showFilterModalBottomSheet(context);
         },
         child: Icon(Icons.filter_list_outlined),
@@ -61,31 +59,33 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: widget.categoryName == 'All'
-                ? OutFittedApp.firestore
-                  .collection(OutFittedApp.collectionProduct)
-                  .snapshots()
-              : widget.categoryName == widget.brandName
-                ? OutFittedApp.firestore
-                  .collection(OutFittedApp.collectionProduct)
-                  .where('supplier', isEqualTo: widget.brandName)
-                  .snapshots()
-              : widget.categoryName == 'Sale'
                   ? OutFittedApp.firestore
-                  .collection(OutFittedApp.collectionProduct)
-                  .where('discount', isGreaterThan: 0)
-                  .snapshots()
-              : OutFittedApp.firestore
-                  .collection(OutFittedApp.collectionProduct)
-                  .where('category', isEqualTo: widget.categoryName)
-                  .snapshots(),
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      .collection(OutFittedApp.collectionProduct)
+                      .snapshots()
+                  : widget.categoryName == widget.brandName
+                      ? OutFittedApp.firestore
+                          .collection(OutFittedApp.collectionProduct)
+                          .where('supplier', isEqualTo: widget.brandName)
+                          .snapshots()
+                      : widget.categoryName == 'Sale'
+                          ? OutFittedApp.firestore
+                              .collection(OutFittedApp.collectionProduct)
+                              .where('discount', isGreaterThan: 0)
+                              .snapshots()
+                          : OutFittedApp.firestore
+                              .collection(OutFittedApp.collectionProduct)
+                              .where('category', isEqualTo: widget.categoryName)
+                              .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError)
                   return Center(
                     child: Text('Error: ${snapshot.error}'),
                   );
                 if (!snapshot.hasData)
                   return Center(
-                    child: Text('There are no products yet! Sign up for updates'),
+                    child:
+                        Text('There are no products yet! Sign up for updates'),
                   );
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
@@ -107,7 +107,8 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
                           crossAxisCount: 2,
                         ),
                         itemBuilder: (context, index) {
-                          Product product = Product.getProductFromJson(snapshot.data.docs[index].data());
+                          Product product = Product.getProductFromJson(
+                              snapshot.data.docs[index].data());
                           // set name of document as id of the product
                           product.id = snapshot.data.docs[index].id;
 
@@ -129,119 +130,99 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext buildContext) {
-      return StatefulBuilder(
-        builder: (BuildContext context, StateSetter state){
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            height: 400,
-            decoration: BoxDecoration(
-                color: kPrimaryColor
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: Text(
-                    'Filter',
-                    style: TextStyle(
-                        fontSize: 30
-                    ),
-                  ),
-                ),
-                // Divider(
-                //   thickness: 1,
-                //   color: kWhiteColor.withOpacity(0.3),
-                //),
-                Text('Sort By'),
-                Column(
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter state) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                height: 400,
+                decoration: BoxDecoration(color: kPrimaryColor),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 35,
-                      child: RadioListTile(
-                          value: 0,
-                          groupValue: selectedRadio,
-                          title: Text(
-                              'Sale'
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        'Filter',
+                        style: TextStyle(fontSize: 30),
+                      ),
+                    ),
+                    Text('Sort By'),
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: 35,
+                          child: RadioListTile(
+                            activeColor: kSecondaryColor,
+                              value: 0,
+                              groupValue: selectedSortByRadio,
+                              title: Text('Sale'),
+                              onChanged: (val) {
+                                state(() {
+                                  selectedSortByRadio = val;
+                                });
+                              },
                           ),
-                          onChanged: (val){
-                            print('radio button value sale $val');
-                            state((){
-                              selectedRadio = val;
-                            });
-                          }),
+                        ),
+                        SizedBox(
+                          height: 35,
+                          child: RadioListTile(
+                            activeColor: kSecondaryColor,
+                              value: 1,
+                              groupValue: selectedSortByRadio,
+                              title: Text('Newest'),
+                              onChanged: (val) {
+                                state(() {
+                                  selectedSortByRadio = val;
+                                });
+                              }),
+                        ),
+                        SizedBox(
+                          height: 35,
+                          child: RadioListTile(
+                              activeColor: kSecondaryColor,
+                              value: 2,
+                              groupValue: selectedSortByRadio,
+                              title: Text('Price High-Low'),
+                              onChanged: (val) {
+                                state(() {
+                                  selectedSortByRadio = val;
+                                });
+                              }),
+                        ),
+                        SizedBox(
+                          height: 35,
+                          child: RadioListTile(
+                              activeColor: kSecondaryColor,
+                              value: 3,
+                              groupValue: selectedSortByRadio,
+                              title: Text('Price Low-High'),
+                              onChanged: (val) {
+                                state(() {
+                                  selectedSortByRadio = val;
+                                });
+                              }),
+                        )
+                      ],
                     ),
                     SizedBox(
-                      height: 35,
-                      child: RadioListTile(
-                          value: 1,
-                          groupValue: selectedRadio,
-                          title: Text(
-                              'Newest'
-                          ),
-                          onChanged: (val){
-                            print('radio button value newest $val');
-                            state((){
-                              selectedRadio = val;
-                            });
-                          }),
+                      height: 20,
                     ),
-                    SizedBox(
-                      height: 35,
-                      child: RadioListTile(
-                          value: 2,
-                          groupValue: selectedRadio,
-                          title: Text(
-                              'Price High-Low'
-                          ),
-                          onChanged: (val){
-                            print('radio button value high $val');
-                            state((){
-                              selectedRadio = val;
-                            });
-                          }),
+                    Divider(
+                      thickness: 1,
+                      color: kWhiteColor.withOpacity(0.3),
                     ),
-                    SizedBox(
-                      height: 35,
-                      child: RadioListTile(
-                          value: 3,
-                          groupValue: selectedRadio,
-                          title: Text(
-                              'Price Low-High'
-                          ),
-                          onChanged: (val){
-                            print('radio button value low $val');
-                            state((){
-                              selectedRadio = val;
-                            });
-                          }),
-                    )
-
+                    Text('Price Range'),
+                    PriceRangeSlider(),
+                    Divider(
+                      thickness: 1,
+                      color: kWhiteColor.withOpacity(0.3),
+                    ),
+                    Text('Brand'),
                   ],
                 ),
-                SizedBox(
-                  height:20,
-                ),
-                Divider(
-                  thickness: 1,
-                  color: kWhiteColor.withOpacity(0.3),
-                ),
-                Text('Price Range'),
-                Divider(
-                  thickness: 1,
-                  color: kWhiteColor.withOpacity(0.3),
-                ),
-                Text('Brand'),
-              ],
-            ),
+              );
+            },
           );
-        },
-
-      );
-      }
-      );
-
+        });
   }
 }
-
-
