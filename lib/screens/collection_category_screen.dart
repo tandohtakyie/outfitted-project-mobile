@@ -57,6 +57,7 @@ class CollectionCategoryScreen extends StatelessWidget {
                   .snapshots()
               : OutFittedApp.firestore
                   .collection(OutFittedApp.collectionProduct)
+                  .where('category', isEqualTo: categoryName)
                   .snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError)
