@@ -22,12 +22,10 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
         .limit(1)
         .get()
         .then((value) {
-          // print('Highest price GOOD ONE ==> ${value.docs[0].data()['price'].toString()}');
           setState(() {
             _upperValue = double.parse(value.docs[0].data()['price'].toString());
             values = RangeValues(_lowerValue, _upperValue);
           });
-          // print('PRINT AANGEPAST: $_upperValue');
         });
   }
 
@@ -39,10 +37,6 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
 
   @override
   Widget build(BuildContext context) {
-    /*print('highest price se BIJ BUILD price price is ==> ' + _upperValue.toString());
-    print(values.start);
-    print(values.end);*/
-
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
         valueIndicatorColor: kSecondaryColor,
@@ -58,7 +52,6 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
         values: values,
         onChanged: (val){
           setState(() {
-            // print('values ====> $val');
             values = val;
           });
         },
