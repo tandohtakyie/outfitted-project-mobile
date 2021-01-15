@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/rounded_button.dart';
@@ -17,20 +18,60 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: OutFittedCustomAppBarV2(
-        title: 'Account',
-        customIcon: Icon(Icons.search),
-        appBar: AppBar(),
-        onLeftIconPress: () {
-          Route route = MaterialPageRoute(builder: (c) => SearchProductScreen());
-          Navigator.push(context, route);
-        },
+    return WillPopScope(
+      child: Scaffold(
+        appBar: OutFittedCustomAppBarV2(
+          title: 'Account',
+          customIcon: Icon(Icons.search),
+          appBar: AppBar(),
+          onLeftIconPress: () {
+            Route route = MaterialPageRoute(builder: (c) => SearchProductScreen());
+            Navigator.push(context, route);
+          },
+        ),
+        backgroundColor: kBackgroundOutFitted,
+        body: OutFittedApp.auth.currentUser != null
+            ? ProfileScreen()
+            : buildLoginAndRegisterPane(context),
       ),
-      backgroundColor: kBackgroundOutFitted,
-      body: OutFittedApp.auth.currentUser != null
-          ? ProfileScreen()
-          : buildLoginAndRegisterPane(context),
+      onWillPop: (){
+        return showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context){
+              return AlertDialog(
+                title: Text(
+                  "Confirm Exit",
+                  style: TextStyle(
+                      color: kPrimaryColor
+                  ),
+                ),
+                content: Text(
+                  "Are you sure you want to exit?",
+                  style: TextStyle(
+                      color: kPrimaryColor
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    color: kPrimaryColor,
+                    child: Text("YES"),
+                    onPressed: () {
+                      SystemNavigator.pop();
+                    },
+                  ),
+                  FlatButton(
+                    color: kPrimaryColor,
+                    child: Text("NO"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            }
+        );
+      },
     );
   }
 

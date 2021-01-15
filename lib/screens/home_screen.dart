@@ -30,143 +30,183 @@ class _HomeScreenState extends State<HomeScreen> {
         statusBarColor: Colors.transparent,
       )
     );
-    return Scaffold(
-      backgroundColor: Color(0xffa19d95),
-      //backgroundColor: kWhiteColor,
+    return WillPopScope(
+      child: Scaffold(
+        backgroundColor: Color(0xffa19d95),
+        //backgroundColor: kWhiteColor,
 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(
-              left: 15
-          ),
-          child: Stack(
-            children: [
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Image.asset(
-                  'assets/images/dp2.jpg',
-                  height: 500,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+                left: 15
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Image.asset(
+                    'assets/images/dp2.jpg',
+                    height: 500,
+                  ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 100),
-                      child: Text('New Collection',
-                        style:  TextStyle(
-                          fontSize: 45,
-                          color: kPrimaryColor,
-                          fontFamily: 'BodoniModa',
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 100),
+                        child: Text('New Collection',
+                          style:  TextStyle(
+                            fontSize: 45,
+                            color: kPrimaryColor,
+                            fontFamily: 'BodoniModa',
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Image.asset(
-                    'assets/images/dp3.jpg',
-                    height: 340,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    height: 380,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          right: 0,
-                          child: Image.asset(
-                            'assets/images/dp.jpg',
-                            width: MediaQuery.of(context).size.width * 0.75,
-                            fit: BoxFit.contain,
+                    Image.asset(
+                      'assets/images/dp3.jpg',
+                      height: 340,
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      height: 380,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            right: 0,
+                            child: Image.asset(
+                              'assets/images/dp.jpg',
+                              width: MediaQuery.of(context).size.width * 0.75,
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'All'));
-                            Navigator.push(context, route);
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                'See All ',
-                                style: TextStyle(
-                                  fontSize: 30,
-                                    color: kPrimaryColor,
-                                  fontFamily: 'BodoniModa',
+                          GestureDetector(
+                            onTap: (){
+                              Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'All'));
+                              Navigator.push(context, route);
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  'See All ',
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                      color: kPrimaryColor,
+                                    fontFamily: 'BodoniModa',
+                                  ),
                                 ),
-                              ),
-                               Icon(Icons.arrow_forward_sharp),
-                            ],
+                                 Icon(Icons.arrow_forward_sharp),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: 15
+                    SizedBox(
+                      height: 20,
                     ),
-                    child: TitleWithButton(
-                      title: 'Best Sales',
-                      press: (){
-                        Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'Sale'));
-                        Navigator.push(context, route);
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  DiscountProducts(),
-                  Padding(
-                    padding: EdgeInsets.only(
+                    Padding(
+                      padding: EdgeInsets.only(
                         right: 15
+                      ),
+                      child: TitleWithButton(
+                        title: 'Best Sales',
+                        press: (){
+                          Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'Sale'));
+                          Navigator.push(context, route);
+                        },
+                      ),
                     ),
-                    child: TitleWithButton(
-                      title: 'Shop by Brand',
-                      press: (){
-                        Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'All'));
-                        Navigator.push(context, route);
+                    SizedBox(
+                      height: 10,
+                    ),
+                    DiscountProducts(),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          right: 15
+                      ),
+                      child: TitleWithButton(
+                        title: 'Shop by Brand',
+                        press: (){
+                          Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'All'));
+                          Navigator.push(context, route);
 
-                      },
+                        },
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  BrandPartnerships(),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        right: 15
+                    SizedBox(
+                      height: 20,
                     ),
-                    child: TitleWithButton(
-                      title: 'Follow our models',
-                      press: (){
-                      },
+                    BrandPartnerships(),
+                    SizedBox(
+                      height: 50,
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ModelsImageSlider(),
-                  SizedBox(
-                    height: 30,
-                  ),
-                ],
-              ),
-            ],
+                    Padding(
+                      padding: EdgeInsets.only(
+                          right: 15
+                      ),
+                      child: TitleWithButton(
+                        title: 'Follow our models',
+                        press: (){
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ModelsImageSlider(),
+                    SizedBox(
+                      height: 30,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
+      onWillPop: (){
+        return showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context){
+              return AlertDialog(
+                title: Text(
+                  "Confirm Exit",
+                  style: TextStyle(
+                      color: kPrimaryColor
+                  ),
+                ),
+                content: Text(
+                  "Are you sure you want to exit?",
+                  style: TextStyle(
+                      color: kPrimaryColor
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    color: kPrimaryColor,
+                    child: Text("YES"),
+                    onPressed: () {
+                      SystemNavigator.pop();
+                    },
+                  ),
+                  FlatButton(
+                    color: kPrimaryColor,
+                    child: Text("NO"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            }
+        );
+      },
     );
   }
 

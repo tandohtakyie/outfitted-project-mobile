@@ -26,71 +26,96 @@ class OrderDetailsScreen extends StatelessWidget {
         appBar: AppBar(),
       ),
       backgroundColor: kBackgroundOutFitted,
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            FutureBuilder<DocumentSnapshot>(
-              future: OutFittedApp.firestore
-                  .collection(OutFittedApp.collectionCustomer)
-                  .doc(OutFittedApp.sharedPreferences
-                      .getString(OutFittedApp.customerUID))
-                  .collection(OutFittedApp.collectionOrders)
-                  .doc(orderID)
-                  .get(),
-              builder: (c, snapshot) {
-                Map dataMap;
-                if (snapshot.hasData) {
-                  dataMap = snapshot.data.data();
-                }
-                return snapshot.hasData
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Order ID',
-                          style: TextStyle(
-                            color: kWhiteColor
-                          ),),
-                          Container(
-                            child: Text(
-                              snapshot.data.id,
-                              style: TextStyle(
-                                fontSize: 13,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              FutureBuilder<DocumentSnapshot>(
+                future: OutFittedApp.firestore
+                    .collection(OutFittedApp.collectionCustomer)
+                    .doc(OutFittedApp.sharedPreferences
+                        .getString(OutFittedApp.customerUID))
+                    .collection(OutFittedApp.collectionOrders)
+                    .doc(orderID)
+                    .get(),
+                builder: (c, snapshot) {
+                  Map dataMap;
+                  if (snapshot.hasData) {
+                    dataMap = snapshot.data.data();
+                  }
+                  return snapshot.hasData
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Order ID',
+                            style: TextStyle(
+                              color: kWhiteColor
+                            ),),
+                            Container(
+                              child: Text(
+                                snapshot.data.id,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                ),
                               ),
                             ),
-                          ),
-                          Divider(
-                            thickness: 0.1,
-                            color: kWhiteColor.withOpacity(0.3),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text('Address & Date'),
-                          FutureBuilder<DocumentSnapshot>(
+                            Divider(
+                              thickness: 0.1,
+                              color: kWhiteColor.withOpacity(0.3),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text('Address & Date'),
+                            FutureBuilder<DocumentSnapshot>(
+                                future: OutFittedApp.firestore
+                                    .collection(OutFittedApp.collectionCustomer)
+                                    .doc(OutFittedApp.sharedPreferences
+                                        .getString(OutFittedApp.customerUID))
+                                    .collection(OutFittedApp.subCollectionAddress)
+                                    .doc(dataMap[OutFittedApp.addressID])
+                                    .get(),
+                                builder: (c, snapsho2) {
+                                  return snapsho2.hasData
+                                      ? ShippingInfoDetails(
+                                          address: Address.getAddressFromJson(
+                                              snapsho2.data.data()),
+                                          dateOrdered: DateFormat(
+                                                  'dd MMMM, yyyy - hh:mm aa')
+                                              .format(DateTime
+                                                  .fromMicrosecondsSinceEpoch(
+                                                      int.parse(dataMap[
+                                                          OutFittedApp
+                                                              .orderTime]))),
+                                        )
+                                      : Center(
+                                          child: SpinKitDualRing(
+                                            color: kSecondaryColor,
+                                            size: 50,
+                                          ),
+                                        );
+                                },),
+
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Text('Items ordered'),
+                            FutureBuilder<QuerySnapshot>(
                               future: OutFittedApp.firestore
-                                  .collection(OutFittedApp.collectionCustomer)
-                                  .doc(OutFittedApp.sharedPreferences
-                                      .getString(OutFittedApp.customerUID))
-                                  .collection(OutFittedApp.subCollectionAddress)
-                                  .doc(dataMap[OutFittedApp.addressID])
+                                  .collection(OutFittedApp.collectionProduct)
+                                  .where(FieldPath.documentId,
+                                      whereIn: dataMap[OutFittedApp.productID])
                                   .get(),
-                              builder: (c, snapsho2) {
-                                return snapsho2.hasData
-                                    ? ShippingInfoDetails(
-                                        address: Address.getAddressFromJson(
-                                            snapsho2.data.data()),
-                                        dateOrdered: DateFormat(
-                                                'dd MMMM, yyyy - hh:mm aa')
-                                            .format(DateTime
-                                                .fromMicrosecondsSinceEpoch(
-                                                    int.parse(dataMap[
-                                                        OutFittedApp
-                                                            .orderTime]))),
+                              builder: (c, dataSnapshot) {
+                                return dataSnapshot.hasData
+                                    ? OrderCard(
+                                        itemCount: dataSnapshot.data.docs.length,
+                                        data: dataSnapshot.data.docs,
                                       )
                                     : Center(
                                         child: SpinKitDualRing(
@@ -98,52 +123,29 @@ class OrderDetailsScreen extends StatelessWidget {
                                           size: 50,
                                         ),
                                       );
-                              },),
-
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Text('Items ordered'),
-                          FutureBuilder<QuerySnapshot>(
-                            future: OutFittedApp.firestore
-                                .collection(OutFittedApp.collectionProduct)
-                                .where(FieldPath.documentId,
-                                    whereIn: dataMap[OutFittedApp.productID])
-                                .get(),
-                            builder: (c, dataSnapshot) {
-                              return dataSnapshot.hasData
-                                  ? OrderCard(
-                                      itemCount: dataSnapshot.data.docs.length,
-                                      data: dataSnapshot.data.docs,
-                                    )
-                                  : Center(
-                                      child: SpinKitDualRing(
-                                        color: kSecondaryColor,
-                                        size: 50,
-                                      ),
-                                    );
-                            },
-                          ),
-                          Container(
-                            child: Text(
-                              'Total : €' +
-                                  double.parse(dataMap[OutFittedApp.totalAmount].toString()).toStringAsFixed(2),
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              },
                             ),
-                          ),
-                          Divider(
-                            thickness: 0.1,
-                            color: kWhiteColor.withOpacity(0.3),
-                          ),
-                        ],
-                      )
-                    : SpinKitDualRing(
-                        color: kSecondaryColor,
-                        size: 50,
-                      );
-              },
-            ),
-          ],
+                            Container(
+                              child: Text(
+                                'Total : €' +
+                                    double.parse(dataMap[OutFittedApp.totalAmount].toString()).toStringAsFixed(2),
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Divider(
+                              thickness: 0.1,
+                              color: kWhiteColor.withOpacity(0.3),
+                            ),
+                          ],
+                        )
+                      : SpinKitDualRing(
+                          color: kSecondaryColor,
+                          size: 50,
+                        );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
