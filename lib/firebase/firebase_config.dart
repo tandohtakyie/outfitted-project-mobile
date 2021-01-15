@@ -28,7 +28,7 @@ class OutFittedApp {
 
   static final String addressID = 'addressID';
   static final String totalAmount = 'totalAmount';
-  static final String productID = 'productIDs';
+  static final String productID = 'OrderedProductIDs';
   static final String paymentDetails = 'paymentDetails';
   static final String orderTime = 'orderTime';
   static final String isSuccess = 'isSuccess';

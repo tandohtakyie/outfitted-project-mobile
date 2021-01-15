@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfitted_flutter_mobile/components/brand_logo.dart';
+import 'package:outfitted_flutter_mobile/components/brand_partnerships.dart';
 import 'package:outfitted_flutter_mobile/components/discount_products.dart';
+import 'package:outfitted_flutter_mobile/components/models_image_slider.dart';
 import 'package:outfitted_flutter_mobile/components/productInfo.dart';
 import 'package:outfitted_flutter_mobile/components/title_with_button.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
@@ -138,40 +140,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    children: [
-                        BrandLogo(
-                          brandName: 'Nike',
-                          image: 'assets/icons/nike.png',
-                        ),
-                        BrandLogo(
-                          brandName: 'Adidas',
-                          image: 'assets/icons/adidas.png',
-                        ),
-                        BrandLogo(
-                          brandName: 'Jordans',
-                          image: 'assets/icons/jordans.png',
-                        ),
-                    ],
+                  BrandPartnerships(),
+                  SizedBox(
+                    height: 50,
                   ),
-                  Row(
-                    children: [
-                      BrandLogo(
-                        brandName: 'Emporio',
-                        image: 'assets/icons/emporio.png',
-                      ),
-                      BrandLogo(
-                        brandName: 'Puma',
-                        image: 'assets/icons/puma.png',
-                      ),
-                      BrandLogo(
-                        brandName: 'Gucci',
-                        image: 'assets/icons/gucci.png',
-                      ),
-                    ],
+                  Padding(
+                    padding: EdgeInsets.only(
+                        right: 15
+                    ),
+                    child: TitleWithButton(
+                      title: 'Follow our models',
+                      press: (){
+                      },
+                    ),
                   ),
                   SizedBox(
                     height: 20,
+                  ),
+                  ModelsImageSlider(),
+                  SizedBox(
+                    height: 30,
                   ),
                 ],
               ),

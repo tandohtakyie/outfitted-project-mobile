@@ -84,6 +84,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   saveOrderDetails(String paymentMethod) {
+
+    String orderTime = DateTime.now().microsecondsSinceEpoch.toString();
+
     saveOrderDetailsForCustomer({
       OutFittedApp.addressID: widget.addressID,
       OutFittedApp.totalAmount: widget.totalAmount,
@@ -92,10 +95,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
       OutFittedApp.productID: OutFittedApp.sharedPreferences
           .getStringList(OutFittedApp.customerCartList),
       OutFittedApp.paymentDetails: paymentMethod,
-      OutFittedApp.orderTime: DateTime.now().microsecondsSinceEpoch.toString(),
+      OutFittedApp.orderTime: orderTime,
       OutFittedApp.isSuccess: true,
       OutFittedApp.orderStatus: 'Order Pending',
+      'OrderID' : OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID) +
+          orderTime
     });
+
 
     saveOrderDetailsForAdmin({
       OutFittedApp.addressID: widget.addressID,
@@ -105,9 +111,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
       OutFittedApp.productID: OutFittedApp.sharedPreferences
           .getStringList(OutFittedApp.customerCartList),
       OutFittedApp.paymentDetails: paymentMethod,
-      OutFittedApp.orderTime: DateTime.now().microsecondsSinceEpoch.toString(),
+      OutFittedApp.orderTime: orderTime,
       OutFittedApp.isSuccess: true,
       OutFittedApp.orderStatus: 'Order Pending',
+      'OrderID' : OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID) +
+          orderTime
     }).whenComplete(() => {
           emptyCart(),
         });
