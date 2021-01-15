@@ -16,12 +16,26 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
   static double _upperValue = 10;
 
   RangeValues values = RangeValues(_lowerValue, _upperValue);
+  int price = 0;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getMaxPrice();
+    print('highest price se price price is ==> ' + price.toString());
+  }
 
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      getMaxPrice();
+      print('highest price se gethightest price price is ==> ' + price.toString());
+    });
 
+  print(values.start);
+  print(values.end);
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
         valueIndicatorColor: kSecondaryColor,
@@ -43,5 +57,25 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
         },
       ),
     );
+  }
+  void getMaxPrice() async {
+    await OutFittedApp.firestore
+        .collection(OutFittedApp.collectionProduct)
+        .orderBy('price', descending: true)
+        .get()
+        .then((value) {
+          print('Highest price GOOD ONE ==> ${value.docs[0].data()['price'].toString()}');
+          price = int.parse(value.docs[0].data()['price'].toString());
+          // print('NEEWWWW $price');
+    });
+   // https://stackoverflow.com/questions/50296061/flutter-is-it-possible-to-extract-data-from-a-future-without-using-a-futurebui
+
+    // querySnapshot.docs.forEach((snapshot) {
+    //   tempPrice = snapshot.data()['price'];
+    // });
+    // setState(() {
+    //   price = tempPrice;
+    // });
+
   }
 }
