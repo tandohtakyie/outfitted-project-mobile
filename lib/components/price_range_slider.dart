@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
+import 'package:outfitted_flutter_mobile/screens/collection_category_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class PriceRangeSlider extends StatefulWidget {
@@ -13,7 +14,7 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
   static double _lowerValue = 0,
                 _upperValue;
 
-  RangeValues values;
+  RangeValues values = RangeValues(0, 0);
 
   initMaxPrice() async {
     await OutFittedApp.firestore
@@ -37,6 +38,7 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
 
   @override
   Widget build(BuildContext context) {
+
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
         valueIndicatorColor: kSecondaryColor,

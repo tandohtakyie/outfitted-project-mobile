@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
@@ -25,6 +26,7 @@ class CollectionCategoryScreen extends StatefulWidget {
 }
 
 class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   int selectedSortByRadio = 0;
 
   void setSelectedRadioValue(int val) {
@@ -33,9 +35,35 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
     });
   }
 
+  static double _lowerValue = 0,
+      _upperValue;
+
+  RangeValues values = RangeValues(0, 0);
+
+  initMaxPrice() async {
+    await OutFittedApp.firestore
+        .collection(OutFittedApp.collectionProduct)
+        .orderBy('price', descending: true)
+        .limit(1)
+        .get()
+        .then((value) {
+      setState(() {
+        _upperValue = double.parse(value.docs[0].data()['price'].toString());
+        values = RangeValues(_lowerValue, _upperValue);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initMaxPrice();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _drawerKey,
       appBar: OutFittedCustomAppBarV2(
         title: 'Collection',
         customIcon: Icon(Icons.arrow_back),
@@ -44,10 +72,149 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
           Navigator.pop(context);
         },
       ),
+      drawer: Drawer(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            color: kPrimaryColor,
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  child: Text(
+                    'Filter',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                ),
+                Text('Sort By'),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 35,
+                      child: RadioListTile(
+                        activeColor: kSecondaryColor,
+                        value: 0,
+                        groupValue: selectedSortByRadio,
+                        title: Text('Sale'),
+                        onChanged: (val) {
+                          setState(() {
+                            selectedSortByRadio = val;
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 35,
+                      child: RadioListTile(
+                          activeColor: kSecondaryColor,
+                          value: 1,
+                          groupValue: selectedSortByRadio,
+                          title: Text('Newest'),
+                          onChanged: (val) {
+                            setState(() {
+                              selectedSortByRadio = val;
+                            });
+                          }),
+                    ),
+                    SizedBox(
+                      height: 35,
+                      child: RadioListTile(
+                          activeColor: kSecondaryColor,
+                          value: 2,
+                          groupValue: selectedSortByRadio,
+                          title: Text('Price High-Low'),
+                          onChanged: (val) {
+                            setState(() {
+                              selectedSortByRadio = val;
+                            });
+                          }),
+                    ),
+                    SizedBox(
+                      height: 35,
+                      child: RadioListTile(
+                          activeColor: kSecondaryColor,
+                          value: 3,
+                          groupValue: selectedSortByRadio,
+                          title: Text('Price Low-High'),
+                          onChanged: (val) {
+                            setState(() {
+                              selectedSortByRadio = val;
+                            });
+                          }),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Divider(
+                  thickness: 1,
+                  color: kWhiteColor.withOpacity(0.3),
+                ),
+                Text('Price Range'),
+                SliderTheme(
+                  data: SliderTheme.of(context).copyWith(
+                    valueIndicatorColor: kSecondaryColor,
+                    inactiveTrackColor: kPrimaryColor,
+                  ),
+                  child: RangeSlider(
+                    activeColor: kSecondaryColor,
+                    inactiveColor: kBackgroundOutFitted,
+                    min: _lowerValue,
+                    max: _upperValue,
+                    labels: RangeLabels(values.start.toStringAsFixed(2), values.end.toStringAsFixed(2)),
+                    divisions: (_upperValue - _lowerValue).toInt() * 2.3.toInt(),
+                    values: values,
+                    onChanged: (val){
+                      setState(() {
+                        values = val;
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                FlatButton(
+                  onPressed: (){
+                    // filter uit
+                    Navigator.pop(context);
+                    Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'Sale'));
+                    Navigator.push(context, route);
+                  },
+                  child: Center(
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      decoration: BoxDecoration(
+                        color: kSecondaryColor,
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Apply',
+                          style: TextStyle(
+                            color: kWhiteColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'filterCollection',
         onPressed: () {
-          showFilterModalBottomSheet(context);
+          _drawerKey.currentState.openDrawer();
+         // showFilterModalBottomSheet(context);
         },
         child: Icon(Icons.filter_list_outlined),
         backgroundColor: kSecondaryColor,
@@ -132,9 +299,14 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
         builder: (BuildContext buildContext) {
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter state) {
+              OutFittedApp.firestore
+              .collection(OutFittedApp.collectionProduct)
+              // .where('price', isGreaterThanOrEqualTo: lowerPrice)
+              // .where('price', isLessThanOrEqualTo: higherPrice)
+              .get();
               return Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
-                height: 400,
+                height: MediaQuery.of(context).size.height * 0.7,
                 decoration: BoxDecoration(color: kPrimaryColor),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,11 +385,31 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
                     ),
                     Text('Price Range'),
                     PriceRangeSlider(),
-                    Divider(
-                      thickness: 1,
-                      color: kWhiteColor.withOpacity(0.3),
+                    SizedBox(
+                      height: 30,
                     ),
-                    Text('Brand'),
+                    FlatButton(
+                      onPressed: (){
+                        // filter uit
+                      },
+                      child: Center(
+                        child: Container(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          decoration: BoxDecoration(
+                            color: kSecondaryColor,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Apply',
+                              style: TextStyle(
+                                color: kWhiteColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               );
