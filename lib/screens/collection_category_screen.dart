@@ -176,8 +176,10 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
                     inactiveColor: kBackgroundOutFitted,
                     min: _lowerValue,
                     max: _upperValue,
-                    labels: RangeLabels(values.start.toStringAsFixed(2),
-                        values.end.toStringAsFixed(2)),
+                    labels: RangeLabels(
+                        values.start.toStringAsFixed(2),
+                        values.end.toStringAsFixed(2),
+                    ),
                     divisions:(_upperValue - _lowerValue).toInt(),
                     values: values,
                     onChanged: (val) {
@@ -236,6 +238,7 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
   }
 
   Widget initContent() {
+
     print('start values:${values.start}');
     print('end values:${values.end}');
     return Column(

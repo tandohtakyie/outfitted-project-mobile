@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class ModelsImageSlider extends StatefulWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  const ModelsImageSlider({Key key, this.scaffoldKey}) : super(key: key);
   @override
   _ModelsImageSliderState createState() => _ModelsImageSliderState();
 }
@@ -49,6 +52,20 @@ class _ModelsImageSliderState extends State<ModelsImageSlider> {
                   FlatButton(
                     onPressed: (){
                       // redirect to instagram page
+                      widget.scaffoldKey.currentState.showSnackBar(
+                        new SnackBar(
+                          backgroundColor: kPrimaryColor,
+                          duration: Duration(
+                            seconds: 2,
+                          ),
+                          content: Container(
+                            height: 30,
+                            child: Center(
+                                child: Text('Follow models not available yet... coming up soon!'),
+                            ),
+                          ),
+                        ),
+                      );
                     },
                     child: Center(
                       child: Container(
