@@ -86,14 +86,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
   saveOrderDetails(String paymentMethod) {
 
     String orderTime = DateTime.now().microsecondsSinceEpoch.toString();
+    List productsToBuyID = OutFittedApp.sharedPreferences
+        .getStringList(OutFittedApp.customerCartList);
+
+    productsToBuyID.removeAt(0);
 
     saveOrderDetailsForCustomer({
       OutFittedApp.addressID: widget.addressID,
       OutFittedApp.totalAmount: widget.totalAmount,
       "orderBy":
           OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID),
-      OutFittedApp.productID: OutFittedApp.sharedPreferences
-          .getStringList(OutFittedApp.customerCartList),
+      OutFittedApp.productID: productsToBuyID,
       OutFittedApp.paymentDetails: paymentMethod,
       OutFittedApp.orderTime: orderTime,
       OutFittedApp.isSuccess: true,
@@ -108,8 +111,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       OutFittedApp.totalAmount: widget.totalAmount,
       "orderBy":
           OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID),
-      OutFittedApp.productID: OutFittedApp.sharedPreferences
-          .getStringList(OutFittedApp.customerCartList),
+      OutFittedApp.productID: productsToBuyID,
       OutFittedApp.paymentDetails: paymentMethod,
       OutFittedApp.orderTime: orderTime,
       OutFittedApp.isSuccess: true,
@@ -166,7 +168,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         msg: 'Order placed successfully.',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
-        backgroundColor: Color(0xff5eba7d),
+        backgroundColor: kSuccessColor,
         fontSize: 15,
       );
       Navigator.pushNamedAndRemoveUntil(

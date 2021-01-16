@@ -141,7 +141,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
         msg: pProduct.name + ' removed from wishlist successfully.',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: Color(0xfff7b0b7),
+        backgroundColor: kNotFavoriteProductColorToastBackground,
         fontSize: 15,
       );
 

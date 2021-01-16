@@ -124,14 +124,15 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                        color: Color(0xFFFFE6E6).withOpacity(0.8),
+                        color: kBackgroundLikeButton.withOpacity(0.8),
                         shape: BoxShape.circle
                     ),
                     child: IconButton(
                       icon: new Icon(Icons.favorite,
                           color: (isFavorite)
-                              ? Color(0xFFFF4848)
-                              : Color(0xff9A9A9A)),
+                              ? kFavoriteProductColor
+                              : kNotFavoriteProductColor
+                      ),
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onPressed: () async {
@@ -176,7 +177,7 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
               msg: widget.product.name + ' removed from wishlist successfully.',
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
-              backgroundColor: Color(0xfff7b0b7),
+              backgroundColor: kNotFavoriteProductColorToastBackground,
               fontSize: 15,
             );
 
@@ -198,7 +199,7 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
         msg: widget.product.name + ' added to wish successfully 🎉',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
-        backgroundColor: Color(0xff5eba7d),
+        backgroundColor: kSuccessColor,
         fontSize: 15,
       );
 

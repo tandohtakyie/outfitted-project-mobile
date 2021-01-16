@@ -16,7 +16,7 @@ List<Widget> buildWishListCard({@required WishList wishListItem,}) {
         child: Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: Color(0xFFF5F6F9),
+            color: kWhiteColor,
             borderRadius: BorderRadius.circular(15),
           ),
           child: Image.network(image),

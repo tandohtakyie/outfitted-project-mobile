@@ -16,12 +16,14 @@ class ListDismissible extends StatefulWidget{
   final String emptyListText;
   final dynamic list;
   final Function funcOnDismissible;
+  final GlobalKey<ScaffoldState> scaffoldState;
 
   const ListDismissible({
     Key key,
     this.emptyListText = "Empty list",
     @required this.list,
     @required this.funcOnDismissible,
+    this.scaffoldState,
   }) : super(key: key);
 
   @override
@@ -53,7 +55,7 @@ class _ListItemDismissible extends State<ListDismissible>{
               background: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
-                  color: Color(0xFFFFE6E6),
+                  color: kBackgroundLikeButton,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Row(
@@ -80,7 +82,9 @@ class _ListItemDismissible extends State<ListDismissible>{
                   /* Check which list-item-card must be created:
                       items for shopping cart or items for wishlist */
                   widget.list is List<Cart> ?
-                  buildShoppingCartCard(cartItem: widget.list[index])
+                  buildShoppingCartCard(
+                      cartItem: widget.list[index],
+                      scaffoldKey: widget.scaffoldState)
                       : buildWishListCard(wishListItem: widget.list[index])
               ),
             ),

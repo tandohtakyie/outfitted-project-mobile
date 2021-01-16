@@ -57,7 +57,7 @@ class OrderCard extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Color(0xfff5f6f9),
+                  color: kWhiteColor,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Image.network(product.productImage),
@@ -86,7 +86,6 @@ class OrderCard extends StatelessWidget {
                   style: TextStyle(color: kSecondaryColor),
                   children: [
                     TextSpan(
-                      text: ' totalOfItems',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.5),
                       ),

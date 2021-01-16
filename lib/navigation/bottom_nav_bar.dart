@@ -48,28 +48,28 @@ class _BottomNavBarState extends State<BottomNavBar> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home_outlined,
-                color: Colors.white.withOpacity(0.8),
+                color: kBottomNavigationIconColor.withOpacity(0.8),
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.list_outlined,
-                color: Colors.white.withOpacity(0.8),
+                color: kBottomNavigationIconColor.withOpacity(0.8),
               ),
               label: 'Search',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite_border,
-                color: Colors.white.withOpacity(0.8),
+                color: kBottomNavigationIconColor.withOpacity(0.8),
               ),
               label: 'Wishlist',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.person_outline,
-                color: Colors.white.withOpacity(0.8),
+                color: kBottomNavigationIconColor.withOpacity(0.8),
               ),
               label: 'Account',
             ),

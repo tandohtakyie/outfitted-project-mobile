@@ -129,7 +129,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           padding: EdgeInsets.all(15),
                           width: 64,
                           decoration: BoxDecoration(
-                            color: Color(0xFFFFE6E6),
+                            color: kBackgroundLikeButton,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),
                               bottomLeft: Radius.circular(20),
@@ -138,8 +138,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           child: IconButton(
                             icon: new Icon(Icons.favorite,
                                 color: (isFavorite)
-                                    ? Color(0xFFFF4848)
-                                    : Color(0xff9A9A9A)),
+                                    ? kFavoriteProductColor
+                                    : kNotFavoriteProductColor,
+                          ),
                             onPressed: () async {
                               if (OutFittedApp.auth.currentUser != null) {
                                 addItemToWish(widget.product.id, context);
@@ -289,7 +290,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           msg: widget.product.name + ' removed from wishlist successfully.',
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
-          backgroundColor: Color(0xfff7b0b7),
+          backgroundColor: kNotFavoriteProductColorToastBackground,
           fontSize: 15,
         );
 
@@ -311,7 +312,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         msg: widget.product.name + ' added to wish successfully 🎉',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
-        backgroundColor: Color(0xff5eba7d),
+        backgroundColor: kSuccessColor,
         fontSize: 15,
       );
 

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/model/CollectionCategory.dart';
 import 'dart:io' show Platform;
 
+import 'package:outfitted_flutter_mobile/style/style.dart';
+
 class StoreCategory extends StatelessWidget {
   const StoreCategory({
     Key key,
@@ -40,9 +42,9 @@ class StoreCategory extends StatelessWidget {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                          Color(0xff343434).withOpacity(0.6),
-                          Color(0xff343434).withOpacity(0.4),
-                              Color(0xff343434).withOpacity(0.7),
+                          kDarkGradient.withOpacity(0.6),
+                              kDarkGradient.withOpacity(0.4),
+                              kDarkGradient.withOpacity(0.7),
                         ],
                         ),
                     ),

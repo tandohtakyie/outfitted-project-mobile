@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return WillPopScope(
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Color(0xffa19d95),
+        backgroundColor: kHomeScreenBackground,
         //backgroundColor: kWhiteColor,
 
         body: SingleChildScrollView(
@@ -233,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
         msg: '🚑 🚑',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
-        backgroundColor: Color(0xffff0000),
+        backgroundColor: kFavoriteProductColor,
         fontSize: 50,
       );
     }

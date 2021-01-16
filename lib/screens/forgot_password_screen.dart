@@ -23,7 +23,7 @@ class ForgotPasswordScreen extends StatelessWidget{
             msg: "We've sent you an email with a reset link",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.CENTER,
-            backgroundColor: Color(0xff5eba7d),
+            backgroundColor: kSuccessColor,
             fontSize: 15,
           );
           Navigator.pop(context);

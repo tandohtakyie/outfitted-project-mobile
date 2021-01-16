@@ -5,6 +5,7 @@ import 'package:outfitted_flutter_mobile/components/order_card.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
+import 'package:intl/intl.dart';
 
 class AllOrdersScreen extends StatefulWidget {
   @override
@@ -39,7 +40,7 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (c, index) {
                       return FutureBuilder<QuerySnapshot>(
-                        future: FirebaseFirestore.instance
+                        future: OutFittedApp.firestore
                             .collection(OutFittedApp.collectionProduct)
                             .where(FieldPath.documentId,
                                 whereIn: snapshot.data.docs[index]
@@ -47,11 +48,38 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                             .get(),
                         builder: (c, snapshot2) {
                           return snapshot2.hasData
-                              ? OrderCard(
-                                  itemCount: snapshot2.data.docs.length,
-                                  data: snapshot2.data.docs,
-                                  orderID: snapshot.data.docs[index].id,
-                                )
+                              ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  FutureBuilder<DocumentSnapshot>(
+                                    future: OutFittedApp.firestore
+                                          .collection(OutFittedApp.collectionCustomer)
+                                          .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
+                                          .collection(OutFittedApp.collectionOrders)
+                                          .doc(snapshot.data.docs[index].id)
+                                          .get(),
+                                      builder: (c, snapshotOrder){
+                                        return snapshotOrder.hasData
+                                            ? Text(
+                                            DateFormat(
+                                                'dd MMMM, yyyy - hh:mm aa')
+                                                .format(DateTime
+                                                .fromMicrosecondsSinceEpoch(
+                                                int.parse(snapshotOrder.data.data()[OutFittedApp.orderTime])))
+                                        )
+                                            : Container();
+                                      }
+                                  ),
+                                  OrderCard(
+                                      itemCount: snapshot2.data.docs.length,
+                                      data: snapshot2.data.docs,
+                                      orderID: snapshot.data.docs[index].id,
+                                    ),
+                                ],
+                              )
                               : Center(
                                   child: SpinKitDualRing(
                                     color: kSecondaryColor,

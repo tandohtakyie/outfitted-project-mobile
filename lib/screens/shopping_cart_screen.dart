@@ -76,7 +76,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             return ListDismissible(
                 emptyListText:"Add a product by pressing the 🛒️ icon",
                 list: snapshot.data.docs.length == 0 ? shoppingCartList : getItemsForCustomerCart(snapshot),
-                funcOnDismissible: removeItemFromCustomerCart
+                funcOnDismissible: removeItemFromCustomerCart,
+                scaffoldState: _scaffoldKey,
             );
           }
         },
@@ -94,12 +95,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           color: kPrimaryColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30),
-              topRight: Radius.circular(30)),
+              topRight: Radius.circular(30),
+          ),
           boxShadow: [
             BoxShadow(
               offset: Offset(0, -15),
               blurRadius: 20,
-              color: Color(0xFFDADADA).withOpacity(0.15),
+              color: kShadowColor.withOpacity(0.15),
             ),
           ],
         ),
@@ -113,19 +115,37 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     height: 40,
                     width: 40,
                     decoration: BoxDecoration(
-                      color: Color(0xFFF5F6F9),
+                      color: kWhiteColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(
                       Icons.receipt,
-                      color: Colors.orange,
+                      color: kSecondaryColor,
                     ),
                   ),
                   Spacer(),
-                  Text(
-                    "Add voucher code",
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.5),
+                  GestureDetector(
+                    onTap: (){
+                      _scaffoldKey.currentState.showSnackBar(
+                        new SnackBar(
+                          backgroundColor: kPrimaryColor,
+                          duration: Duration(
+                            seconds: 2,
+                          ),
+                          content: Container(
+                            height: 30,
+                            child: Center(
+                              child: Text('We are working on this voucher... coming up soon!'),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Add voucher code",
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -183,7 +203,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                           Fluttertoast.showToast(
                             msg: 'Your cart is empty.',
                             textColor: kWhiteColor,
-                            backgroundColor: Color(0xffeb4034),
+                            backgroundColor: kErrorBackground,
                           );
                         } else {
                           // Navigate customer to fill in address screen.
@@ -248,7 +268,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             msg: '${pProduct.name} removed from cart successfully.',
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
-            backgroundColor: Color(0xfff7b0b7),
+            backgroundColor: kNotFavoriteProductColorToastBackground,
             fontSize: 15,
           );
           OutFittedApp.sharedPreferences
