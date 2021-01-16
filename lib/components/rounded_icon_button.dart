@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class RoundedIconButton extends StatelessWidget {
-  const RoundedIconButton(
-      {Key key, @required this.iconData, @required this.press})
-      : super(key: key);
+  const RoundedIconButton({
+    Key key,
+    @required this.iconData,
+    @required this.press,
+  }) : super(key: key);
 
   final IconData iconData;
   final GestureTapCallback press;

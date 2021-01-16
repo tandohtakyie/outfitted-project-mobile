@@ -17,31 +17,30 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
-          Route route;
-            route = MaterialPageRoute(
-                builder: (c) => OrderDetailsScreen(
-                      orderID: orderID,
-                    ));
-          Navigator.push(context, route);
-        },
-        child: Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: kPrimaryColor,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          margin: EdgeInsets.symmetric(vertical: 5),
-          height: itemCount * 125.0,
-          child: ListView.builder(
-            itemCount: itemCount,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (c, index){
-                Product product = Product.getProductFromJson(data[index].data());
-                return productInfo(product, context);
-              }
-          ),
+      onTap: () {
+        Route route;
+        route = MaterialPageRoute(
+            builder: (c) => OrderDetailsScreen(
+                  orderID: orderID,
+                ));
+        Navigator.push(context, route);
+      },
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.circular(5),
         ),
+        margin: EdgeInsets.symmetric(vertical: 5),
+        height: itemCount * 125.0,
+        child: ListView.builder(
+            itemCount: itemCount,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (c, index) {
+              Product product = Product.getProductFromJson(data[index].data());
+              return productInfo(product, context);
+            }),
+      ),
     );
   }
 

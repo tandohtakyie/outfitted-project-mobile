@@ -3,7 +3,8 @@ import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class OutFittedCustomCard extends StatelessWidget {
   const OutFittedCustomCard({
-    Key key, this.child,
+    Key key,
+    this.child,
   }) : super(key: key);
 
   final Widget child;

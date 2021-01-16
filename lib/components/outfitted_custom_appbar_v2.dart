@@ -7,9 +7,15 @@ import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:provider/provider.dart';
 
-class OutFittedCustomAppBarV2 extends StatelessWidget implements PreferredSizeWidget {
+class OutFittedCustomAppBarV2 extends StatelessWidget
+    implements PreferredSizeWidget {
   const OutFittedCustomAppBarV2({
-    Key key, this.title, this.underTitle = "", this.customIcon, this.appBar, this.onLeftIconPress,
+    Key key,
+    this.title,
+    this.underTitle = "",
+    this.customIcon,
+    this.appBar,
+    this.onLeftIconPress,
   }) : super(key: key);
 
   final String title;
@@ -41,32 +47,34 @@ class OutFittedCustomAppBarV2 extends StatelessWidget implements PreferredSizeWi
             ),
             child: GestureDetector(
               onTap: onLeftIconPress,
-                child: customIcon,
+              child: customIcon,
             ),
           ),
         ),
       ),
-      title: underTitle.isEmpty ? Text(
-        title,
-        style: TextStyle(
-          fontFamily: "Muli",
-        ),
-      ) : Column(
-        children: [
-          Text(
-            title,
-            style: TextStyle(color: Colors.white),
-          ),
-          SizedBox(height: 7),
-          Text(
-              underTitle,
+      title: underTitle.isEmpty
+          ? Text(
+              title,
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10
-              )
-          )
-        ],
-      ),
+                fontFamily: "Muli",
+              ),
+            )
+          : Column(
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 7),
+                Text(
+                  underTitle,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                  ),
+                ),
+              ],
+            ),
       centerTitle: true,
       actions: [
         Center(
@@ -75,14 +83,13 @@ class OutFittedCustomAppBarV2 extends StatelessWidget implements PreferredSizeWi
             child: Stack(
               children: [
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
-                      context,
-                      ScreenAnimationRoute(
-                        animationType: Curves.bounceIn,
-                        screenToGoTo: ShoppingCartScreen(),
-                      )
-                    );
+                        context,
+                        ScreenAnimationRoute(
+                          animationType: Curves.bounceIn,
+                          screenToGoTo: ShoppingCartScreen(),
+                        ));
                     // Route route = MaterialPageRoute(builder: (c) => ShoppingCartScreen());
                     // Navigator.push(context, route);
                   },
@@ -98,21 +105,25 @@ class OutFittedCustomAppBarV2 extends StatelessWidget implements PreferredSizeWi
                     ),
                   ),
                 ),
-                OutFittedApp.auth.currentUser != null ?
-                Positioned(
-                  right: 0,
-                  child: Container(
-                    height: 20,
-                    width: 20,
-                    decoration: BoxDecoration(
-                        color: kSecondaryColor,
-                        shape: BoxShape.circle,
-                        border: Border.all(width: 1.5, color: Colors.white)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // replace text with consumer to keep up the counter
-                        /*
+                OutFittedApp.auth.currentUser != null
+                    ? Positioned(
+                        right: 0,
+                        child: Container(
+                          height: 20,
+                          width: 20,
+                          decoration: BoxDecoration(
+                            color: kSecondaryColor,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              width: 1.5,
+                              color: Colors.white,
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // replace text with consumer to keep up the counter
+                              /*
                         todo: @Gibbs dit zorgt voor die error bij het inloggen/registreren
                             --> Probleem is dat
                             OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerCartList).length
@@ -128,22 +139,26 @@ class OutFittedCustomAppBarV2 extends StatelessWidget implements PreferredSizeWi
                               Consumer<CartItemCounter> /lib/components/outfitted_custom_appbar.dart:94:23
                             ════════════════════════════════════════════════════════════════════════════════════════════════════
                       */
-                        Consumer<CartItemCounter>(
-                          builder: (context, counter, _){
-                            return Text(
-                              (OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerCartList).length - 1).toString(),
-                              style: TextStyle(
-                                fontSize: 8,
+                              Consumer<CartItemCounter>(
+                                builder: (context, counter, _) {
+                                  return Text(
+                                    (OutFittedApp.sharedPreferences
+                                                .getStringList(OutFittedApp
+                                                    .customerCartList)
+                                                .length -
+                                            1)
+                                        .toString(),
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                )
-                    :
-                SizedBox()
+                      )
+                    : SizedBox()
               ],
             ),
           ),

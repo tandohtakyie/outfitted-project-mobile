@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/model/Cart.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
-List<Widget> buildShoppingCartCard({@required Cart cartItem, GlobalKey<ScaffoldState> scaffoldKey}) {
-
+List<Widget> buildShoppingCartCard(
+    {@required Cart cartItem, GlobalKey<ScaffoldState> scaffoldKey}) {
   double discount = 0;
-  if(cartItem.product.discountPercentage != 0){
-    discount = cartItem.product.price * cartItem.product.discountPercentage / 100;
+  if (cartItem.product.discountPercentage != 0) {
+    discount =
+        cartItem.product.price * cartItem.product.discountPercentage / 100;
   }
 
   final String image = cartItem.product.productImage,
-               productName = cartItem.product.name,
-               price = cartItem.product.discountPercentage == 0
-                ? cartItem.product.price.toStringAsFixed(2)
-               : (cartItem.product.price - discount).toStringAsFixed(2),
-               totalOfItems = (cartItem.amountItems + 1).toString();
+      productName = cartItem.product.name,
+      price = cartItem.product.discountPercentage == 0
+          ? cartItem.product.price.toStringAsFixed(2)
+          : (cartItem.product.price - discount).toStringAsFixed(2),
+      totalOfItems = (cartItem.amountItems + 1).toString();
 
   return [
     SizedBox(
@@ -27,7 +28,7 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem, GlobalKey<ScaffoldS
             color: kWhiteColor,
             borderRadius: BorderRadius.circular(15),
           ),
-           child: Image.network(image),
+          child: Image.network(image),
           // child: Image.asset(image),
         ),
       ),
@@ -63,8 +64,8 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem, GlobalKey<ScaffoldS
                   TextSpan(
                     text: ' x$totalOfItems',
                     style: TextStyle(
-                        color: Colors.white.withOpacity(0.5),
-                        fontSize: 15
+                      color: Colors.white.withOpacity(0.5),
+                      fontSize: 15,
                     ),
                   ),
                 ],
@@ -82,10 +83,9 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem, GlobalKey<ScaffoldS
               height: 30,
               decoration: BoxDecoration(
                   color: Colors.black26,
-                  borderRadius: BorderRadius.circular(4)
-              ),
+                  borderRadius: BorderRadius.circular(4)),
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
                   scaffoldKey.currentState.showSnackBar(
                     new SnackBar(
                       backgroundColor: kPrimaryColor,
@@ -95,7 +95,9 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem, GlobalKey<ScaffoldS
                       content: Container(
                         height: 30,
                         child: Center(
-                          child: Text('We are working on this... coming up soon!'),
+                          child: Text(
+                            'We are working on this... coming up soon!',
+                          ),
                         ),
                       ),
                     ),
@@ -121,10 +123,9 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem, GlobalKey<ScaffoldS
               height: 30,
               decoration: BoxDecoration(
                   color: kSecondaryColor,
-                  borderRadius: BorderRadius.circular(4)
-              ),
+                  borderRadius: BorderRadius.circular(4)),
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
                   scaffoldKey.currentState.showSnackBar(
                     new SnackBar(
                       backgroundColor: kPrimaryColor,
@@ -134,7 +135,9 @@ List<Widget> buildShoppingCartCard({@required Cart cartItem, GlobalKey<ScaffoldS
                       content: Container(
                         height: 30,
                         child: Center(
-                          child: Text('We are working on this... coming up soon!'),
+                          child: Text(
+                            'We are working on this... coming up soon!',
+                          ),
                         ),
                       ),
                     ),

@@ -6,7 +6,11 @@ class ShippingInfoDetails extends StatelessWidget {
   final Address address;
   final String dateOrdered;
 
-  const ShippingInfoDetails({Key key, this.address, this.dateOrdered}) : super(key: key);
+  const ShippingInfoDetails({
+    Key key,
+    this.address,
+    this.dateOrdered,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +23,7 @@ class ShippingInfoDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                  address.streetAndNumber,
+                address.streetAndNumber,
                 style: TextStyle(
                   fontSize: 12,
                 ),
@@ -28,7 +32,8 @@ class ShippingInfoDetails extends StatelessWidget {
                 address.postCode + ', ' + address.cityOrTown,
                 style: TextStyle(
                   fontSize: 12,
-                ),),
+                ),
+              ),
               SizedBox(
                 height: 5,
               ),
@@ -43,7 +48,7 @@ class ShippingInfoDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                  dateOrdered,
+                dateOrdered,
                 style: TextStyle(
                   fontSize: 10,
                 ),

@@ -3,7 +3,10 @@ import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class RoundedButton extends StatelessWidget {
   const RoundedButton({
-    Key key, this.buttonText, this.press, this.buttonColor,
+    Key key,
+    this.buttonText,
+    this.press,
+    this.buttonColor,
   }) : super(key: key);
 
   final String buttonText;
@@ -18,12 +21,17 @@ class RoundedButton extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(29),
         child: FlatButton(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+          padding: EdgeInsets.symmetric(
+            vertical: 20,
+            horizontal: 40,
+          ),
           color: buttonColor,
           onPressed: press,
           child: Text(
             buttonText,
-            style: TextStyle(color: kWhiteColor),
+            style: TextStyle(
+              color: kWhiteColor,
+            ),
           ),
         ),
       ),

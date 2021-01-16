@@ -10,9 +10,10 @@ class BrandLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(
-            categoryName : brandName,
+      onTap: () {
+        Route route = MaterialPageRoute(
+          builder: (c) => CollectionCategoryScreen(
+            categoryName: brandName,
             brandName: brandName,
           ),
         );
@@ -22,18 +23,12 @@ class BrandLogo extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.31,
         height: MediaQuery.of(context).size.width * 0.31,
         decoration: BoxDecoration(
-          color: kWhiteColor,
-          border: Border(
-            top: BorderSide(
-                width: 1,
-                color: Colors.black.withOpacity(0.03)
-            ),
-            right: BorderSide(
-              width: 1,
-              color: Colors.black.withOpacity(0.03)
-            ),
-          )
-        ),
+            color: kWhiteColor,
+            border: Border(
+              top: BorderSide(width: 1, color: Colors.black.withOpacity(0.03)),
+              right:
+                  BorderSide(width: 1, color: Colors.black.withOpacity(0.03)),
+            )),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -42,10 +37,9 @@ class BrandLogo extends StatelessWidget {
                 image,
                 width: 30,
               ),
-              Text(brandName,
-                style: TextStyle(
-                  color: Colors.black
-                ),
+              Text(
+                brandName,
+                style: TextStyle(color: Colors.black),
               ),
             ],
           ),

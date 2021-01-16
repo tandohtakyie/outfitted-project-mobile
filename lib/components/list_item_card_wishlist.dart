@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/model/Wishlist.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
-List<Widget> buildWishListCard({@required WishList wishListItem,}) {
-
+List<Widget> buildWishListCard({
+  @required WishList wishListItem,
+}) {
   final String image = wishListItem.product.productImage,
       productName = wishListItem.product.name,
       price = wishListItem.product.price.toStringAsFixed(2);
@@ -37,7 +38,9 @@ List<Widget> buildWishListCard({@required WishList wishListItem,}) {
         const SizedBox(height: 10),
         Text.rich(TextSpan(
           text: "\€$price",
-          style: TextStyle(color: kSecondaryColor),
+          style: TextStyle(
+            color: kSecondaryColor,
+          ),
         ))
       ],
     )

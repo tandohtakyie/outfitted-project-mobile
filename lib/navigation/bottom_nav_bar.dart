@@ -20,12 +20,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
     AccountScreen(),
   ];
 
-  void displayTabbedScreen(int index){
+  void displayTabbedScreen(int index) {
     setState(() {
       _currentScreenIndex = index;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +38,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           type: BottomNavigationBarType.fixed,
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          selectedIconTheme: IconThemeData(
-            size: 26
-          ),
+          selectedIconTheme: IconThemeData(size: 26),
           onTap: displayTabbedScreen,
           currentIndex: _currentScreenIndex,
           items: [

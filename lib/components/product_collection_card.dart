@@ -7,7 +7,6 @@ import 'package:outfitted_flutter_mobile/model/Product.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class ProductCollectionCard extends StatefulWidget {
-
   final Product product;
   final Function press;
 
@@ -31,7 +30,7 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
   Widget build(BuildContext context) {
     isFavorite = sharedPrefWishList.contains(widget.product.id);
     double discount = 0;
-    if(widget.product.discountPercentage != 0){
+    if (widget.product.discountPercentage != 0) {
       discount = widget.product.price * widget.product.discountPercentage / 100;
     }
 
@@ -53,53 +52,58 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
               child: Stack(
                 children: [
                   Center(
-                      child: Image.network(widget.product.productImage),
+                    child: Image.network(
+                      widget.product.productImage,
+                    ),
                   ),
                   widget.product.discountPercentage != 0
-                  ? Positioned(
-                    right: 5,
-                    top: 3,
-                    child: Container(
-                      height: 32,
-                      width: 32,
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor.withOpacity(0.9),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Text(
-                          widget.product.discountPercentage.toString() + '%',
-                            style: TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.bold
+                      ? Positioned(
+                          right: 5,
+                          top: 3,
+                          child: Container(
+                            height: 32,
+                            width: 32,
+                            decoration: BoxDecoration(
+                              color: kPrimaryColor.withOpacity(0.9),
+                              shape: BoxShape.circle,
                             ),
-                            textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  )
+                            child: Center(
+                              child: Text(
+                                widget.product.discountPercentage.toString() +
+                                    '%',
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        )
                       : Container(),
                 ],
               ),
             ),
             Container(
-              padding: EdgeInsets.only(left: 5,),
-              decoration: BoxDecoration(
-                  color: kPrimaryColor
+              padding: EdgeInsets.only(
+                left: 5,
               ),
+              decoration: BoxDecoration(color: kPrimaryColor),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   widget.product.name,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 14
-                  ),
+                  style: TextStyle(fontSize: 14),
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.only(left: 5, right: 5, bottom: 5,),
+              padding: EdgeInsets.only(
+                left: 5,
+                right: 5,
+                bottom: 5,
+              ),
               decoration: BoxDecoration(
                 color: kPrimaryColor,
               ),
@@ -108,36 +112,35 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
                 children: [
                   Text(
                     '€${(widget.product.price - discount).toStringAsFixed(2)}',
-                    style: TextStyle(
-                        color: kSecondaryColor
-                    ),
+                    style: TextStyle(color: kSecondaryColor),
                   ),
                   widget.product.discountPercentage != 0
-                  ? Text(
-                    '€${widget.product.price.toStringAsFixed(2)}',
-                    style: TextStyle(
-                        decoration: TextDecoration.lineThrough
-                    ),
-                  )
-                  : Container(),
+                      ? Text(
+                          '€${widget.product.price.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        )
+                      : Container(),
                   Container(
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
                         color: kBackgroundLikeButton.withOpacity(0.8),
-                        shape: BoxShape.circle
-                    ),
+                        shape: BoxShape.circle),
                     child: IconButton(
                       icon: new Icon(Icons.favorite,
                           color: (isFavorite)
                               ? kFavoriteProductColor
-                              : kNotFavoriteProductColor
-                      ),
+                              : kNotFavoriteProductColor),
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onPressed: () async {
                         if (OutFittedApp.auth.currentUser != null) {
-                          addItemToWish(widget.product.id, context);
+                          addItemToWish(
+                            widget.product.id,
+                            context,
+                          );
                           setState(() {
                             isFavorite = true;
                           });
@@ -147,7 +150,7 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
                               builder: (c) {
                                 return ErrorAlertDialog(
                                   message:
-                                  'Create an account or Login to add to your cart.',
+                                      'Create an account or Login to add to your cart.',
                                 );
                               });
                         }
@@ -170,22 +173,22 @@ class _ProductCollectionCardState extends State<ProductCollectionCard> {
       OutFittedApp.firestore
           .collection(OutFittedApp.collectionCustomer)
           .doc(OutFittedApp.sharedPreferences
-          .getString(OutFittedApp.customerUID))
+              .getString(OutFittedApp.customerUID))
           .update({OutFittedApp.customerWishList: sharedPrefWishList}).then(
               (v) {
-            Fluttertoast.showToast(
-              msg: widget.product.name + ' removed from wishlist successfully.',
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM,
-              backgroundColor: kNotFavoriteProductColorToastBackground,
-              fontSize: 15,
-            );
+        Fluttertoast.showToast(
+          msg: widget.product.name + ' removed from wishlist successfully.',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: kNotFavoriteProductColorToastBackground,
+          fontSize: 15,
+        );
 
-            OutFittedApp.sharedPreferences
-                .setStringList(OutFittedApp.customerWishList, sharedPrefWishList);
+        OutFittedApp.sharedPreferences
+            .setStringList(OutFittedApp.customerWishList, sharedPrefWishList);
 
-            setIsFavorite(false);
-          });
+        setIsFavorite(false);
+      });
       return;
     }
 

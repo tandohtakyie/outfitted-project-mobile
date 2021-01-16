@@ -7,9 +7,14 @@ class OutFittedCustomToast extends StatelessWidget {
   final Icon iconIndicator;
   final Function press;
 
-  const OutFittedCustomToast(
-      {Key key, this.text, this.gradiantColor, this.textColor, this.iconIndicator, this.press})
-      : super(key: key);
+  const OutFittedCustomToast({
+    Key key,
+    this.text,
+    this.gradiantColor,
+    this.textColor,
+    this.iconIndicator,
+    this.press,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +41,10 @@ class OutFittedCustomToast extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30.0),
               child: Container(
-                width: 40.0,
-                height: 40.0,
-                color: textColor,
-                child: iconIndicator
-              ),
+                  width: 40.0,
+                  height: 40.0,
+                  color: textColor,
+                  child: iconIndicator),
             ),
           ),
           SizedBox(

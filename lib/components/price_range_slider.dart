@@ -10,9 +10,7 @@ class PriceRangeSlider extends StatefulWidget {
 }
 
 class _PriceRangeSliderState extends State<PriceRangeSlider> {
-
-  static double _lowerValue = 0,
-                _upperValue;
+  static double _lowerValue = 0, _upperValue;
 
   RangeValues values = RangeValues(0, 0);
 
@@ -23,11 +21,11 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
         .limit(1)
         .get()
         .then((value) {
-          setState(() {
-            _upperValue = double.parse(value.docs[0].data()['price'].toString());
-            values = RangeValues(_lowerValue, _upperValue);
-          });
-        });
+      setState(() {
+        _upperValue = double.parse(value.docs[0].data()['price'].toString());
+        values = RangeValues(_lowerValue, _upperValue);
+      });
+    });
   }
 
   @override
@@ -38,7 +36,6 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
 
   @override
   Widget build(BuildContext context) {
-
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
         valueIndicatorColor: kSecondaryColor,
@@ -49,10 +46,11 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
         inactiveColor: kBackgroundOutFitted,
         min: _lowerValue,
         max: _upperValue,
-        labels: RangeLabels(values.start.toStringAsFixed(2), values.end.toStringAsFixed(2)),
+        labels: RangeLabels(
+            values.start.toStringAsFixed(2), values.end.toStringAsFixed(2)),
         divisions: (_upperValue - _lowerValue).toInt() * 2.3.toInt(),
         values: values,
-        onChanged: (val){
+        onChanged: (val) {
           setState(() {
             values = val;
           });
