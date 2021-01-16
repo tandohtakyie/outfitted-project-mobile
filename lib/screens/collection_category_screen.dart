@@ -26,15 +26,15 @@ class CollectionCategoryScreen extends StatefulWidget {
 }
 
 class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
-
-  static double _lowerValue = 0,
-                _upperValue;
+  static double _lowerValue = 0, _upperValue;
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   RangeValues values = RangeValues(0, 0);
   int selectedSortByRadio = 0;
 
   Widget content;
+
+  bool isNotFiltered = true;
 
   initMaxPrice() async {
     await OutFittedApp.firestore
@@ -45,6 +45,17 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
         .then((value) {
       setState(() {
         _upperValue = double.parse(value.docs[0].data()['price'].toString());
+        // 55 = 100
+        //    = 20
+        print('before discount: $_upperValue');
+        int discountPercentage = int.parse(value.docs[0].data()['discount'].toString());
+
+        double priceWithDiscount = (_upperValue) - (_upperValue * discountPercentage / 100);
+
+        _upperValue = priceWithDiscount;
+
+        print('after discount: $_upperValue');
+
         values = RangeValues(_lowerValue, _upperValue);
       });
     });
@@ -165,10 +176,11 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
                     inactiveColor: kBackgroundOutFitted,
                     min: _lowerValue,
                     max: _upperValue,
-                    labels: RangeLabels(values.start.toStringAsFixed(2), values.end.toStringAsFixed(2)),
-                    divisions: (_upperValue - _lowerValue).toInt() * 2.3.toInt(),
+                    labels: RangeLabels(values.start.toStringAsFixed(2),
+                        values.end.toStringAsFixed(2)),
+                    divisions:(_upperValue - _lowerValue).toInt(),
                     values: values,
-                    onChanged: (val){
+                    onChanged: (val) {
                       setState(() {
                         values = val;
                       });
@@ -179,9 +191,11 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
                   height: 30,
                 ),
                 FlatButton(
-                  onPressed: (){
-                    // filter uit
-                    updateContent();
+                  onPressed: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      isNotFiltered = false;
+                    });
                   },
                   child: Center(
                     child: Container(
@@ -206,54 +220,81 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: widget.categoryName == 'All' ? FloatingActionButton(
         heroTag: 'filterCollection',
         onPressed: () {
           _drawerKey.currentState.openDrawer();
-         // showFilterModalBottomSheet(context);
+          // showFilterModalBottomSheet(context);
         },
         child: Icon(Icons.filter_list_outlined),
         backgroundColor: kSecondaryColor,
-      ),
+      )
+      : Container(),
       backgroundColor: kBackgroundOutFitted,
-      body: content
+      body: initContent(),
     );
   }
 
-  void initContent(){
-    content = Column(
+  Widget initContent() {
+    print('start values:${values.start}');
+    print('end values:${values.end}');
+    return Column(
       children: [
-        Text("NOO"),
+        Text(widget.categoryName),
         Expanded(
           child: StreamBuilder<QuerySnapshot>(
-            stream: widget.categoryName == 'All'
-                ? OutFittedApp.firestore
-                .collection(OutFittedApp.collectionProduct)
-                .snapshots()
-                : widget.categoryName == widget.brandName
-                ? OutFittedApp.firestore
-                .collection(OutFittedApp.collectionProduct)
-                .where('supplier', isEqualTo: widget.brandName)
-                .snapshots()
-                : widget.categoryName == 'Sale'
-                ? OutFittedApp.firestore
-                .collection(OutFittedApp.collectionProduct)
-                .where('discount', isGreaterThan: 0)
-                .snapshots()
-                : OutFittedApp.firestore
-                .collection(OutFittedApp.collectionProduct)
-                .where('category', isEqualTo: widget.categoryName)
-                .snapshots(),
-            builder: (BuildContext context,
-                AsyncSnapshot<QuerySnapshot> snapshot) {
+            stream: isNotFiltered
+            // non-filter
+                ? (widget.categoryName == 'All'
+                    ? OutFittedApp.firestore
+                        .collection(OutFittedApp.collectionProduct)
+                        .snapshots()
+                    : widget.categoryName == widget.brandName
+                        ? OutFittedApp.firestore
+                            .collection(OutFittedApp.collectionProduct)
+                            .where('supplier', isEqualTo: widget.brandName)
+                            .snapshots()
+                        : widget.categoryName == 'Sale'
+                            ? OutFittedApp.firestore
+                                .collection(OutFittedApp.collectionProduct)
+                                .where('discount', isGreaterThan: 0)
+                                .snapshots()
+                            : OutFittedApp.firestore
+                                .collection(OutFittedApp.collectionProduct)
+                                .where('category',
+                                    isEqualTo: widget.categoryName)
+                                .snapshots())
+            // filter
+                : (widget.categoryName == 'All'
+                    ? OutFittedApp.firestore
+                        .collection(OutFittedApp.collectionProduct)
+                        .where('price', isGreaterThanOrEqualTo: values.start)
+                        .where('price', isLessThanOrEqualTo: values.end)
+                        .snapshots()
+                    : widget.categoryName == widget.brandName
+                        ? OutFittedApp.firestore
+                            .collection(OutFittedApp.collectionProduct)
+                            .where('supplier', isEqualTo: widget.brandName)
+                            .snapshots()
+                        : widget.categoryName == 'Sale'
+                            ? OutFittedApp.firestore
+                                .collection(OutFittedApp.collectionProduct)
+                                .where('discount', isGreaterThan: 0)
+                                .snapshots()
+                            : OutFittedApp.firestore
+                                .collection(OutFittedApp.collectionProduct)
+                                .where('category',
+                                    isEqualTo: widget.categoryName)
+                                .snapshots()),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError)
                 return Center(
                   child: Text('Error: ${snapshot.error}'),
                 );
               if (!snapshot.hasData)
                 return Center(
-                  child:
-                  Text('There are no products yet! Sign up for updates'),
+                  child: Text('There are no products yet! Sign up for updates'),
                 );
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
@@ -279,7 +320,6 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
                             snapshot.data.docs[index].data());
                         // set name of document as id of the product
                         product.id = snapshot.data.docs[index].id;
-
                         return productInfo(product, context);
                       },
                     ),
@@ -292,20 +332,105 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
     );
   }
 
-  void updateContent(){
-    setState(() {
-      // todo: change @content with new Column
-      content = Center(
-        child: Text(
-          'Apply',
-          style: TextStyle(
-            color: kWhiteColor,
-          ),
+  Widget updateContent() {
+    return Center(
+      child: Text(
+        'Apply',
+        style: TextStyle(
+          color: kWhiteColor,
         ),
-      );
-      print("CONTENTT "+ content.toString());
-    });
+      ),
+    );
   }
+
+  // void initContent() {
+  //   if (firstStart) {
+  //     content = Column(
+  //       children: [
+  //         Text("NOO"),
+  //         Expanded(
+  //           child: StreamBuilder<QuerySnapshot>(
+  //             stream: widget.categoryName == 'All'
+  //                 ? OutFittedApp.firestore
+  //                     .collection(OutFittedApp.collectionProduct)
+  //                     .snapshots()
+  //                 : widget.categoryName == widget.brandName
+  //                     ? OutFittedApp.firestore
+  //                         .collection(OutFittedApp.collectionProduct)
+  //                         .where('supplier', isEqualTo: widget.brandName)
+  //                         .snapshots()
+  //                     : widget.categoryName == 'Sale'
+  //                         ? OutFittedApp.firestore
+  //                             .collection(OutFittedApp.collectionProduct)
+  //                             .where('discount', isGreaterThan: 0)
+  //                             .snapshots()
+  //                         : OutFittedApp.firestore
+  //                             .collection(OutFittedApp.collectionProduct)
+  //                             .where('category', isEqualTo: widget.categoryName)
+  //                             .snapshots(),
+  //             builder: (BuildContext context,
+  //                 AsyncSnapshot<QuerySnapshot> snapshot) {
+  //               if (snapshot.hasError)
+  //                 return Center(
+  //                   child: Text('Error: ${snapshot.error}'),
+  //                 );
+  //               if (!snapshot.hasData)
+  //                 return Center(
+  //                   child:
+  //                       Text('There are no products yet! Sign up for updates'),
+  //                 );
+  //               switch (snapshot.connectionState) {
+  //                 case ConnectionState.waiting:
+  //                   return Center(
+  //                     child: Text('Loading'),
+  //                   );
+  //                 default:
+  //                   return Padding(
+  //                     padding: EdgeInsets.only(
+  //                       top: 5,
+  //                       right: 5,
+  //                     ),
+  //                     child: GridView.builder(
+  //                       physics: ScrollPhysics(),
+  //                       shrinkWrap: true,
+  //                       itemCount: snapshot.data.docs.length,
+  //                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //                         childAspectRatio: 0.7,
+  //                         crossAxisCount: 2,
+  //                       ),
+  //                       itemBuilder: (context, index) {
+  //                         Product product = Product.getProductFromJson(
+  //                             snapshot.data.docs[index].data());
+  //                         // set name of document as id of the product
+  //                         product.id = snapshot.data.docs[index].id;
+  //                         return productInfo(product, context);
+  //                       },
+  //                     ),
+  //                   );
+  //               }
+  //             },
+  //           ),
+  //         ),
+  //       ],
+  //     );
+  //   }
+  //   firstStart = false;
+  // }
+
+  // void updateContent() {
+  //   setState(() {
+  //     // todo: change @content with new Column
+  //     content = Center(
+  //       child: Text(
+  //         'Apply',
+  //         style: TextStyle(
+  //           color: kWhiteColor,
+  //         ),
+  //       ),
+  //     );
+  //     print("CONTENTT " + content.toString());
+  //   });
+  // }
 
   void setSelectedRadioValue(int val) {
     setState(() {
@@ -321,10 +446,10 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter state) {
               OutFittedApp.firestore
-              .collection(OutFittedApp.collectionProduct)
-              // .where('price', isGreaterThanOrEqualTo: lowerPrice)
-              // .where('price', isLessThanOrEqualTo: higherPrice)
-              .get();
+                  .collection(OutFittedApp.collectionProduct)
+                  // .where('price', isGreaterThanOrEqualTo: lowerPrice)
+                  // .where('price', isLessThanOrEqualTo: higherPrice)
+                  .get();
               return Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 height: MediaQuery.of(context).size.height * 0.7,
@@ -346,20 +471,20 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
                           height: 35,
                           child: RadioListTile(
                             activeColor: kSecondaryColor,
-                              value: 0,
-                              groupValue: selectedSortByRadio,
-                              title: Text('Sale'),
-                              onChanged: (val) {
-                                state(() {
-                                  selectedSortByRadio = val;
-                                });
-                              },
+                            value: 0,
+                            groupValue: selectedSortByRadio,
+                            title: Text('Sale'),
+                            onChanged: (val) {
+                              state(() {
+                                selectedSortByRadio = val;
+                              });
+                            },
                           ),
                         ),
                         SizedBox(
                           height: 35,
                           child: RadioListTile(
-                            activeColor: kSecondaryColor,
+                              activeColor: kSecondaryColor,
                               value: 1,
                               groupValue: selectedSortByRadio,
                               title: Text('Newest'),
@@ -410,7 +535,7 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
                       height: 30,
                     ),
                     FlatButton(
-                      onPressed: (){
+                      onPressed: () {
                         // filter uit
                       },
                       child: Center(
