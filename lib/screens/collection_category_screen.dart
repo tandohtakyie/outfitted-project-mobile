@@ -26,19 +26,15 @@ class CollectionCategoryScreen extends StatefulWidget {
 }
 
 class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  int selectedSortByRadio = 0;
-
-  void setSelectedRadioValue(int val) {
-    setState(() {
-      selectedSortByRadio = val;
-    });
-  }
 
   static double _lowerValue = 0,
-      _upperValue;
+                _upperValue;
 
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   RangeValues values = RangeValues(0, 0);
+  int selectedSortByRadio = 0;
+
+  Widget content;
 
   initMaxPrice() async {
     await OutFittedApp.firestore
@@ -62,6 +58,8 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    initContent();
+
     return Scaffold(
       key: _drawerKey,
       appBar: OutFittedCustomAppBarV2(
@@ -183,9 +181,7 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
                 FlatButton(
                   onPressed: (){
                     // filter uit
-                    Navigator.pop(context);
-                    Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'Sale'));
-                    Navigator.push(context, route);
+                    updateContent();
                   },
                   child: Center(
                     child: Container(
@@ -220,76 +216,101 @@ class _CollectionCategoryScreenState extends State<CollectionCategoryScreen> {
         backgroundColor: kSecondaryColor,
       ),
       backgroundColor: kBackgroundOutFitted,
-      body: Column(
-        children: [
-          Text(widget.categoryName),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: widget.categoryName == 'All'
-                  ? OutFittedApp.firestore
-                      .collection(OutFittedApp.collectionProduct)
-                      .snapshots()
-                  : widget.categoryName == widget.brandName
-                      ? OutFittedApp.firestore
-                          .collection(OutFittedApp.collectionProduct)
-                          .where('supplier', isEqualTo: widget.brandName)
-                          .snapshots()
-                      : widget.categoryName == 'Sale'
-                          ? OutFittedApp.firestore
-                              .collection(OutFittedApp.collectionProduct)
-                              .where('discount', isGreaterThan: 0)
-                              .snapshots()
-                          : OutFittedApp.firestore
-                              .collection(OutFittedApp.collectionProduct)
-                              .where('category', isEqualTo: widget.categoryName)
-                              .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError)
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
-                if (!snapshot.hasData)
-                  return Center(
-                    child:
-                        Text('There are no products yet! Sign up for updates'),
-                  );
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                    return Center(
-                      child: Text('Loading'),
-                    );
-                  default:
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        top: 5,
-                        right: 5,
-                      ),
-                      child: GridView.builder(
-                        physics: ScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.docs.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 0.7,
-                          crossAxisCount: 2,
-                        ),
-                        itemBuilder: (context, index) {
-                          Product product = Product.getProductFromJson(
-                              snapshot.data.docs[index].data());
-                          // set name of document as id of the product
-                          product.id = snapshot.data.docs[index].id;
-
-                          return productInfo(product, context);
-                        },
-                      ),
-                    );
-                }
-              },
-            ),
-          ),
-        ],
-      ),
+      body: content
     );
+  }
+
+  void initContent(){
+    content = Column(
+      children: [
+        Text("NOO"),
+        Expanded(
+          child: StreamBuilder<QuerySnapshot>(
+            stream: widget.categoryName == 'All'
+                ? OutFittedApp.firestore
+                .collection(OutFittedApp.collectionProduct)
+                .snapshots()
+                : widget.categoryName == widget.brandName
+                ? OutFittedApp.firestore
+                .collection(OutFittedApp.collectionProduct)
+                .where('supplier', isEqualTo: widget.brandName)
+                .snapshots()
+                : widget.categoryName == 'Sale'
+                ? OutFittedApp.firestore
+                .collection(OutFittedApp.collectionProduct)
+                .where('discount', isGreaterThan: 0)
+                .snapshots()
+                : OutFittedApp.firestore
+                .collection(OutFittedApp.collectionProduct)
+                .where('category', isEqualTo: widget.categoryName)
+                .snapshots(),
+            builder: (BuildContext context,
+                AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError)
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              if (!snapshot.hasData)
+                return Center(
+                  child:
+                  Text('There are no products yet! Sign up for updates'),
+                );
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(
+                    child: Text('Loading'),
+                  );
+                default:
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      top: 5,
+                      right: 5,
+                    ),
+                    child: GridView.builder(
+                      physics: ScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.docs.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 0.7,
+                        crossAxisCount: 2,
+                      ),
+                      itemBuilder: (context, index) {
+                        Product product = Product.getProductFromJson(
+                            snapshot.data.docs[index].data());
+                        // set name of document as id of the product
+                        product.id = snapshot.data.docs[index].id;
+
+                        return productInfo(product, context);
+                      },
+                    ),
+                  );
+              }
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  void updateContent(){
+    setState(() {
+      // todo: change @content with new Column
+      content = Center(
+        child: Text(
+          'Apply',
+          style: TextStyle(
+            color: kWhiteColor,
+          ),
+        ),
+      );
+      print("CONTENTT "+ content.toString());
+    });
+  }
+
+  void setSelectedRadioValue(int val) {
+    setState(() {
+      selectedSortByRadio = val;
+    });
   }
 
   void showFilterModalBottomSheet(BuildContext context) {
