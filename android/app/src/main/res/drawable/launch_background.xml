@@ -10,6 +10,6 @@
                 android:gravity="center"
     >
         <bitmap
-            android:src="@drawable/logo_reversed" />
+            android:src="@drawable/logo_reversed_2" />
     </item>
 </layer-list>
