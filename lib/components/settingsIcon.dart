@@ -23,7 +23,9 @@ class SettingsIcon extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.all(15),
-              margin: EdgeInsets.symmetric(horizontal: 10),
+              margin: EdgeInsets.symmetric(
+                horizontal: 10,
+              ),
               decoration: BoxDecoration(
                 border: Border.all(
                   width: 2,

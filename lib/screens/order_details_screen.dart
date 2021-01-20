@@ -99,7 +99,8 @@ class OrderDetailsScreen extends StatelessWidget {
                                             size: 50,
                                           ),
                                         );
-                                },),
+                                },
+                            ),
 
                             SizedBox(
                               height: 30,
@@ -135,6 +136,34 @@ class OrderDetailsScreen extends StatelessWidget {
                             Divider(
                               thickness: 0.1,
                               color: kWhiteColor.withOpacity(0.3),
+                            ),
+                            FutureBuilder<DocumentSnapshot>(
+                              future: OutFittedApp.firestore
+                                  .collection(OutFittedApp.collectionOrders)
+                                  .doc(orderID)
+                                  .get(),
+                              builder: (c, dataSnapshot) {
+                                return dataSnapshot.hasData
+                                    ? Container(
+                                  child: Row(
+                                    children: [
+                                      Text('Order status : '),
+                                      Text(
+                                        dataSnapshot.data.get(OutFittedApp.orderStatus)
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                    : Center(
+                                  child: SpinKitDualRing(
+                                    color: kSecondaryColor,
+                                    size: 50,
+                                  ),
+                                );
+                              },
+                            ),
+                            SizedBox(
+                              height: 30,
                             ),
                           ],
                         )

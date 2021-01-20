@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class ModelsImageSlider extends StatefulWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  const ModelsImageSlider({
+    Key key,
+    this.scaffoldKey,
+  }) : super(key: key);
   @override
   _ModelsImageSliderState createState() => _ModelsImageSliderState();
 }
@@ -24,21 +30,17 @@ class _ModelsImageSliderState extends State<ModelsImageSlider> {
         children: [
           CarouselSlider(
             options: CarouselOptions(
-              disableCenter: true,
-              aspectRatio: 0.857,
-              autoPlay: true,
-              autoPlayCurve: Curves.easeOutCirc
-            ),
+                disableCenter: true,
+                aspectRatio: 0.857,
+                autoPlay: true,
+                autoPlayCurve: Curves.easeOutCirc),
             items: imageList.map((image) {
               return Stack(
                 children: [
                   Container(
                     margin: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 2,
-                        color: kWhiteColor
-                      ),
+                      border: Border.all(width: 2, color: kWhiteColor),
                     ),
                     child: Center(
                       child: Image.asset(
@@ -47,25 +49,39 @@ class _ModelsImageSliderState extends State<ModelsImageSlider> {
                     ),
                   ),
                   FlatButton(
-                    onPressed: (){
+                    onPressed: () {
                       // redirect to instagram page
+                      widget.scaffoldKey.currentState.showSnackBar(
+                        new SnackBar(
+                          backgroundColor: kPrimaryColor,
+                          duration: Duration(
+                            seconds: 2,
+                          ),
+                          content: Container(
+                            height: 30,
+                            child: Center(
+                              child: Text(
+                                  'Follow models not available yet... coming up soon!'),
+                            ),
+                          ),
+                        ),
+                      );
                     },
                     child: Center(
                       child: Container(
-                          width: 100,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 2,
-                              color: kWhiteColor,
-                            ),
+                        width: 100,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 2,
+                            color: kWhiteColor,
                           ),
-                          child: Center(
-                              child: Text('Follow',
-                              style: TextStyle(
-                                color: kWhiteColor
-                              ),)
-                          ),
+                        ),
+                        child: Center(
+                            child: Text(
+                          'Follow',
+                          style: TextStyle(color: kWhiteColor),
+                        )),
                       ),
                     ),
                   )

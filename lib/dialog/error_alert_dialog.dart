@@ -10,9 +10,10 @@ class ErrorAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       key: key,
-      content: Text(message,
+      content: Text(
+        message,
         style: TextStyle(
-          color: kPrimaryColor
+          color: kPrimaryColor,
         ),
       ),
       actions: [

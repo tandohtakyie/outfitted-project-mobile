@@ -45,7 +45,8 @@ class DiscountProducts extends StatelessWidget {
                     crossAxisCount: 1,
                   ),
                   itemBuilder: (context, index) {
-                    Product product = Product.getProductFromJson(snapshot.data.docs[index].data());
+                    Product product = Product.getProductFromJson(
+                        snapshot.data.docs[index].data());
 // set name of document as id of the product
                     product.id = snapshot.data.docs[index].id;
 
@@ -58,6 +59,4 @@ class DiscountProducts extends StatelessWidget {
       },
     );
   }
-  }
-
-
+}

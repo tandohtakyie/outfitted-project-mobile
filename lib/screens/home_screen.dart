@@ -22,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     run();
@@ -32,7 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     return WillPopScope(
       child: Scaffold(
-        backgroundColor: Color(0xffa19d95),
+        key: _scaffoldKey,
+        backgroundColor: kHomeScreenBackground,
         //backgroundColor: kWhiteColor,
 
         body: SingleChildScrollView(
@@ -134,7 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         press: (){
                           Route route = MaterialPageRoute(builder: (c) => CollectionCategoryScreen(categoryName : 'All'));
                           Navigator.push(context, route);
-
                         },
                       ),
                     ),
@@ -152,13 +153,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: TitleWithButton(
                         title: 'Follow our models',
                         press: (){
+                          _scaffoldKey.currentState.showSnackBar(
+                            new SnackBar(
+                              backgroundColor: kPrimaryColor,
+                              duration: Duration(
+                                seconds: 2,
+                              ),
+                              content: Container(
+                                height: 30,
+                                child: Center(
+                                  child: Text('Models screen not available yet... coming up soon!'),
+                                ),
+                              ),
+                            ),
+                          );
                         },
                       ),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    ModelsImageSlider(),
+                    ModelsImageSlider(
+                      scaffoldKey: _scaffoldKey,
+                    ),
                     SizedBox(
                       height: 30,
                     ),
@@ -216,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
         msg: '🚑 🚑',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
-        backgroundColor: Color(0xffff0000),
+        backgroundColor: kFavoriteProductColor,
         fontSize: 50,
       );
     }

@@ -1,4 +1,4 @@
-class Address{
+class Address {
   String name;
   String streetAndNumber;
   String postCode;
@@ -6,16 +6,15 @@ class Address{
   String phone;
   String country;
 
-  Address({
-      this.name,
+  Address(
+      {this.name,
       this.streetAndNumber,
       this.postCode,
       this.cityOrTown,
       this.phone,
-      this.country
-  });
+      this.country});
 
-  Address.getAddressFromJson(Map<String, dynamic> json){
+  Address.getAddressFromJson(Map<String, dynamic> json) {
     name = json['name'];
     streetAndNumber = json['streetAndNumber'];
     postCode = json['postCode'];
@@ -24,7 +23,7 @@ class Address{
     country = json['country'];
   }
 
-  Map<String, dynamic> createAddressToJson(){
+  Map<String, dynamic> createAddressToJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['streetAndNumber'] = this.streetAndNumber;

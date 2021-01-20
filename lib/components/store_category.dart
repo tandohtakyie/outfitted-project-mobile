@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/model/CollectionCategory.dart';
 import 'dart:io' show Platform;
 
+import 'package:outfitted_flutter_mobile/style/style.dart';
+
 class StoreCategory extends StatelessWidget {
   const StoreCategory({
     Key key,
@@ -19,9 +21,7 @@ class StoreCategory extends StatelessWidget {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: Platform.isIOS
-            ?251
-            :280,
+            height: Platform.isIOS ? 251 : 280,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Stack(
@@ -30,21 +30,21 @@ class StoreCategory extends StatelessWidget {
                     direction: Axis.vertical,
                     children: [
                       Image.network(
-                          collectionCategory.categoryImage,
+                        collectionCategory.categoryImage,
                       ),
                     ],
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                          Color(0xff343434).withOpacity(0.6),
-                          Color(0xff343434).withOpacity(0.4),
-                              Color(0xff343434).withOpacity(0.7),
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          kDarkGradient.withOpacity(0.6),
+                          kDarkGradient.withOpacity(0.4),
+                          kDarkGradient.withOpacity(0.7),
                         ],
-                        ),
+                      ),
                     ),
                   ),
                   Padding(
@@ -55,13 +55,15 @@ class StoreCategory extends StatelessWidget {
                     child: Center(
                       child: Text.rich(
                         TextSpan(
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                           children: [
                             TextSpan(
                               text: collectionCategory.categoryName,
                               style: TextStyle(
-                                  fontSize: 28,
-                                  fontFamily: "Muli",
+                                fontSize: 28,
+                                fontFamily: "Muli",
                               ),
                             ),
                           ],

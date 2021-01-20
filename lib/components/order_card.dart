@@ -17,31 +17,30 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
-          Route route;
-            route = MaterialPageRoute(
-                builder: (c) => OrderDetailsScreen(
-                      orderID: orderID,
-                    ));
-          Navigator.push(context, route);
-        },
-        child: Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: kPrimaryColor,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          margin: EdgeInsets.symmetric(vertical: 5),
-          height: itemCount * 125.0,
-          child: ListView.builder(
-            itemCount: itemCount,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (c, index){
-                Product product = Product.getProductFromJson(data[index].data());
-                return productInfo(product, context);
-              }
-          ),
+      onTap: () {
+        Route route;
+        route = MaterialPageRoute(
+            builder: (c) => OrderDetailsScreen(
+                  orderID: orderID,
+                ));
+        Navigator.push(context, route);
+      },
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.circular(5),
         ),
+        margin: EdgeInsets.symmetric(vertical: 5),
+        height: itemCount * 125.0,
+        child: ListView.builder(
+            itemCount: itemCount,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (c, index) {
+              Product product = Product.getProductFromJson(data[index].data());
+              return productInfo(product, context);
+            }),
+      ),
     );
   }
 
@@ -57,7 +56,7 @@ class OrderCard extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Color(0xfff5f6f9),
+                  color: kWhiteColor,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Image.network(product.productImage),
@@ -86,7 +85,6 @@ class OrderCard extends StatelessWidget {
                   style: TextStyle(color: kSecondaryColor),
                   children: [
                     TextSpan(
-                      text: ' totalOfItems',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.5),
                       ),

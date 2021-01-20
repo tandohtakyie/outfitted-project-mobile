@@ -3,13 +3,16 @@ import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class PaymentCard extends StatelessWidget {
   const PaymentCard({
-    Key key, this.paymentImage, this.paymentMethodName, this.paymentDetails, this.onPaymentPressed,
+    Key key,
+    this.paymentImage,
+    this.paymentMethodName,
+    this.paymentDetails,
+    this.onPaymentPressed,
   }) : super(key: key);
 
   final Image paymentImage;
-  final String paymentMethodName,paymentDetails;
+  final String paymentMethodName, paymentDetails;
   final Function onPaymentPressed;
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,9 @@ class PaymentCard extends StatelessWidget {
                   ),
                   Text(
                     paymentDetails,
-                    style: TextStyle(color: kWhiteColor),
+                    style: TextStyle(
+                      color: kWhiteColor,
+                    ),
                   ),
                 ],
               )

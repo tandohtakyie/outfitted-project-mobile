@@ -15,14 +15,14 @@ class HomeScreenSecondTitle extends StatelessWidget {
       height: 28,
       child: Padding(
         padding: const EdgeInsets.only(
-            left: kDefaultPadding / 4
+          left: kDefaultPadding / 4,
         ),
         child: Text(
           text,
           style: TextStyle(
-              color: kPrimaryColor,
-              fontSize: 20,
-              fontWeight: FontWeight.bold
+            color: kPrimaryColor,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

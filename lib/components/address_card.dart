@@ -13,7 +13,14 @@ class AddressCard extends StatefulWidget {
   final int currentIndex;
   final int value;
 
-  const AddressCard({Key key, this.addressModel, this.addressID, this.totalAmount, this.value, this.currentIndex}) : super(key: key);
+  const AddressCard(
+      {Key key,
+      this.addressModel,
+      this.addressID,
+      this.totalAmount,
+      this.value,
+      this.currentIndex})
+      : super(key: key);
 
   @override
   _AddressCardState createState() => _AddressCardState();
@@ -23,11 +30,16 @@ class _AddressCardState extends State<AddressCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        Provider.of<AddressChanger>(context, listen: false).displayResult(widget.value);
+      onTap: () {
+        Provider.of<AddressChanger>(context, listen: false)
+            .displayResult(widget.value);
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 10, left: 10, right: 10,),
+        padding: const EdgeInsets.only(
+          top: 10,
+          left: 10,
+          right: 10,
+        ),
         child: Card(
           color: kPrimaryColor,
           child: Column(
@@ -38,8 +50,9 @@ class _AddressCardState extends State<AddressCard> {
                     groupValue: widget.currentIndex,
                     value: widget.value,
                     activeColor: kSecondaryColor,
-                    onChanged: (val){
-                      Provider.of<AddressChanger>(context, listen: false).displayResult(val);
+                    onChanged: (val) {
+                      Provider.of<AddressChanger>(context, listen: false)
+                          .displayResult(val);
                     },
                   ),
                   Padding(
@@ -62,7 +75,9 @@ class _AddressCardState extends State<AddressCard> {
                           ),
                         ),
                         Text(
-                          widget.addressModel.cityOrTown + ', ' + widget.addressModel.postCode,
+                          widget.addressModel.cityOrTown +
+                              ', ' +
+                              widget.addressModel.postCode,
                           style: TextStyle(
                             color: kWhiteColor,
                           ),
@@ -79,19 +94,20 @@ class _AddressCardState extends State<AddressCard> {
                 ],
               ),
               widget.value == Provider.of<AddressChanger>(context).count
-                ? RoundedButton(
-                buttonText: 'Proceed',
-                buttonColor: kSecondaryColor,
-                press: (){
-                  // navigate customer to payment screen
-                  // with address id and the total amount
-                  Route route = MaterialPageRoute(builder: (c) => PaymentScreen(
-                    addressID: widget.addressID,
-                    totalAmount: widget.totalAmount,
-                  ));
-                  Navigator.push(context, route);
-                },
-              )
+                  ? RoundedButton(
+                      buttonText: 'Proceed',
+                      buttonColor: kSecondaryColor,
+                      press: () {
+                        // navigate customer to payment screen
+                        // with address id and the total amount
+                        Route route = MaterialPageRoute(
+                            builder: (c) => PaymentScreen(
+                                  addressID: widget.addressID,
+                                  totalAmount: widget.totalAmount,
+                                ));
+                        Navigator.push(context, route);
+                      },
+                    )
                   : Container(),
               SizedBox(
                 height: 10,

@@ -20,12 +20,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
     AccountScreen(),
   ];
 
-  void displayTabbedScreen(int index){
+  void displayTabbedScreen(int index) {
     setState(() {
       _currentScreenIndex = index;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -39,37 +38,35 @@ class _BottomNavBarState extends State<BottomNavBar> {
           type: BottomNavigationBarType.fixed,
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          selectedIconTheme: IconThemeData(
-            size: 26
-          ),
+          selectedIconTheme: IconThemeData(size: 26),
           onTap: displayTabbedScreen,
           currentIndex: _currentScreenIndex,
           items: [
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home_outlined,
-                color: Colors.white.withOpacity(0.8),
+                color: kBottomNavigationIconColor.withOpacity(0.8),
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.list_outlined,
-                color: Colors.white.withOpacity(0.8),
+                color: kBottomNavigationIconColor.withOpacity(0.8),
               ),
               label: 'Search',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite_border,
-                color: Colors.white.withOpacity(0.8),
+                color: kBottomNavigationIconColor.withOpacity(0.8),
               ),
               label: 'Wishlist',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.person_outline,
-                color: Colors.white.withOpacity(0.8),
+                color: kBottomNavigationIconColor.withOpacity(0.8),
               ),
               label: 'Account',
             ),

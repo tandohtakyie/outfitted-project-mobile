@@ -1,4 +1,4 @@
-class Product{
+class Product {
   String id;
   String name;
   String productImage;
@@ -15,10 +15,10 @@ class Product{
     this.productDescription,
     this.stock,
     this.discountPercentage,
-    this.price
+    this.price,
   });
 
-  Product.getProductFromJson(Map<String, dynamic> json){
+  Product.getProductFromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     productImage = json['productImage'];
@@ -29,7 +29,7 @@ class Product{
     price = double.parse(json['price'].toString());
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
@@ -45,7 +45,7 @@ class Product{
 
   // When using the API
 
-  Product.fromJsonApi(Map<String, dynamic> json){
+  Product.fromJsonApi(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     productImage = json['productImage'];
@@ -55,7 +55,7 @@ class Product{
     price = double.parse(json['price'].toString());
   }
 
-  Map<String, dynamic> toJsonApi(){
+  Map<String, dynamic> toJsonApi() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;

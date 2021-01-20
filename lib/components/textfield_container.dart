@@ -4,7 +4,8 @@ import 'package:outfitted_flutter_mobile/style/style.dart';
 class TextFieldContainer extends StatelessWidget {
   const TextFieldContainer({
     Key key,
-    this.child, this.backgroundColor,
+    this.child,
+    this.backgroundColor,
   }) : super(key: key);
 
   final Widget child;
@@ -15,12 +16,18 @@ class TextFieldContainer extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      margin: EdgeInsets.symmetric(
+        vertical: 10,
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 5,
+      ),
       width: size.width * 0.8,
       decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(30)),
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(30),
+      ),
       child: child,
     );
   }
