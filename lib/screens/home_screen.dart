@@ -20,7 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    run();
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -220,17 +219,5 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
-  }
-
-  run(){
-    if(OutFittedApp.sharedPreferences.getStringList(OutFittedApp.customerCartList) == null){
-      Fluttertoast.showToast(
-        msg: '🚑 🚑',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: kFavoriteProductColor,
-        fontSize: 50,
-      );
-    }
   }
 }

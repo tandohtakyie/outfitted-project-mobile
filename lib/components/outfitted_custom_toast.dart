@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
+import 'dart:io' show Platform;
 
 class OutFittedCustomToast extends StatelessWidget {
   final String text;
@@ -51,7 +52,7 @@ class OutFittedCustomToast extends StatelessWidget {
             width: 30,
           ),
           Container(
-            width: 250,
+            width: Platform.isIOS ? 200 : 250,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
