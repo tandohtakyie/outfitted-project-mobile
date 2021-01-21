@@ -1,17 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:outfitted_flutter_mobile/components/brand_logo.dart';
 import 'package:outfitted_flutter_mobile/components/brand_partnerships.dart';
 import 'package:outfitted_flutter_mobile/components/discount_products.dart';
 import 'package:outfitted_flutter_mobile/components/models_image_slider.dart';
-import 'package:outfitted_flutter_mobile/components/productInfo.dart';
 import 'package:outfitted_flutter_mobile/components/title_with_button.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
-import 'package:outfitted_flutter_mobile/model/Product.dart';
-import 'package:outfitted_flutter_mobile/screens/search_product_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 import 'collection_category_screen.dart';

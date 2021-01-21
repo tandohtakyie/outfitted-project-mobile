@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/model/CollectionCategory.dart';
 import 'dart:io' show Platform;
 
+import 'package:flutter/material.dart';
+import 'package:outfitted_flutter_mobile/model/CollectionCategory.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class StoreCategory extends StatelessWidget {

@@ -7,8 +7,8 @@ import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.d
 import 'package:outfitted_flutter_mobile/components/textfield_container.dart';
 import 'package:outfitted_flutter_mobile/counters/address_changer.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
-import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:outfitted_flutter_mobile/model/Address.dart';
+import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:provider/provider.dart';
 
 class AddressScreen extends StatelessWidget {

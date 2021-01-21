@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class TextFieldContainer extends StatelessWidget {
   const TextFieldContainer({

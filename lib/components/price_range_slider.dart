@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
-import 'package:outfitted_flutter_mobile/screens/collection_category_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 
 class PriceRangeSlider extends StatefulWidget {

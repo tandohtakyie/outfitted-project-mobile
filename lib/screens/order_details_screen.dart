@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/intl.dart';
 import 'package:outfitted_flutter_mobile/components/order_card.dart';
 import 'package:outfitted_flutter_mobile/components/outfitted_custom_appbar_v2.dart';
 import 'package:outfitted_flutter_mobile/components/shipping_info_details.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/model/Address.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
-import 'package:intl/intl.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final String orderID;

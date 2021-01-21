@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:outfitted_flutter_mobile/components/screen_animation_route.dart';
 import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
-import 'package:outfitted_flutter_mobile/screens/search_product_screen.dart';
+import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/screens/shopping_cart_screen.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
-import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:provider/provider.dart';
 
 class OutFittedCustomAppBarV2 extends StatelessWidget
