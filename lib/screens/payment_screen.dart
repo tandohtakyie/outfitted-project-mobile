@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,6 +8,7 @@ import 'package:outfitted_flutter_mobile/counters/cart_item_counter.dart';
 import 'package:outfitted_flutter_mobile/firebase/firebase_config.dart';
 import 'package:outfitted_flutter_mobile/style/style.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 
 class PaymentScreen extends StatefulWidget {
   final String addressID;
@@ -84,13 +84,36 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 
-  saveOrderDetails(String paymentMethod) {
+  saveOrderDetails(String paymentMethod) async {
 
     String orderTime = DateTime.now().microsecondsSinceEpoch.toString();
     List productsToBuyID = OutFittedApp.sharedPreferences
         .getStringList(OutFittedApp.customerCartList);
 
     productsToBuyID.removeAt(0);
+    String name = '';
+    String cityOrTown = '';
+    String streetAndNumber = '';
+    String phone = '';
+    String postCode = '';
+    String country = '';
+
+   await OutFittedApp.firestore
+            .collection(OutFittedApp.collectionCustomer)
+            .doc(OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID))
+            .collection(OutFittedApp.subCollectionAddress)
+            .doc(widget.addressID)
+            .get()
+            .then((value){
+        name = value.data()['name'].toString();
+        cityOrTown = value.data()['cityOrTown'].toString();
+        streetAndNumber = value.data()['streetAndNumber'].toString();
+        phone = value.data()['phone'].toString();
+        postCode = value.data()['postCode'].toString();
+        country = value.data()['country'].toString();
+    });
+
+
 
     saveOrderDetailsForCustomer({
       OutFittedApp.addressID: widget.addressID,
@@ -103,7 +126,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
       OutFittedApp.isSuccess: true,
       OutFittedApp.orderStatus: 'Order Pending',
       'OrderID' : OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID) +
-          orderTime
+          orderTime,
+      'name' : name,
+      'cityOrTown' : cityOrTown,
+      'streetAndNumber' : streetAndNumber,
+      'phone' : phone,
+      'postCode' : postCode,
+      'country' : country,
     });
 
 
@@ -118,7 +147,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
       OutFittedApp.isSuccess: true,
       OutFittedApp.orderStatus: 'Order Pending',
       'OrderID' : OutFittedApp.sharedPreferences.getString(OutFittedApp.customerUID) +
-          orderTime
+          orderTime,
+      'name' : name,
+      'cityOrTown' : cityOrTown,
+      'streetAndNumber' : streetAndNumber,
+      'phone' : phone,
+      'postCode' : postCode,
+      'country' : country,
     }).whenComplete(() => {
           emptyCart(),
         });

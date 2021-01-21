@@ -34,7 +34,7 @@ class _SearchCategoryScreenState extends State<SearchCategoryScreen> {
         body: Padding(
           padding: EdgeInsets.all(10),
           child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
+            stream: OutFittedApp.firestore
                 .collection(OutFittedApp.collectionCategory)
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
