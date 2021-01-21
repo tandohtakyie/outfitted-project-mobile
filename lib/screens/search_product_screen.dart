@@ -18,7 +18,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
 
   // Refresh and update list which contains search-based products
   Future<void> updateSearch(String searchedValue) async {
-    CollectionReference col1 = FirebaseFirestore.instance.collection(OutFittedApp.collectionProduct);
+    CollectionReference col1 = OutFittedApp.firestore.collection(OutFittedApp.collectionProduct);
     /// Method to collect documents by multiple where clauses based on @searchedValue
     final snapshots = col1.snapshots().map(
             (snapshot) => snapshot.docs.where((doc) =>

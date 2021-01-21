@@ -27,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final node = FocusScope.of(context);
 
     Future readData(User fUser) async {
-      FirebaseFirestore.instance
+      OutFittedApp.firestore
           .collection("customers")
           .doc(fUser.uid)
           .get()

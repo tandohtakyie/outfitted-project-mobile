@@ -39,7 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     Future saveCustomerInfo(User fUser) async {
       DateTime now = new DateTime.now();
-      FirebaseFirestore.instance
+      OutFittedApp.firestore
           .collection(OutFittedApp.collectionCustomer)
           .doc(fUser.uid)
           .set({
